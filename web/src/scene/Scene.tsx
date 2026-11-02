@@ -188,10 +188,14 @@ function Man2({
         }
       }
 
-      // 贴纸尺寸、材质深度与渲染层级优化
+      // 贴纸尺寸、材质深度与渲染层级优化（精致微型贴纸）
       if (o.name && o.name.startsWith('sticker_')) {
         if (o.isMesh && o.material) {
-          o.scale.set(0.18, 0.18, 0.18)
+          let s = 0.095
+          if (o.name === 'sticker_404') s = 0.085
+          if (o.name === 'sticker_cursor') s = 0.08
+          if (o.name === 'sticker_cd') s = 0.09
+          o.scale.set(s, s, s)
           o.renderOrder = 10
           const mats = Array.isArray(o.material) ? o.material : [o.material]
           mats.forEach((m: any) => {
