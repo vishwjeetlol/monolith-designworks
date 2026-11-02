@@ -1,23 +1,22 @@
 ---
-title: Monolith Chatpati Edition · Issue 01
-banner: /works/books/chatpati_cover.png
+title: Monolith · Chatpati Edition v2
+banner: /works/books/chatpati_v2_p1.png
 year: 2026
-role: Founder, Editor & Art Director
-tags: [monolith.zine, Editorial Design, Maximalism, Cultural Zine]
+role: Author, Editorial Designer & Publisher
+tags: [monolith.zine, Independent Publishing, Maximalist Editorial, Print Culture]
 link: https://www.instagram.com/monolith.zine
 ---
 
-# Monolith Chatpati Edition — Issue 01
+# monolith.zine — The Chatpati Edition (Vol. II)
 
-![Magazine Cover](/works/books/chatpati_cover.png)
+![Monolith Chatpati Edition v2 Cover](/works/books/chatpati_v2_p1.png)
 
-*monolith.zine* is an independent monthly magazine founded and edited by Vishwjeet Chavan. It explores contemporary culture, underground music, graphic design, and cultural commentary through an uninhibited, maximalist visual language.
+The second expanded edition of **monolith.zine**, celebrating the vibrant collision of Indian street culture, bold vernacular typography, tangy maximalist design, and contemporary creative commentary.
 
-## Editorial Spreads & "Aaj Ka Menu"
+### Editorial Architecture
+- **Maximalist Vernacular Layouts**: Dense typographic compositions combining Hindi script nuances, sticker bombing, receipt paper aesthetics, and screenprint textures.
+- **Cultural Criticism**: Essays analyzing contemporary music, visual arts, and independent publishing ecosystems through an unapologetically authentic local lens.
 
-![Table of Contents Menu](/works/books/chatpati_menu.png)
-
-![Editorial Spread](/works/books/chatpati_spread.png)
-
-- **Aesthetic**: Bold Indian street typography, maximalist collage, high-saturation accents, and raw risograph textures.
-- **Features**: Retrospectives, music reviews (Tinashe, Chat Pile, Protomartyr, Carly Rae Jepsen), and cultural essays.
+![Chatpati Edition Spread 1](/works/books/chatpati_v2_p2.png)
+![Chatpati Edition Spread 2](/works/books/chatpati_v2_p3.png)
+![Chatpati Edition Spread 3](/works/books/chatpati_v2_p4.png)

@@ -1,0 +1,2972 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CD Mechanical Storage · Precision Machined Aluminum Ejection System</title>
+    <meta name="description" content="Photorealistic skeuomorphic 3D vintage mechanical CD storage tower with push-button spring ejection, full 360-degree orbit, solid detailed backplate, studio desk background, and 40% full 3D jewel case ejection." />
+    <meta property="og:title" content="CD Mechanical Storage · Push Button Ejection System" />
+    <meta property="og:description" content="Photorealistic skeuomorphic 3D vintage mechanical CD storage tower with push-button spring ejection, full 360-degree orbit, solid detailed backplate, studio desk background, and 40% full 3D jewel case ejection." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <style>
+      :root {
+        --metal-face-dark: #1f252e;
+        --metal-face-mid: #323b47;
+        --metal-face-light: #526072;
+        --metal-chamfer-bright: #8a9bb0;
+        --metal-chamfer-shadow: #0f1318;
+        --metal-steel-accent: #c4d3e5;
+        --neon-status-blue: #00d2ff;
+        --neon-status-glow: rgba(0, 210, 255, 0.45);
+        --neon-amber-glow: rgba(255, 170, 0, 0.4);
+        --sheen-rot: 45deg;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* =========================================================================
+         1. PHOTOREALISTIC STUDIO ENVIRONMENT & BACKGROUND
+         ========================================================================= */
+      body {
+        min-height: 100vh;
+        width: 100vw;
+        background-color: #0c0f14;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #d8e2ec;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1rem 1rem 3.5rem;
+        position: relative;
+        perspective: 1400px;
+      }
+
+      /* Photorealistic Room Lighting Layers */
+      .studio-room-environment {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        transition: background 0.6s ease;
+      }
+
+      /* Acoustic Diffuser Wall in Distance */
+      .acoustic-wall-slats {
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 60%;
+        background-image: 
+          repeating-linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.5) 0px,
+            rgba(0, 0, 0, 0.5) 12px,
+            rgba(70, 48, 32, 0.25) 12px,
+            rgba(110, 75, 48, 0.3) 24px,
+            rgba(40, 26, 16, 0.6) 24px,
+            rgba(40, 26, 16, 0.6) 28px
+          );
+        opacity: 0.7;
+        mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 65%, transparent 100%);
+        -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 65%, transparent 100%);
+      }
+
+      /* Directional Warm Tungsten Studio Key Light (Top-Left) */
+      .studio-key-light {
+        position: absolute;
+        top: -150px;
+        left: 10%;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(circle, rgba(255, 210, 150, 0.18) 0%, rgba(255, 180, 100, 0.08) 45%, transparent 70%);
+        filter: blur(40px);
+      }
+
+      /* Cool Rim / Fill Studio Backlight (Top-Right) */
+      .studio-rim-light {
+        position: absolute;
+        top: -100px;
+        right: 12%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(100, 200, 255, 0.14) 0%, rgba(40, 120, 200, 0.05) 50%, transparent 75%);
+        filter: blur(50px);
+      }
+
+      /* The Studio Desk / Workbench Surface Plane */
+      .studio-desk-surface {
+        position: absolute;
+        top: 42%;
+        left: -10%;
+        right: -10%;
+        bottom: 0;
+        background: 
+          /* Walnut Wood Grain Sheen Overlay */
+          repeating-linear-gradient(
+            88deg,
+            rgba(0, 0, 0, 0.35) 0px,
+            rgba(0, 0, 0, 0.35) 4px,
+            transparent 4px,
+            transparent 16px,
+            rgba(255, 255, 255, 0.015) 16px,
+            transparent 32px
+          ),
+          /* Warm Walnut Polish Depth Gradient */
+          linear-gradient(
+            180deg,
+            #1e140d 0%,
+            #2a1c12 25%,
+            #382416 50%,
+            #1e130c 80%,
+            #110a06 100%
+          );
+        box-shadow: inset 0 20px 40px rgba(0, 0, 0, 0.85);
+        border-top: 2px solid rgba(255, 180, 120, 0.15);
+      }
+
+      /* Desk Bevel Edge Highlight */
+      .studio-desk-surface::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, transparent 0%, rgba(255, 220, 170, 0.35) 20%, rgba(255, 255, 255, 0.5) 50%, rgba(100, 200, 255, 0.35) 80%, transparent 100%);
+      }
+
+      /* Ambient Light Cone from Vintage Desk Lamp */
+      .studio-lamp-spill {
+        position: absolute;
+        top: 15%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(ellipse at 50% 30%, rgba(255, 230, 180, 0.09) 0%, transparent 65%);
+        pointer-events: none;
+      }
+
+      /* Theme 2: Brushed Steel High-Tech Lab */
+      body.theme-steel .studio-desk-surface {
+        background: 
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.02) 0px,
+            rgba(255, 255, 255, 0.02) 2px,
+            transparent 2px,
+            transparent 10px
+          ),
+          linear-gradient(180deg, #1c222a 0%, #29323d 30%, #151a21 70%, #0d1015 100%);
+        border-top: 2px solid rgba(180, 220, 255, 0.25);
+      }
+      body.theme-steel .acoustic-wall-slats {
+        background-image: repeating-linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.6) 0px,
+          rgba(0, 0, 0, 0.6) 16px,
+          rgba(30, 40, 55, 0.3) 16px,
+          rgba(50, 65, 85, 0.4) 32px
+        );
+      }
+
+      /* Theme 3: Midnight Cyber Lounge */
+      body.theme-midnight .studio-desk-surface {
+        background: 
+          repeating-linear-gradient(
+            90deg,
+            rgba(0, 210, 255, 0.015) 0px,
+            transparent 4px,
+            transparent 20px
+          ),
+          linear-gradient(180deg, #0d1117 0%, #161b22 35%, #0b0e14 75%, #05070a 100%);
+        border-top: 2px solid rgba(0, 210, 255, 0.3);
+      }
+      body.theme-midnight .acoustic-wall-slats {
+        background-image: repeating-linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.7) 0px,
+          rgba(0, 0, 0, 0.7) 14px,
+          rgba(15, 25, 35, 0.4) 14px,
+          rgba(25, 45, 60, 0.5) 28px
+        );
+      }
+
+      /* =========================================================================
+         2. TOP HARDWARE BAR & PERSPECTIVE / THEME CONTROLS
+         ========================================================================= */
+      .top-hardware-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 920px;
+        margin-bottom: 0.75rem;
+        z-index: 50;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .hardware-spec-strip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.45rem 1.1rem;
+        background: linear-gradient(180deg, #2a313b 0%, #171c23 100%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      }
+
+      .hardware-spec-strip span {
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--metal-steel-accent);
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      }
+
+      .hardware-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--neon-status-blue);
+        box-shadow: 0 0 8px var(--neon-status-blue);
+      }
+
+      .top-controls-cluster {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .drag-hint-badge {
+        font-size: 0.68rem;
+        color: #9cb0c6;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(16, 22, 30, 0.85);
+        padding: 0.35rem 0.75rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      }
+
+      /* Viewing Angle Preset Controls */
+      .angle-control-group {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: rgba(16, 20, 26, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 6px;
+        padding: 3px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      }
+
+      .angle-btn {
+        background: transparent;
+        border: 1px solid transparent;
+        color: #8c9baa;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        padding: 0.35rem 0.65rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .angle-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .angle-btn.active {
+        background: linear-gradient(180deg, #3a4350 0%, #20262e 100%);
+        border-color: rgba(255, 255, 255, 0.35);
+        color: #00d2ff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+
+      /* Environment Switcher */
+      .env-switcher-btn {
+        background: rgba(24, 30, 40, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #b8c9dc;
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.35rem 0.65rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .env-switcher-btn:hover {
+        color: #fff;
+        border-color: #00d2ff;
+      }
+
+      /* =========================================================================
+         3. THE 3D VIEWPORT STAGE & DYNAMIC GROUND CONTACT SHADOW
+         ========================================================================= */
+      .cabinet-viewport-stage {
+        perspective: 1250px;
+        perspective-origin: 72% 36%;
+        width: 100%;
+        max-width: 920px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 2rem 1.5rem 3rem;
+        cursor: grab;
+        z-index: 10;
+      }
+
+      .cabinet-viewport-stage:active {
+        cursor: grabbing;
+      }
+
+      /* Soft Realistic Contact Shadow on Desk */
+      .cabinet-desk-shadow {
+        position: absolute;
+        bottom: 8px;
+        width: 740px;
+        height: 180px;
+        background: radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 45%, transparent 75%);
+        filter: blur(14px);
+        transform-origin: center center;
+        transform: rotateX(85deg) translateZ(-45px) scale(1.15);
+        pointer-events: none;
+        z-index: 1;
+        transition: transform 0.08s linear;
+      }
+
+      /* Subtle Desktop Specular Reflection of Cabinet */
+      .cabinet-desk-reflection {
+        position: absolute;
+        bottom: -20px;
+        width: 680px;
+        height: 120px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(138, 155, 176, 0.15) 0%, rgba(0, 210, 255, 0.05) 40%, transparent 70%);
+        filter: blur(10px);
+        pointer-events: none;
+        transform: rotateX(80deg) translateZ(-40px);
+        z-index: 1;
+      }
+
+      /* =========================================================================
+         4. ROCK-SOLID 360-DEGREE 6-FACED 3D MACHINED METAL CUBOID
+         (Zero clipping, zero hollow gaps, front/back hidden backface visibility!)
+         ========================================================================= */
+      .cabinet-tower {
+        position: relative;
+        width: 100%;
+        max-width: 720px;
+        height: 480px;
+        background: transparent;
+        transform-style: preserve-3d;
+        /* Default: Angled view from the right side */
+        transform: rotateY(-25deg) rotateX(7deg);
+        will-change: transform;
+        transition: transform 0.08s linear;
+        z-index: 10;
+      }
+
+      .cabinet-tower.smooth-snap {
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      /* =========================================================================
+         FACE 1: FRONT FACE (+45px Z)
+         ========================================================================= */
+      .cabinet-face-front {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        transform: translateZ(45px);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        background: linear-gradient(135deg, #3d4552 0%, #29303a 45%, #181d24 100%);
+        border-radius: 6px;
+        border: 2px solid var(--metal-chamfer-bright);
+        box-shadow: 
+          -30px 45px 85px rgba(0, 0, 0, 0.95),
+          inset 0 2px 2px rgba(255, 255, 255, 0.6),
+          inset 0 -3px 4px rgba(0, 0, 0, 0.9),
+          inset 2px 0 3px rgba(255, 255, 255, 0.4),
+          inset -2px 0 3px rgba(0, 0, 0, 0.8);
+        padding: 1.15rem 1rem 1.25rem;
+        transform-style: preserve-3d;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      /* Front Brushed Metal Grain Overlay */
+      .cabinet-face-front::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: 
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.04) 0px,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px,
+            transparent 3px
+          ),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.4) 100%);
+        pointer-events: none !important;
+        border-radius: 4px;
+      }
+
+      /* Corner Hex Bolts */
+      .hex-socket-bolt {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff 0%, #8594a6 50%, #202630 100%);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.6);
+        z-index: 30;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none !important;
+      }
+
+      .hex-socket-bolt::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: #0d1014;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+      }
+
+      .hex-socket-bolt.tl { top: 8px; left: 8px; }
+      .hex-socket-bolt.tr { top: 8px; right: 8px; }
+      .hex-socket-bolt.bl { bottom: 8px; left: 8px; }
+      .hex-socket-bolt.br { bottom: 8px; right: 8px; }
+
+      /* Brushed Stainless Steel Nameplate */
+      .metallic-nameplate {
+        position: relative;
+        width: calc(100% - 1rem);
+        margin: 0 auto 0.85rem;
+        background: linear-gradient(180deg, #d8e2ec 0%, #a4b3c4 40%, #768597 75%, #495462 100%);
+        border: 1.5px solid #ffffff;
+        border-bottom: 2px solid #252b34;
+        border-radius: 4px;
+        padding: 0.55rem 1rem 0.45rem;
+        box-shadow: 
+          0 4px 12px rgba(0, 0, 0, 0.8),
+          inset 0 1px 3px rgba(255, 255, 255, 0.9),
+          inset 0 -1px 2px rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        pointer-events: none !important;
+      }
+
+      .plate-title {
+        font-family: "Trebuchet MS", "Lucida Grande", sans-serif;
+        font-size: 0.92rem;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #12161c;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+      }
+
+      .plate-subtitle {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #2b333e;
+        margin-top: 0.15rem;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+
+      /* Dual Vertical Columns Grid */
+      .dual-bay-grid {
+        display: grid;
+        grid-template-columns: 1fr 20px 1fr;
+        gap: 0;
+        position: relative;
+        background: #090c10;
+        border-radius: 4px;
+        border: 2px solid #232a33;
+        box-shadow: inset 0 10px 25px rgba(0, 0, 0, 0.95);
+        padding: 0.35rem 0.25rem;
+        flex: 1;
+        transform-style: preserve-3d;
+      }
+
+      /* Central Extruded Metal Divider */
+      .center-metal-divider {
+        background: linear-gradient(90deg, #181d24 0%, #465160 50%, #181d24 100%);
+        border-left: 1px solid rgba(0, 0, 0, 0.8);
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8);
+        position: relative;
+        border-radius: 2px;
+        pointer-events: none !important;
+      }
+
+      .center-metal-divider::before {
+        content: '';
+        position: absolute;
+        top: 8px; bottom: 8px; left: 7px; width: 6px;
+        background: repeating-linear-gradient(
+          180deg,
+          #9cb0c6 0px,
+          #9cb0c6 1.5px,
+          transparent 1.5px,
+          transparent 36px
+        );
+        opacity: 0.6;
+        pointer-events: none !important;
+      }
+
+      /* Column Containers */
+      .rack-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.15rem;
+        position: relative;
+        transform-style: preserve-3d;
+      }
+
+      /* Slot Row: Button + CD Rail Bay */
+      .slot-unit-row {
+        display: flex;
+        align-items: center;
+        height: 35px;
+        position: relative;
+        transform-style: preserve-3d;
+      }
+
+      .rack-column.col-left .slot-unit-row {
+        flex-direction: row;
+      }
+
+      .rack-column.col-right .slot-unit-row {
+        flex-direction: row-reverse;
+      }
+
+      /* Machined Knurled Push-Buttons (Slots 01-20 100% Reliable Hit-Testing) */
+      .eject-push-button {
+        width: 36px;
+        height: 27px;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #5a6677 0%, #323b46 50%, #191f26 100%);
+        border: 1.5px solid #78879b;
+        border-bottom: 2.5px solid #0d1116;
+        border-radius: 5px;
+        box-shadow: 
+          0 4px 8px rgba(0, 0, 0, 0.85),
+          inset 0 1px 1px rgba(255, 255, 255, 0.5),
+          inset 0 -1px 2px rgba(0, 0, 0, 0.7);
+        cursor: pointer !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transform: translateZ(24px);
+        transition: transform 0.08s cubic-bezier(0.1, 0.9, 0.2, 1), box-shadow 0.08s;
+        z-index: 9999 !important;
+        pointer-events: auto !important;
+      }
+
+      .eject-push-button:hover {
+        background: linear-gradient(180deg, #6c798d 0%, #3e4856 50%, #202730 100%);
+        border-color: #00d2ff;
+        box-shadow: 0 0 10px rgba(0, 210, 255, 0.5), inset 0 1px 1px #fff;
+      }
+
+      .eject-push-button:active,
+      .eject-push-button.depressed {
+        transform: translateZ(8px) scale(0.92);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), inset 0 2px 4px rgba(0, 0, 0, 0.9);
+        background: #11151a;
+        border-color: #2b333e;
+      }
+
+      .btn-slot-num {
+        font-family: "Trebuchet MS", monospace, sans-serif;
+        font-size: 0.62rem;
+        font-weight: 800;
+        color: #b0c2d6;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.9);
+        letter-spacing: -0.02em;
+        pointer-events: none;
+      }
+
+      /* Milled CD Guide Channel */
+      .cd-bay-channel {
+        flex: 1;
+        height: 100%;
+        background: #080a0d;
+        border: 1px solid #1f2732;
+        border-radius: 3px;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.98);
+        margin: 0 4px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: visible;
+        transform-style: preserve-3d;
+        cursor: pointer;
+      }
+
+      /* =========================================================================
+         FULL 3D PHYSICAL JEWEL CASE & 40% POP-OUT ARCHITECTURE
+         When in slot: only front spine is visible flush.
+         When ejected: shoots forward +160px into Z!
+         Extending back to slot (Z: 160px to 0px):
+         - Top face: Full acrylic lid with booklet cover art, compact disc inside tray!
+         - Right face: Full clear acrylic sidewall with latch tabs, disc rim curve!
+         - Left face: Acrylic hinge edge with pivot nubs!
+         - Bottom face: Tray base card!
+         ========================================================================= */
+      .jewel-case-spine {
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        right: 2px;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0.5rem;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: transform 0.48s cubic-bezier(0.18, 1.36, 0.32, 1), box-shadow 0.48s;
+        will-change: transform, box-shadow;
+        z-index: 10;
+        transform: translate3d(0, 0, 0px);
+      }
+
+      /* Ribbed Clear-Plastic Texture on Spine Edges */
+      .jewel-case-spine::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(0, 0, 0, 0.45) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 2px;
+        pointer-events: none;
+        box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.3);
+      }
+
+      .spine-grip-ribs {
+        position: absolute;
+        top: 1px; bottom: 1px;
+        width: 10px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.4) 0px,
+          rgba(255, 255, 255, 0.4) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      .spine-grip-ribs.left { left: 4px; }
+      .spine-grip-ribs.right { right: 4px; }
+
+      .spine-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 12px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      .spine-artist {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spine-separator {
+        font-size: 0.6rem;
+        opacity: 0.6;
+        margin: 0 0.35rem;
+      }
+
+      .spine-album {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .spine-cat-no {
+        font-family: monospace;
+        font-size: 0.5rem;
+        font-weight: 700;
+        opacity: 0.8;
+        margin-left: 0.4rem;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+
+      /* 40% POPPED-OUT 3D POSITIONING */
+      .rack-column.col-left .jewel-case-spine.ejected {
+        transform: translate3d(0, 0, 160px) rotateY(3deg);
+        box-shadow: -25px 30px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(0, 210, 255, 0.4);
+        z-index: 100;
+      }
+
+      .rack-column.col-right .jewel-case-spine.ejected {
+        transform: translate3d(0, 0, 160px) rotateY(-3deg);
+        box-shadow: 25px 30px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(0, 210, 255, 0.4);
+        z-index: 100;
+      }
+
+      /* 3D PROTRUDING JEWEL CASE CONTAINER (Visible when ejected) */
+      .protruding-jewel-case-3d {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none;
+        transform-style: preserve-3d;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .jewel-case-spine.ejected .protruding-jewel-case-3d {
+        opacity: 1;
+      }
+
+      /* -------------------------------------------------------------
+         TOP FACE: Clear Acrylic Lid (Spanning Z from 160px back to 0px)
+         Facing UP towards the viewer!
+         ------------------------------------------------------------- */
+      .case-3d-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 160px;
+        transform-origin: top center;
+        transform: rotateX(-90deg);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 30%, rgba(10, 14, 20, 0.85) 100%);
+        border: 1.5px solid rgba(255, 255, 255, 0.65);
+        border-top: none;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(255, 255, 255, 0.4);
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 8px;
+        padding: 8px 10px;
+        align-items: center;
+      }
+
+      .case-acrylic-specular {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, transparent 40%, rgba(255, 255, 255, 0.25) 100%);
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      /* Molded Compact Disc Logo in acrylic corner */
+      .case-top-logo {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        font-family: monospace;
+        font-size: 0.48rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.6);
+        text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        padding: 1px 4px;
+        border-radius: 2px;
+        z-index: 6;
+      }
+
+      /* Front Cover Booklet Insert visible through clear lid */
+      .case-booklet-preview {
+        width: 140px;
+        height: 140px;
+        border-radius: 3px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        z-index: 2;
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .case-booklet-preview::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; bottom: 0; width: 4px;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+      }
+
+      /* Compact Disc seated in the internal tray */
+      .case-disc-preview {
+        width: 135px;
+        height: 135px;
+        border-radius: 50%;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.9);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        flex-shrink: 0;
+        border: 1.5px solid rgba(255, 255, 255, 0.6);
+        overflow: hidden;
+        margin-left: auto;
+      }
+
+      .case-disc-hole {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #000;
+        border: 1.5px solid rgba(255, 255, 255, 0.7);
+        z-index: 3;
+        box-shadow: 0 0 4px rgba(0,0,0,0.9);
+      }
+
+      .case-disc-rainbow {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 45deg,
+          rgba(255,255,255,0.5) 0deg,
+          rgba(255,100,160,0.6) 60deg,
+          rgba(255,230,100,0.6) 120deg,
+          rgba(100,255,180,0.6) 180deg,
+          rgba(100,200,255,0.6) 240deg,
+          rgba(200,100,255,0.6) 300deg,
+          rgba(255,255,255,0.5) 360deg
+        );
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+
+      /* -------------------------------------------------------------
+         RIGHT FACE: Clear Acrylic Flank (Spanning Z: 160px to 0px)
+         Crucial because camera views from the right!
+         ------------------------------------------------------------- */
+      .case-3d-side-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 160px;
+        height: 100%;
+        transform-origin: right center;
+        transform: rotateY(-90deg);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(20, 28, 38, 0.88) 15%,
+          rgba(10, 15, 20, 0.95) 85%,
+          rgba(255, 255, 255, 0.35) 100%
+        );
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 6px;
+      }
+
+      /* Latch tabs molded on the right side of the jewel case */
+      .case-side-latch-tab {
+        width: 18px;
+        height: 60%;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+      }
+
+      /* Visible booklet paper thickness line through acrylic flank */
+      .case-side-booklet-edge {
+        position: absolute;
+        top: 3px;
+        left: 8px;
+        right: 8px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 1px;
+      }
+
+      /* Visible CD disc rim curve through flank */
+      .case-side-disc-rim {
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #c4d3e5, #00d2ff, transparent);
+        border-radius: 2px;
+        box-shadow: 0 0 4px #00d2ff;
+      }
+
+      /* -------------------------------------------------------------
+         LEFT FACE: Clear Acrylic Hinge Edge (Spanning Z: 160px to 0px)
+         ------------------------------------------------------------- */
+      .case-3d-side-left {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 160px;
+        height: 100%;
+        transform-origin: left center;
+        transform: rotateY(90deg);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.35) 0%,
+          rgba(10, 15, 20, 0.95) 15%,
+          rgba(20, 28, 38, 0.88) 85%,
+          rgba(255, 255, 255, 0.5) 100%
+        );
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      .case-hinge-pin {
+        width: 8px;
+        height: 75%;
+        border-radius: 3px;
+        background: linear-gradient(180deg, #fff 0%, #888 100%);
+        border: 1px solid rgba(0, 0, 0, 0.6);
+      }
+
+      /* -------------------------------------------------------------
+         BOTTOM FACE: Acrylic Tray Base (Spanning Z: 160px to 0px)
+         ------------------------------------------------------------- */
+      .case-3d-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 160px;
+        transform-origin: bottom center;
+        transform: rotateX(90deg);
+        background: linear-gradient(180deg, rgba(10, 14, 20, 0.96) 0%, rgba(20, 26, 36, 0.9) 100%);
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        border-bottom: none;
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95);
+      }
+
+      /* =========================================================================
+         FACE 2: 3D FULL SOLID METAL BACKPLATE (-45px Z, ROTATED 180 DEG)
+         (Completely filled with authentic high-end Hi-Fi industrial details!)
+         ========================================================================= */
+      .cabinet-face-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateZ(-45px) rotateY(180deg);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        background: linear-gradient(135deg, #242b36 0%, #181d24 50%, #0e1216 100%);
+        border: 2px solid var(--metal-chamfer-bright);
+        box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.95), 0 30px 70px rgba(0, 0, 0, 0.9);
+        border-radius: 6px;
+        padding: 1.25rem 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: auto !important;
+      }
+
+      /* Dual Heavy Steel Wall-Mount Brackets */
+      .backplate-mount-brackets {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+
+      .steel-mount-tab {
+        width: 60px;
+        height: 24px;
+        background: linear-gradient(180deg, #4f5a6b 0%, #202630 100%);
+        border: 1.5px solid #78889d;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.8), inset 0 1px 0 #fff;
+      }
+
+      .keyhole-slot {
+        width: 16px;
+        height: 10px;
+        background: #090c10;
+        border-radius: 4px 4px 2px 2px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Heavy Stamped Manufacturer Serial Badge */
+      .backplate-serial-badge {
+        background: linear-gradient(180deg, #3d4654 0%, #1e242c 100%);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        border-radius: 4px;
+        padding: 0.65rem 1rem;
+        box-shadow: inset 0 1px 2px rgba(255,255,255,0.4), 0 3px 8px rgba(0,0,0,0.7);
+        text-align: center;
+      }
+
+      .backplate-serial-title {
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #d1dde8;
+      }
+
+      .backplate-serial-sub {
+        font-family: monospace;
+        font-size: 0.62rem;
+        font-weight: 700;
+        color: #8c9baa;
+        margin-top: 0.25rem;
+        letter-spacing: 0.08em;
+      }
+
+      /* 20 Dual-Column Spring Tension Adjustment Ports */
+      .backplate-tension-section {
+        background: rgba(0, 0, 0, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 5px;
+        padding: 0.75rem 0.85rem;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.9);
+      }
+
+      .tension-section-header {
+        display: flex;
+        justify-content: space-between;
+        font-family: monospace;
+        font-size: 0.58rem;
+        font-weight: 800;
+        color: #9cb0c6;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.25rem;
+      }
+
+      .backplate-spring-regulators {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 8px 6px;
+      }
+
+      .tension-screw-dial {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        cursor: pointer;
+      }
+
+      .tension-screw-dial:hover .screw-head-slot {
+        border-color: #00d2ff;
+        box-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+      }
+
+      .screw-head-slot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff 0%, #768494 50%, #202630 100%);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+      }
+
+      .screw-head-slot::after {
+        content: '';
+        width: 10px;
+        height: 1.5px;
+        background: #0f1216;
+      }
+
+      .dial-slot-label {
+        font-family: monospace;
+        font-size: 0.5rem;
+        color: #7b8899;
+        font-weight: 800;
+      }
+
+      /* Stamped Ventilation Louvers */
+      .backplate-louvers {
+        width: 100%;
+        height: 44px;
+        background: repeating-linear-gradient(
+          180deg,
+          #0b0d10 0px,
+          #0b0d10 3px,
+          #2c3440 3px,
+          #2c3440 6px
+        );
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 3px;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.9);
+      }
+
+      /* Audiophile Rear I/O Connectors & Ground Terminal */
+      .backplate-io-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-family: monospace;
+        font-size: 0.6rem;
+        color: #8c9baa;
+      }
+
+      .rca-ports-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .rca-jack {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 40% 40%, #ffd700 0%, #b8860b 60%, #443400 100%);
+        border: 2px solid;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      }
+      .rca-jack.red { border-color: #e63946; }
+      .rca-jack.white { border-color: #ffffff; }
+
+      .ground-terminal-screw {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 700;
+      }
+
+      .copper-washer {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #e07a5f 40%, #8c3b24 100%);
+        border: 1px solid #ffd166;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.7);
+      }
+
+      .backplate-qc-seal {
+        border: 1px dashed rgba(255, 170, 0, 0.5);
+        color: #ffaa00;
+        padding: 2px 6px;
+        border-radius: 2px;
+        font-size: 0.52rem;
+        letter-spacing: 0.05em;
+      }
+
+      /* =========================================================================
+         FACES 3, 4, 5, 6: SIDES, TOP, BOTTOM (DEPTH = 90PX, SPANNING -45 TO +45)
+         ========================================================================= */
+      /* RIGHT FLANK (Facing right at +X) */
+      .cabinet-face-right {
+        position: absolute;
+        top: 0;
+        right: -45px;
+        width: 90px;
+        height: 100%;
+        transform: rotateY(90deg);
+        background: linear-gradient(90deg, #1b2027 0%, #363e4b 40%, #15191f 100%);
+        border-top: 2px solid var(--metal-chamfer-bright);
+        border-bottom: 2px solid var(--metal-chamfer-shadow);
+        border-right: 2px solid #2d3540;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 15px 8px;
+        pointer-events: none !important;
+      }
+
+      .right-panel-fins {
+        width: 100%;
+        height: 80%;
+        background: repeating-linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.15) 0px,
+          rgba(255, 255, 255, 0.15) 2px,
+          #101318 2px,
+          #101318 10px
+        );
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+      }
+
+      /* LEFT FLANK (Facing left at -X) */
+      .cabinet-face-left {
+        position: absolute;
+        top: 0;
+        left: -45px;
+        width: 90px;
+        height: 100%;
+        transform: rotateY(-90deg);
+        background: linear-gradient(90deg, #15191f 0%, #363e4b 60%, #1b2027 100%);
+        border-top: 2px solid var(--metal-chamfer-bright);
+        border-bottom: 2px solid var(--metal-chamfer-shadow);
+        border-left: 2px solid #2d3540;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 15px 8px;
+        pointer-events: none !important;
+      }
+
+      /* TOP LID (Facing up at -Y) */
+      .cabinet-face-top {
+        position: absolute;
+        top: -45px;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        transform: rotateX(90deg);
+        background: linear-gradient(180deg, #4f5b6b 0%, #2c333e 100%);
+        border-left: 2px solid var(--metal-chamfer-bright);
+        border-right: 2px solid #232932;
+        border-top: 2px solid #6b7a8f;
+        box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.4);
+        pointer-events: none !important;
+      }
+
+      /* BOTTOM BASE (Facing down at +Y) */
+      .cabinet-face-bottom {
+        position: absolute;
+        bottom: -45px;
+        left: 0;
+        width: 100%;
+        height: 90px;
+        transform: rotateX(-90deg);
+        background: linear-gradient(180deg, #12151a 0%, #242a33 100%);
+        border-left: 2px solid #242a33;
+        border-right: 2px solid #242a33;
+        border-bottom: 2px solid #14171d;
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.9);
+        pointer-events: none !important;
+      }
+
+      /* =========================================================================
+         5. BOTTOM SECTION: "WHY I LIKE THIS ALBUM" POP-OUT CARD
+         ========================================================================= */
+      .bottom-review-section {
+        width: 100%;
+        max-width: 920px;
+        margin-top: 1.25rem;
+        position: relative;
+        z-index: 40;
+      }
+
+      .album-appreciation-card {
+        background: linear-gradient(135deg, #2b333e 0%, #1c2229 60%, #12161b 100%);
+        border: 2px solid var(--metal-chamfer-bright);
+        border-radius: 8px;
+        padding: 1.15rem 1.4rem;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.4s cubic-bezier(0.18, 1.35, 0.32, 1), box-shadow 0.4s;
+      }
+
+      .album-appreciation-card.pop-active {
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px var(--neon-status-glow), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+      }
+
+      .card-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        padding-bottom: 0.6rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .card-title-group {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .card-header-badge {
+        font-family: "Trebuchet MS", monospace, sans-serif;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #081017;
+        background: #00d2ff;
+        padding: 0.2rem 0.55rem;
+        border-radius: 3px;
+        box-shadow: 0 0 8px var(--neon-status-glow);
+      }
+
+      .card-header-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #9cb0c6;
+      }
+
+      .card-slot-indicator {
+        font-family: monospace;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--neon-status-blue);
+      }
+
+      .album-review-content {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 1.25rem;
+        align-items: center;
+      }
+
+      @media (max-width: 650px) {
+        .album-review-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .album-art-mini-chip {
+        width: 68px;
+        height: 68px;
+        border-radius: 4px;
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 6px;
+        flex-shrink: 0;
+      }
+
+      .review-text-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .review-album-headline {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: 0.02em;
+      }
+
+      .review-album-headline span {
+        color: var(--neon-status-blue);
+      }
+
+      .review-why-i-like-it {
+        font-size: 0.82rem;
+        line-height: 1.5;
+        color: #d1dde8;
+      }
+
+      .review-actions-block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .metallic-btn {
+        background: linear-gradient(180deg, #4f5a6b 0%, #29303a 100%);
+        border: 1px solid #78889d;
+        border-bottom: 2px solid #14181f;
+        border-radius: 4px;
+        color: #fff;
+        font-family: "Trebuchet MS", sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.5rem 0.85rem;
+        cursor: pointer;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.6);
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+
+      .metallic-btn:hover {
+        background: linear-gradient(180deg, #606d82 0%, #343d4a 100%);
+        border-color: #9cb0c8;
+      }
+
+      .metallic-btn:active {
+        transform: translateY(1.5px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      }
+
+      .metallic-btn.primary-cyan {
+        background: linear-gradient(180deg, #0099cc 0%, #005577 100%);
+        border-color: #00d2ff;
+        color: #fff;
+        box-shadow: 0 3px 10px rgba(0, 210, 255, 0.3);
+      }
+      .metallic-btn.primary-cyan:hover {
+        background: linear-gradient(180deg, #00b4ee 0%, #006b96 100%);
+      }
+
+      /* =========================================================================
+         6. 3D JEWEL CASE INSPECTION MODAL (Open Lid 135deg & Pop CD)
+         ========================================================================= */
+      .inspection-backdrop {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(5, 8, 12, 0.88);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        perspective: 1400px;
+      }
+
+      .inspection-backdrop.active {
+        display: flex;
+      }
+
+      .inspection-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .jewel-case-3d {
+        width: 320px;
+        height: 290px;
+        position: relative;
+        transform-style: preserve-3d;
+        transform: rotateX(14deg) rotateY(-18deg);
+        transition: transform 0.1s ease-out;
+      }
+
+      .case-back-tray {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(20, 25, 35, 0.95) 0%, rgba(10, 12, 16, 0.98) 100%);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 6px;
+        box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 0, 0, 0.9);
+        transform-style: preserve-3d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .case-spine-hinge {
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 14px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(20, 25, 35, 0.95) 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .case-hub-teeth {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #080a0d 45%, #252d38 100%);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        box-shadow: inset 0 0 8px #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hub-tooth-peg {
+        position: absolute;
+        width: 4px;
+        height: 12px;
+        background: #505c6d;
+        border-radius: 2px;
+      }
+      .hub-tooth-peg:nth-child(1) { transform: rotate(0deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(2) { transform: rotate(45deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(3) { transform: rotate(90deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(4) { transform: rotate(135deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(5) { transform: rotate(180deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(6) { transform: rotate(225deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(7) { transform: rotate(270deg) translateY(-14px); }
+      .hub-tooth-peg:nth-child(8) { transform: rotate(315deg) translateY(-14px); }
+
+      /* Compact Disc seated on Hub */
+      .inspection-cd-disc {
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        transform: translateZ(4px);
+        transition: transform 0.5s cubic-bezier(0.18, 1.4, 0.32, 1);
+        cursor: pointer;
+      }
+
+      .inspection-cd-disc.popped-out {
+        transform: translateZ(85px) rotateY(-15deg) scale(1.08);
+        box-shadow: 0 35px 70px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 210, 255, 0.4);
+      }
+
+      .cd-disc-surface {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        background: radial-gradient(circle at 50% 50%, #ffffff 0%, #cbd5e1 30%, #94a3b8 65%, #1e293b 100%);
+      }
+
+      .cd-groove-lines {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        background: repeating-radial-gradient(
+          circle at 50% 50%,
+          transparent 0px,
+          transparent 1.5px,
+          rgba(0, 0, 0, 0.15) 1.5px,
+          rgba(0, 0, 0, 0.15) 3px
+        );
+      }
+
+      .cd-disc-surface::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        background: conic-gradient(
+          from var(--sheen-rot),
+          rgba(255,255,255,0.7) 0deg,
+          rgba(255,100,160,0.7) 60deg,
+          rgba(255,230,100,0.7) 120deg,
+          rgba(100,255,180,0.7) 180deg,
+          rgba(100,200,255,0.7) 240deg,
+          rgba(200,100,255,0.7) 300deg,
+          rgba(255,255,255,0.7) 360deg
+        );
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+
+      .cd-silkscreen-art {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border-radius: 50%;
+        clip-path: circle(48% at 50% 50%);
+        mask-image: radial-gradient(circle at 50% 50%, transparent 26%, black 27%);
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 26%, black 27%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .cd-inner-mirror-ring {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(200,210,225,0.8) 70%, #000 100%);
+        border: 1.5px solid rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 4;
+      }
+
+      .cd-matrix-stamp {
+        position: absolute;
+        font-family: monospace;
+        font-size: 0.38rem;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        bottom: 8px;
+      }
+
+      .cd-center-clamp-hole {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #000;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+      }
+
+      /* Front Acrylic Lid (Hinged on the Left) */
+      .case-front-lid {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        transform: rotateY(0deg);
+        transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 10;
+        cursor: pointer;
+      }
+
+      .jewel-case-3d.lid-open .case-front-lid {
+        transform: rotateY(-135deg);
+      }
+
+      .lid-acrylic-pane {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(15, 20, 28, 0.8) 100%);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        border-radius: 6px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.35);
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .booklet-front-art {
+        width: 250px;
+        height: 250px;
+        border-radius: 4px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .booklet-gloss-streak {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.55) 0%, transparent 45%, rgba(255, 255, 255, 0.15) 100%);
+        pointer-events: none;
+      }
+
+      .inspection-actions-card {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(20, 26, 35, 0.95);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        border-radius: 6px;
+        padding: 0.75rem 1.25rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 0. PHOTOREALISTIC STUDIO ENVIRONMENT LAYERS -->
+    <div class="studio-room-environment" id="studioEnvironment">
+      <div class="acoustic-wall-slats"></div>
+      <div class="studio-key-light"></div>
+      <div class="studio-rim-light"></div>
+      <div class="studio-desk-surface"></div>
+      <div class="studio-lamp-spill"></div>
+    </div>
+
+    <!-- 1. TOP HARDWARE SPECIFICATION & 3D CONTROLS -->
+    <header class="top-hardware-bar">
+      <div class="hardware-spec-strip">
+        <div class="hardware-dot"></div>
+        <span>JAPAN PRECISION MEC-SYSTEMS · CS-2000X</span>
+      </div>
+
+      <div class="top-controls-cluster">
+        <div class="drag-hint-badge">
+          <span>🔄 DRAG TO ORBIT 360°</span>
+        </div>
+
+        <div class="angle-control-group">
+          <button class="angle-btn active" id="btnAngleRight" title="View from Right Side (40% Pop-out view)">
+            RIGHT SIDE
+          </button>
+          <button class="angle-btn" id="btnAngleFront" title="View from Front">
+            FRONTAL
+          </button>
+          <button class="angle-btn" id="btnAngleBack" title="View Solid Detailed Backside">
+            BACKSIDE
+          </button>
+          <button class="angle-btn" id="btnAngleSteep" title="View from Steep Angle">
+            STEEP
+          </button>
+          <button class="angle-btn" id="btnAngleLeft" title="View from Left Side">
+            LEFT SIDE
+          </button>
+        </div>
+
+        <button class="env-switcher-btn" id="btnEnvSwitch" title="Switch Studio Environment">
+          <span id="envIcon">🪵</span> <span id="envLabel">WALNUT STUDIO</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. THE 3D CABINET VIEWPORT (INTERACTIVE ORBIT TRACKING & GROUND SHADOW) -->
+    <main class="cabinet-viewport-stage" id="cabinetStage">
+      <!-- Realistic Dynamic Studio Desk Floor Shadow -->
+      <div class="cabinet-desk-shadow" id="cabinetDeskShadow"></div>
+      <!-- Subtle Desktop Specular Reflection -->
+      <div class="cabinet-desk-reflection"></div>
+
+      <!-- ROCK-SOLID 360-DEGREE 6-FACED 3D METAL CUBOID -->
+      <div class="cabinet-tower" id="cabinetTower">
+
+        <!-- ==========================================
+             FACE 1: FRONT FACE (+45px Z)
+             ========================================== -->
+        <div class="cabinet-face-front">
+          <!-- Front Allen Hex Socket Cap Bolts -->
+          <div class="hex-socket-bolt tl"></div>
+          <div class="hex-socket-bolt tr"></div>
+          <div class="hex-socket-bolt bl"></div>
+          <div class="hex-socket-bolt br"></div>
+
+          <!-- Brushed Stainless Steel Nameplate -->
+          <div class="metallic-nameplate">
+            <h1 class="plate-title">CD MECHANICAL STORAGE · PUSH BUTTON EJECTION SYSTEM</h1>
+            <div class="plate-subtitle">PRECISION MACHINED ALUMINUM CARTRIDGE RACK · 20 COMPACT DISC CAPACITY</div>
+          </div>
+
+          <!-- DUAL VERTICAL COLUMNS -->
+          <div class="dual-bay-grid">
+            <!-- COLUMN 1: SLOTS 01 TO 10 (Buttons on Left flank) -->
+            <div class="rack-column col-left" id="columnLeft"></div>
+
+            <!-- Central Extruded Metal Divider -->
+            <div class="center-metal-divider"></div>
+
+            <!-- COLUMN 2: SLOTS 11 TO 20 (Buttons on Right flank) -->
+            <div class="rack-column col-right" id="columnRight"></div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             FACE 2: 3D FULL SOLID METAL BACKPLATE (-45px Z)
+             (Never empty! Intricately detailed rear chassis)
+             ========================================== -->
+        <div class="cabinet-face-back">
+          <!-- Wall Mount Steel Brackets -->
+          <div class="backplate-mount-brackets">
+            <div class="steel-mount-tab"><div class="keyhole-slot"></div></div>
+            <div class="steel-mount-tab"><div class="keyhole-slot"></div></div>
+          </div>
+
+          <!-- Stamped Manufacturer Plaque -->
+          <div class="backplate-serial-badge">
+            <div class="backplate-serial-title">JAPAN PRECISION MEC-SYSTEMS · MODEL CS-2000X</div>
+            <div class="backplate-serial-sub">HIGH-SPEED SPRING DAMPED CD CARTRIDGE TOWER // SERIAL #849-204-B</div>
+          </div>
+
+          <!-- 20 Spring Tension Regulator Canisters (Clickable dials!) -->
+          <div class="backplate-tension-section">
+            <div class="tension-section-header">
+              <span>SLOTS 01-10 TENSION PORTS</span>
+              <span>CALIBRATED SPRING FORCE 2.2N</span>
+              <span>SLOTS 11-20 TENSION PORTS</span>
+            </div>
+            <div class="backplate-spring-regulators" id="backplateRegulators"></div>
+          </div>
+
+          <!-- Stamped Ventilation Louvers -->
+          <div class="backplate-louvers"></div>
+
+          <!-- Rear Audiophile I/O, Ground Lug & QC Seal -->
+          <div class="backplate-io-row">
+            <div class="rca-ports-group">
+              <div class="rca-jack white" title="Left Channel Output"></div>
+              <div class="rca-jack red" title="Right Channel Output"></div>
+              <span>MONITOR OUT</span>
+            </div>
+
+            <div class="ground-terminal-screw">
+              <div class="copper-washer"></div>
+              <span>CHASSIS GROUND ⏚</span>
+            </div>
+
+            <div class="backplate-qc-seal">
+              QC PASSED #07
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================
+             FACES 3, 4, 5, 6: SIDES, TOP, BOTTOM DEPTH PANELS
+             ========================================== -->
+        <!-- 3D Right Side Depth Panel (Heatsink Fins) -->
+        <div class="cabinet-face-right">
+          <div class="right-panel-fins"></div>
+        </div>
+
+        <!-- 3D Left Side Depth Panel (Heatsink Fins) -->
+        <div class="cabinet-face-left">
+          <div class="right-panel-fins"></div>
+        </div>
+
+        <!-- 3D Top Lid Panel -->
+        <div class="cabinet-face-top"></div>
+
+        <!-- 3D Bottom Base Panel -->
+        <div class="cabinet-face-bottom"></div>
+      </div>
+    </main>
+
+    <!-- 3. BOTTOM SECTION: "WHY I LIKE THIS ALBUM" POP-OUT CARD -->
+    <section class="bottom-review-section">
+      <div class="album-appreciation-card" id="albumAppreciationCard">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <span class="card-header-badge" id="cardStatusBadge">CARTRIDGE EXTENDED // 40% POP-OUT</span>
+            <span class="card-header-label">CURATOR'S LOG · WHY I LOVE THIS ALBUM</span>
+          </div>
+          <span class="card-slot-indicator" id="cardSlotIndicator">SLOT 01 ACTIVE</span>
+        </div>
+
+        <div class="album-review-content">
+          <!-- Mini Album Artwork Chip -->
+          <div class="album-art-mini-chip" id="miniArtChip" style="background: #8ace00; color: #050700;">
+            <div style="font-family: monospace; font-size: 0.45rem; font-weight: 800; text-transform: uppercase;">CD-01</div>
+            <div style="font-size: 0.8rem; font-weight: 900; line-height: 1;">BRAT</div>
+          </div>
+
+          <!-- Review & Reason Block -->
+          <div class="review-text-block">
+            <div class="review-album-headline" id="reviewHeadline">
+              Charli xcx · <span>BRAT</span>
+            </div>
+            <p class="review-why-i-like-it" id="reviewBodyText">
+              The raw club minimalism and razor-sharp hyperpop production redefined modern pop. Every drop on tracks like "360" and "Von Dutch" feels sweaty, urgent, and infectious.
+            </p>
+          </div>
+
+          <!-- Actions: 3D Inspect & Push Back -->
+          <div class="review-actions-block">
+            <button class="metallic-btn primary-cyan" id="btnInspectActive">
+              🔍 INSPECT 3D CASE
+            </button>
+            <button class="metallic-btn" id="btnLatchActive">
+              ⏮ PUSH BACK & LATCH
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 3D JEWEL CASE INSPECTION MODAL -->
+    <div class="inspection-backdrop" id="inspectionBackdrop">
+      <div class="inspection-stage">
+        <div class="jewel-case-3d" id="jewelCase3D">
+          <div class="case-back-tray">
+            <div class="case-spine-hinge"></div>
+            <div class="case-hub-teeth">
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+              <div class="hub-tooth-peg"></div>
+            </div>
+
+            <div class="inspection-cd-disc" id="inspectionCd" title="Click disc to pop in/out of hub">
+              <div class="cd-disc-surface" id="cdDiscSurface">
+                <div class="cd-groove-lines"></div>
+                <div class="cd-silkscreen-art" id="cdSilkscreenArt"></div>
+                <div class="cd-inner-mirror-ring">
+                  <span class="cd-matrix-stamp" id="cdMatrixStamp">CDP-792842-NL</span>
+                  <div class="cd-center-clamp-hole"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-front-lid" id="caseFrontLid">
+            <div class="lid-acrylic-pane">
+              <div class="booklet-front-art" id="bookletFrontArt"></div>
+              <div class="booklet-gloss-streak"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="inspection-actions-card">
+          <button class="metallic-btn primary-cyan" id="btnOpenCaseLid">
+            <span id="openLidIcon">📂</span> <span id="openLidText">OPEN LID</span>
+          </button>
+          <button class="metallic-btn" id="btnPopDisc">
+            💿 POP DISC
+          </button>
+          <button class="metallic-btn" id="btnReturnToRack">
+            ⏮ PUSH BACK & LATCH
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. PROCEDURAL MECHANICAL AUDIO & HARDWARE CONTROLLER -->
+    <script>
+      /**
+       * 20 FEATURED ALBUMS WITH CURATED "WHY I LIKE THIS ALBUM" INSIGHTS
+       */
+      const ALBUMS = [
+        {
+          id: 'brat',
+          artist: 'Charli xcx',
+          album: 'BRAT',
+          track: '360',
+          spineBg: '#8ace00',
+          spineColor: '#050700',
+          cat: 'ATL-8201',
+          discColor: '#8ace00',
+          discAccent: '#050700',
+          style: 'font-weight: 900; letter-spacing: -0.05em;',
+          whyILikeIt: 'The raw, sweaty club minimalism and razor-sharp hyperpop production redefined modern pop. Every drop on tracks like "360" and "Von Dutch" feels unapologetically urgent, chaotic, and infectious.'
+        },
+        {
+          id: 'amftm',
+          artist: 'Tsumyoki',
+          album: 'A Message from the Moon',
+          track: 'Pink Blue',
+          spineBg: '#1e1b4b',
+          spineColor: '#c084fc',
+          cat: 'GOA-02',
+          discColor: '#0f172a',
+          discAccent: '#a855f7',
+          style: 'font-weight: 700; letter-spacing: 0.05em;',
+          whyILikeIt: 'Goan indie hip-hop meets ethereal melodic pop. The transition from introspective acoustic strums to punchy modern trap drums creates an intimate, late-night emotional journey.'
+        },
+        {
+          id: 'graduation',
+          artist: 'Kanye West',
+          album: 'Graduation',
+          track: 'Flashing Lights',
+          spineBg: '#581c87',
+          spineColor: '#facc15',
+          cat: 'DEF-03',
+          discColor: '#3b0764',
+          discAccent: '#f59e0b',
+          style: 'font-family: Impact, sans-serif; font-weight: 900; letter-spacing: 0.05em;',
+          whyILikeIt: 'The pinnacle of triumphant arena rap. Blending stadium-sized synth arpeggios, Daft Punk samples, and orchestral strings, it permanently shifted hip-hop away from gangsta rap into futuristic pop.'
+        },
+        {
+          id: 'tpab',
+          artist: 'Kendrick Lamar',
+          album: 'To Pimp a Butterfly',
+          track: 'King Kunta',
+          spineBg: '#171717',
+          spineColor: '#e5e5e5',
+          cat: 'TDE-04',
+          discColor: '#0a0a0a',
+          discAccent: '#ffffff',
+          style: 'font-family: "Courier New", monospace; font-weight: 900; letter-spacing: -0.05em;',
+          whyILikeIt: 'A monumental, jazz-infused masterpiece. Thundercat\'s virtuosic bass runs, Kamasi Washington\'s horns, and Kendrick\'s poetic storytelling make this one of the most vital albums in music history.'
+        },
+        {
+          id: 'yjhd',
+          artist: 'Pritam',
+          album: 'Yeh Jawaani Hai Deewani',
+          track: 'Badtameez Dil',
+          spineBg: '#7f1d1d',
+          spineColor: '#fef08a',
+          cat: 'TSR-05',
+          discColor: '#450a0a',
+          discAccent: '#fbbf24',
+          style: 'font-family: "Trebuchet MS", sans-serif; font-weight: 800; letter-spacing: 0.08em;',
+          whyILikeIt: 'Pure celebratory nostalgia and Bollywood musical craftsmanship at its peak. From swinging brass big-band jazz in "Badtameez Dil" to the melancholic strings of "Kabira", it never gets old.'
+        },
+        {
+          id: 'beta',
+          artist: 'Peter Cat Recording Co.',
+          album: 'BETA',
+          track: 'People Never Change',
+          spineBg: '#134e4a',
+          spineColor: '#fed7aa',
+          cat: 'PCR-06',
+          discColor: '#042f2e',
+          discAccent: '#fdba74',
+          style: 'font-family: Georgia, serif; font-style: italic;',
+          whyILikeIt: 'Velvety, vintage gypsy-jazz, ballroom waltzes, and crooning cabaret soul. Suryakant Sawhney\'s voice sounds like an antique gramophone recording floating through a smoke-filled room.'
+        },
+        {
+          id: 'nanda_devi',
+          artist: 'UNIYAL',
+          album: 'Nanda Devi Express',
+          track: 'Valley Drift',
+          spineBg: '#064e3b',
+          spineColor: '#6ee7b7',
+          cat: 'HIM-07',
+          discColor: '#022c22',
+          discAccent: '#34d399',
+          style: 'font-weight: 800; letter-spacing: 0.1em;',
+          whyILikeIt: 'Himalayan mountain folk textures interwoven with rolling ambient electronica and crisp modern basslines. Evokes high-altitude mist and endless winding pine roads.'
+        },
+        {
+          id: 'hood_hottest',
+          artist: 'Sexyy Red',
+          album: 'Hood Hottest Princess',
+          track: 'SkeeYee',
+          spineBg: '#831843',
+          spineColor: '#fbcfe8',
+          cat: 'OFT-08',
+          discColor: '#500724',
+          discAccent: '#f472b6',
+          style: 'font-weight: 900; letter-spacing: 0.02em;',
+          whyILikeIt: 'Unfiltered, charismatic, and infectious St. Louis energy. The minimalist Tay Keith piano riffs and catchy call-and-response adlibs made "SkeeYee" an inescapable summer anthem.'
+        },
+        {
+          id: 'planet_her',
+          artist: 'Doja Cat',
+          album: 'Planet Her',
+          track: 'Kiss Me More',
+          spineBg: '#701a75',
+          spineColor: '#f5d0fe',
+          cat: 'KEMO-09',
+          discColor: '#4a044e',
+          discAccent: '#e879f9',
+          style: 'font-family: "Lucida Console", monospace; font-weight: 800;',
+          whyILikeIt: 'Seamless cosmic disco-pop and rap perfection. With lush synth pads, bouncy basslines, and effortless melodic vocal runs, every single track feels like a polished hit single.'
+        },
+        {
+          id: 'evermore',
+          artist: 'Taylor Swift',
+          album: 'evermore',
+          track: 'willow',
+          spineBg: '#451a03',
+          spineColor: '#fed7aa',
+          cat: 'REP-10',
+          discColor: '#270e02',
+          discAccent: '#d97706',
+          style: 'font-family: Times, serif; font-style: italic;',
+          whyILikeIt: 'Cozy autumnal chamber-folk driven by Aaron Dessner\'s intricate acoustic fingerpicking, muted piano chords, and evocative narrative songwriting.'
+        },
+        {
+          id: 'blonde',
+          artist: 'Frank Ocean',
+          album: 'Blonde',
+          track: 'Ivy',
+          spineBg: '#262626',
+          spineColor: '#ffffff',
+          cat: 'BOYS-11',
+          discColor: '#171717',
+          discAccent: '#e5e5e5',
+          style: 'font-family: -apple-system, sans-serif; font-weight: 700;',
+          whyILikeIt: 'Sprawling avant-garde R&B with stripped-down electric guitars, pitch-shifted vocals, and raw vulnerability. An intimate masterpiece that sounds like overheard memories.'
+        },
+        {
+          id: 'y2k',
+          artist: 'Ice Spice',
+          album: 'Y2K!',
+          track: 'Think U The Shit (Fart)',
+          spineBg: '#991b1b',
+          spineColor: '#fef08a',
+          cat: '10K-12',
+          discColor: '#450a0a',
+          discAccent: '#facc15',
+          style: 'font-weight: 900; letter-spacing: 0.12em;',
+          whyILikeIt: 'High-tempo Bronx drill percussion paired with playful 2000s nostalgic samples and deadpan, nonchalant earworm delivery.'
+        },
+        {
+          id: 'guts',
+          artist: 'Olivia Rodrigo',
+          album: 'GUTS',
+          track: 'bad idea right?',
+          spineBg: '#3b0764',
+          spineColor: '#c084fc',
+          cat: 'GEFF-13',
+          discColor: '#1e0533',
+          discAccent: '#e0aaff',
+          style: 'font-weight: 900; letter-spacing: 0.05em;',
+          whyILikeIt: 'Crunchy 90s alt-rock power chords, riotous garage-rock sarcasm, and cathartic teenage angst. "bad idea right?" captures the chaotic fun of grunge-pop at its best.'
+        },
+        {
+          id: 'glorious',
+          artist: 'GloRilla',
+          album: 'Glorious',
+          track: 'TGIF',
+          spineBg: '#141414',
+          spineColor: '#d4af37',
+          cat: 'CMG-14',
+          discColor: '#1c1917',
+          discAccent: '#ffd700',
+          style: 'font-family: Georgia, serif; font-weight: 700;',
+          whyILikeIt: 'Thunderous 808s, triumphant southern brass anthems, and an unstoppable commanding delivery. Opulent, unapologetic, and packed with irresistible trap energy.'
+        },
+        {
+          id: 'megan',
+          artist: 'Megan Thee Stallion',
+          album: 'MEGAN',
+          track: 'Mamushi',
+          spineBg: '#0a0a0a',
+          spineColor: '#f5f5f5',
+          cat: 'HOT-15',
+          discColor: '#111111',
+          discAccent: '#e63946',
+          style: 'font-weight: 900; letter-spacing: 0.15em;',
+          whyILikeIt: 'Dark gothic bounce with menacing anime synth bells, heavy Houston trunk-rattling bass, and razor-sharp cadences. "Mamushi" delivers infectious international energy.'
+        },
+        {
+          id: 'inside',
+          artist: 'Bo Burnham',
+          album: 'Inside',
+          track: 'Bezos I',
+          spineBg: '#003566',
+          spineColor: '#ffc300',
+          cat: 'NETF-16',
+          discColor: '#001d3d',
+          discAccent: '#00a8e8',
+          style: 'font-family: monospace; font-weight: 700;',
+          whyILikeIt: 'Claustrophobic 80s synth-pop existentialism crafted entirely within a single room. Songs like "Bezos I" and "All Eyes On Me" blend hilarious satire with profound musical craftsmanship.'
+        },
+        {
+          id: 'alligator',
+          artist: 'Doechii',
+          album: 'Alligator Bites Never Heal',
+          track: 'NISSAN ALTIMA',
+          spineBg: '#283618',
+          spineColor: '#dda15e',
+          cat: 'CAP-17',
+          discColor: '#1b2611',
+          discAccent: '#bc6c25',
+          style: 'font-weight: 900; letter-spacing: -0.02em;',
+          whyILikeIt: 'Swampy, organic raw hip-hop with off-kilter boom-bap percussion, biting flows, and fearless genre-bending versatility. Visceral and completely original.'
+        },
+        {
+          id: 'addison',
+          artist: 'Addison Rae',
+          album: 'Addison',
+          track: 'Diet Pepsi',
+          spineBg: '#ff758f',
+          spineColor: '#ffffff',
+          cat: 'COL-18',
+          discColor: '#ff4d6d',
+          discAccent: '#ffb3c1',
+          style: 'font-weight: 800; font-style: italic;',
+          whyILikeIt: 'Pumping French house and sidechained Y2K dance-pop nostalgia with glossy breathy vocals and hypnotic basslines. "Diet Pepsi" is a masterclass in modern pop earworms.'
+        },
+        {
+          id: 'voulez_vous',
+          artist: 'ABBA',
+          album: 'Voulez-Vous',
+          track: 'Gimme! Gimme! Gimme!',
+          spineBg: '#002855',
+          spineColor: '#ffd166',
+          cat: 'POL-19',
+          discColor: '#001833',
+          discAccent: '#06d6a0',
+          style: 'font-weight: 900; letter-spacing: 0.08em;',
+          whyILikeIt: 'The gold standard of late-70s euro-disco glam. Driving octave bass gallops, dramatic orchestral strings, and timeless hooks that electrify any dancefloor.'
+        },
+        {
+          id: 'you_still_here',
+          artist: 'Flo Milli',
+          album: 'You Still Here, Ho?',
+          track: 'Conception',
+          spineBg: '#e85d04',
+          spineColor: '#ffffff',
+          cat: 'RCA-20',
+          discColor: '#dc2f02',
+          discAccent: '#ffba08',
+          style: 'font-weight: 800; letter-spacing: 0.02em;',
+          whyILikeIt: 'Punchy 2000s teen magazine sass, joyful crunk horns, and rapid-fire witty punchlines that deliver pure, unadulterated swagger and good vibes.'
+        }
+      ];
+
+      /**
+       * PROCEDURAL MECHANICAL AUDIO ENGINE
+       */
+      class MechanicalAudioEngine {
+        constructor() {
+          this.ctx = null;
+        }
+
+        init() {
+          if (this.ctx) return;
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+
+        ensureContext() {
+          this.init();
+          if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+        }
+
+        playButtonClick() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1900, t);
+          osc.frequency.exponentialRampToValueAtTime(140, t + 0.025);
+          gain.gain.setValueAtTime(0.4, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.032);
+        }
+
+        playSpringRelease() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(115, t);
+          osc.frequency.exponentialRampToValueAtTime(45, t + 0.16);
+          gain.gain.setValueAtTime(0.55, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.19);
+        }
+
+        playRailFriction() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const bufferSize = this.ctx.sampleRate * 0.12;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buffer;
+
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.value = 1400;
+          filter.Q.value = 3.0;
+
+          const gain = this.ctx.createGain();
+          const t = this.ctx.currentTime;
+          gain.gain.setValueAtTime(0.18, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          noise.start(t);
+        }
+
+        playLatchLock() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc1 = this.ctx.createOscillator();
+          const gain1 = this.ctx.createGain();
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(420, t);
+          osc1.frequency.exponentialRampToValueAtTime(110, t + 0.02);
+          gain1.gain.setValueAtTime(0.3, t);
+          gain1.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
+
+          osc1.connect(gain1);
+          gain1.connect(this.ctx.destination);
+          osc1.start(t);
+          osc1.stop(t + 0.022);
+
+          const t2 = t + 0.028;
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(2100, t2);
+          osc2.frequency.exponentialRampToValueAtTime(350, t2 + 0.025);
+          gain2.gain.setValueAtTime(0.4, t2);
+          gain2.gain.exponentialRampToValueAtTime(0.001, t2 + 0.025);
+
+          osc2.connect(gain2);
+          gain2.connect(this.ctx.destination);
+          osc2.start(t2);
+          osc2.stop(t2 + 0.028);
+        }
+
+        playLidSnap() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(2800, t);
+          osc.frequency.exponentialRampToValueAtTime(500, t + 0.02);
+          gain.gain.setValueAtTime(0.25, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.022);
+        }
+
+        playHubToothSnap() {
+          this.ensureContext();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(1300, t);
+          osc.frequency.exponentialRampToValueAtTime(280, t + 0.03);
+          gain.gain.setValueAtTime(0.3, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.03);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.032);
+        }
+      }
+
+      const audio = new MechanicalAudioEngine();
+
+      /**
+       * MECHANICAL METAL CABINET CONTROLLER
+       */
+      class MetallicTowerController {
+        constructor() {
+          this.slotStates = new Array(20).fill(false);
+          this.activeEjectedIndex = 0;
+          this.inspectedIndex = null;
+          this.isLidOpen = false;
+          this.isDiscPopped = false;
+
+          // 3D Orbit Camera Angles
+          this.currentRotY = -25;
+          this.currentRotX = 7;
+          this.isDragging = false;
+          this.dragStartX = 0;
+          this.dragStartY = 0;
+          this.startAngleY = -25;
+          this.startAngleX = 7;
+
+          // Environments: 0 = walnut, 1 = steel, 2 = midnight
+          this.currentEnvIndex = 0;
+          this.environments = [
+            { id: 'walnut', icon: '🪵', label: 'WALNUT STUDIO', bodyClass: '' },
+            { id: 'steel', icon: '🎛️', label: 'STEEL LAB', bodyClass: 'theme-steel' },
+            { id: 'midnight', icon: '🌌', label: 'MIDNIGHT HI-FI', bodyClass: 'theme-midnight' }
+          ];
+
+          // DOM Elements
+          this.cabinetStage = document.getElementById('cabinetStage');
+          this.cabinetTower = document.getElementById('cabinetTower');
+          this.cabinetDeskShadow = document.getElementById('cabinetDeskShadow');
+          this.colLeft = document.getElementById('columnLeft');
+          this.colRight = document.getElementById('columnRight');
+          this.backplateRegulators = document.getElementById('backplateRegulators');
+          this.btnEnvSwitch = document.getElementById('btnEnvSwitch');
+          this.envIcon = document.getElementById('envIcon');
+          this.envLabel = document.getElementById('envLabel');
+
+          // Angle preset buttons
+          this.btnAngleRight = document.getElementById('btnAngleRight');
+          this.btnAngleFront = document.getElementById('btnAngleFront');
+          this.btnAngleBack = document.getElementById('btnAngleBack');
+          this.btnAngleSteep = document.getElementById('btnAngleSteep');
+          this.btnAngleLeft = document.getElementById('btnAngleLeft');
+
+          // Bottom card DOM
+          this.albumAppreciationCard = document.getElementById('albumAppreciationCard');
+          this.cardStatusBadge = document.getElementById('cardStatusBadge');
+          this.cardSlotIndicator = document.getElementById('cardSlotIndicator');
+          this.miniArtChip = document.getElementById('miniArtChip');
+          this.reviewHeadline = document.getElementById('reviewHeadline');
+          this.reviewBodyText = document.getElementById('reviewBodyText');
+          this.btnInspectActive = document.getElementById('btnInspectActive');
+          this.btnLatchActive = document.getElementById('btnLatchActive');
+
+          // Inspection modal DOM
+          this.inspectionBackdrop = document.getElementById('inspectionBackdrop');
+          this.jewelCase3D = document.getElementById('jewelCase3D');
+          this.caseFrontLid = document.getElementById('caseFrontLid');
+          this.inspectionCd = document.getElementById('inspectionCd');
+          this.bookletFrontArt = document.getElementById('bookletFrontArt');
+          this.cdSilkscreenArt = document.getElementById('cdSilkscreenArt');
+          this.cdMatrixStamp = document.getElementById('cdMatrixStamp');
+          this.btnOpenCaseLid = document.getElementById('btnOpenCaseLid');
+          this.openLidIcon = document.getElementById('openLidIcon');
+          this.openLidText = document.getElementById('openLidText');
+          this.btnPopDisc = document.getElementById('btnPopDisc');
+          this.btnReturnToRack = document.getElementById('btnReturnToRack');
+
+          this.init();
+        }
+
+        init() {
+          this.renderBackplateRegulators();
+          this.renderSlots();
+          this.setupEvents();
+          this.setupOrbitDrag();
+
+          // Initial 40% ejection on slot 01 with bottom card pop-out
+          setTimeout(() => {
+            this.toggleSlotEject(0, true);
+          }, 350);
+        }
+
+        renderBackplateRegulators() {
+          this.backplateRegulators.innerHTML = '';
+          for (let i = 0; i < 20; i++) {
+            const dial = document.createElement('div');
+            dial.className = 'tension-screw-dial';
+            dial.title = `Slot ${String(i + 1).padStart(2, '0')}: Click to adjust spring tension`;
+            dial.innerHTML = `
+              <div class="screw-head-slot" id="screwHead_${i}"></div>
+              <span class="dial-slot-label">${String(i + 1).padStart(2, '0')}</span>
+            `;
+
+            dial.addEventListener('click', (e) => {
+              e.stopPropagation();
+              audio.playButtonClick();
+              const screw = document.getElementById(`screwHead_${i}`);
+              if (screw) {
+                const currentRot = parseInt(screw.getAttribute('data-rot') || '0', 10);
+                const nextRot = currentRot + 45;
+                screw.setAttribute('data-rot', nextRot);
+                screw.style.transform = `rotate(${nextRot}deg)`;
+              }
+            });
+
+            this.backplateRegulators.appendChild(dial);
+          }
+        }
+
+        renderSlots() {
+          this.colLeft.innerHTML = '';
+          this.colRight.innerHTML = '';
+
+          ALBUMS.forEach((album, idx) => {
+            const isLeft = idx < 10;
+            const slotNumStr = String(idx + 1).padStart(2, '0');
+
+            const row = document.createElement('div');
+            row.className = 'slot-unit-row';
+            row.id = `slotRow_${idx}`;
+
+            // Machined Push Button
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'eject-push-button';
+            btn.id = `btnSlot_${idx}`;
+            btn.setAttribute('data-slot-idx', idx);
+            btn.title = `Slot ${slotNumStr}: Eject / Reload`;
+            btn.innerHTML = `<span class="btn-slot-num">${slotNumStr}</span>`;
+
+            // Explicit click & pointerdown to ensure instant response on both columns!
+            const handleButtonClick = (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              this.toggleSlotEject(idx);
+            };
+
+            btn.addEventListener('click', handleButtonClick);
+            btn.addEventListener('pointerdown', (e) => e.stopPropagation());
+
+            // Milled Channel
+            const bay = document.createElement('div');
+            bay.className = 'cd-bay-channel';
+            bay.id = `bayChannel_${idx}`;
+            bay.setAttribute('data-bay-idx', idx);
+
+            // AUTHENTIC 3D JEWEL CASE (SPINE + COMPLETE PROTRUDING CASE BODY)
+            const spine = document.createElement('div');
+            spine.className = 'jewel-case-spine';
+            spine.id = `spine_${idx}`;
+            spine.style.background = album.spineBg;
+            spine.style.color = album.spineColor;
+            spine.title = `Slot ${slotNumStr}: ${album.artist} - ${album.album} (Click to inspect / reload)`;
+
+            spine.innerHTML = `
+              <div class="spine-grip-ribs left"></div>
+              <div class="spine-content" style="${album.style}">
+                <span class="spine-artist">${album.artist}</span>
+                <span class="spine-separator">·</span>
+                <span class="spine-album">${album.album}</span>
+                <span class="spine-cat-no">${album.cat}</span>
+              </div>
+              <div class="spine-grip-ribs right"></div>
+
+              <!-- FULL PHYSICAL 3D JEWEL CASE EXTENDING 40% OUT INTO SPACE -->
+              <div class="protruding-jewel-case-3d">
+                <!-- Top Clear Acrylic Lid Face with Artwork & Disc visible inside -->
+                <div class="case-3d-top">
+                  <div class="case-acrylic-specular"></div>
+                  <div class="case-top-logo">COMPACT DISC AUDIO</div>
+
+                  <!-- Album Cover Booklet Artwork visible through clear lid -->
+                  <div class="case-booklet-preview" style="background: ${album.spineBg}; color: ${album.spineColor};">
+                    <div style="font-size: 0.52rem; font-family: monospace; font-weight: 800; letter-spacing: 0.08em;">CD-${slotNumStr} // AUDIO</div>
+                    <div style="font-size: 0.85rem; font-weight: 900; line-height: 1.1; margin-top: 0.2rem; ${album.style}">${album.album}</div>
+                    <div style="font-size: 0.65rem; font-weight: 700; opacity: 0.95;">${album.artist}</div>
+                    <div style="font-size: 0.5rem; font-family: monospace; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 2px;">STEREO · CAT ${album.cat}</div>
+                  </div>
+
+                  <!-- Real Compact Disc & Holographic Sheen inside the tray -->
+                  <div class="case-disc-preview" style="background: radial-gradient(circle at 50% 50%, ${album.discColor} 25%, ${album.discAccent} 70%, #000 100%);">
+                    <div class="case-disc-hole"></div>
+                    <div class="case-disc-rainbow"></div>
+                  </div>
+                </div>
+
+                <!-- Bottom Clear Acrylic Tray Face -->
+                <div class="case-3d-bottom"></div>
+
+                <!-- Right Acrylic Side Wall with Latch Tabs & Disc Edge (Facing Viewer!) -->
+                <div class="case-3d-side-right">
+                  <div class="case-side-booklet-edge"></div>
+                  <div class="case-side-latch-tab"></div>
+                  <div class="case-side-disc-rim"></div>
+                  <div class="case-side-latch-tab"></div>
+                </div>
+
+                <!-- Left Acrylic Side Wall with Hinge Pins -->
+                <div class="case-3d-side-left">
+                  <div class="case-hinge-pin"></div>
+                  <div class="case-hinge-pin"></div>
+                </div>
+              </div>
+            `;
+
+            spine.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (this.slotStates[idx]) {
+                this.openInspection(idx);
+              } else {
+                this.toggleSlotEject(idx);
+              }
+            });
+
+            // Clicking bay also triggers slot eject
+            bay.addEventListener('click', (e) => {
+              if (e.target === bay) {
+                e.stopPropagation();
+                this.toggleSlotEject(idx);
+              }
+            });
+
+            bay.appendChild(spine);
+            row.appendChild(btn);
+            row.appendChild(bay);
+
+            if (isLeft) {
+              this.colLeft.appendChild(row);
+            } else {
+              this.colRight.appendChild(row);
+            }
+          });
+        }
+
+        /* 3D ORBIT DRAG CONTROLLER (FULL 360-DEGREE ROTATION SUPPORT) */
+        setupOrbitDrag() {
+          const onPointerDown = (e) => {
+            if (e.target.closest('.eject-push-button') || e.target.closest('.jewel-case-spine') || e.target.closest('.metallic-btn') || e.target.closest('.tension-screw-dial')) {
+              return;
+            }
+            this.isDragging = true;
+            this.dragStartX = e.clientX;
+            this.dragStartY = e.clientY;
+            this.startAngleY = this.currentRotY;
+            this.startAngleX = this.currentRotX;
+            this.cabinetTower.classList.remove('smooth-snap');
+          };
+
+          const onPointerMove = (e) => {
+            if (!this.isDragging) return;
+            const deltaX = e.clientX - this.dragStartX;
+            const deltaY = e.clientY - this.dragStartY;
+
+            // Full 360-degree horizontal rotation capability!
+            const newY = (this.startAngleY + deltaX * 0.5);
+            const newX = Math.max(-30, Math.min(45, this.startAngleX - deltaY * 0.4));
+
+            this.currentRotY = newY;
+            this.currentRotX = newX;
+
+            this.cabinetTower.style.transform = `rotateY(${newY.toFixed(1)}deg) rotateX(${newX.toFixed(1)}deg)`;
+
+            // Update Floor Shadow Perspective
+            const shadowSkew = Math.sin((newY * Math.PI) / 180) * 20;
+            this.cabinetDeskShadow.style.transform = `rotateX(85deg) translateZ(-45px) rotateZ(${-shadowSkew.toFixed(1)}deg) scale(1.15)`;
+
+            document.querySelectorAll('.angle-btn').forEach(btn => btn.classList.remove('active'));
+          };
+
+          const onPointerUp = () => {
+            if (this.isDragging) {
+              this.isDragging = false;
+            }
+          };
+
+          this.cabinetStage.addEventListener('pointerdown', onPointerDown);
+          window.addEventListener('pointermove', onPointerMove);
+          window.addEventListener('pointerup', onPointerUp);
+        }
+
+        /* TOGGLE 40% POP-OUT EJECTION */
+        toggleSlotEject(idx, silent = false) {
+          const isCurrentlyEjected = this.slotStates[idx];
+          const btn = document.getElementById(`btnSlot_${idx}`);
+          const spine = document.getElementById(`spine_${idx}`);
+
+          if (btn) {
+            btn.classList.add('depressed');
+            setTimeout(() => btn.classList.remove('depressed'), 140);
+          }
+
+          if (!isCurrentlyEjected) {
+            // EJECT 40% OUT
+            if (!silent) {
+              audio.playButtonClick();
+              setTimeout(() => {
+                audio.playSpringRelease();
+                audio.playRailFriction();
+              }, 20);
+            }
+
+            if (spine) spine.classList.add('ejected');
+            this.slotStates[idx] = true;
+            this.activeEjectedIndex = idx;
+            this.updateBottomReview(idx);
+          } else {
+            // RELOAD FLUSH
+            if (!silent) {
+              audio.playRailFriction();
+              setTimeout(() => {
+                audio.playLatchLock();
+              }, 50);
+            }
+
+            if (spine) spine.classList.remove('ejected');
+            this.slotStates[idx] = false;
+
+            const remainingEjectedIdx = this.slotStates.findIndex(s => s === true);
+            if (remainingEjectedIdx !== -1) {
+              this.activeEjectedIndex = remainingEjectedIdx;
+              this.updateBottomReview(remainingEjectedIdx);
+            } else {
+              this.resetBottomReview();
+            }
+          }
+        }
+
+        /* UPDATE BOTTOM REVIEW CARD ("WHY I LIKE THIS ALBUM") */
+        updateBottomReview(idx) {
+          const album = ALBUMS[idx];
+          if (!album) return;
+
+          this.albumAppreciationCard.classList.remove('pop-active');
+          void this.albumAppreciationCard.offsetWidth; // Trigger reflow
+          this.albumAppreciationCard.classList.add('pop-active');
+
+          const slotNumStr = String(idx + 1).padStart(2, '0');
+          this.cardStatusBadge.textContent = `SLOT ${slotNumStr} // 40% POPPED OUT`;
+          this.cardSlotIndicator.textContent = `SLOT ${slotNumStr} ACTIVE`;
+
+          this.miniArtChip.style.background = album.spineBg;
+          this.miniArtChip.style.color = album.spineColor;
+          this.miniArtChip.innerHTML = `
+            <div style="font-family: monospace; font-size: 0.45rem; font-weight: 800; text-transform: uppercase;">CD-${slotNumStr}</div>
+            <div style="font-size: 0.75rem; font-weight: 900; line-height: 1; ${album.style}">${album.album}</div>
+          `;
+
+          this.reviewHeadline.innerHTML = `${album.artist} · <span>${album.album}</span>`;
+          this.reviewBodyText.textContent = album.whyILikeIt;
+
+          this.btnInspectActive.style.display = 'block';
+          this.btnLatchActive.style.display = 'block';
+        }
+
+        resetBottomReview() {
+          this.albumAppreciationCard.classList.remove('pop-active');
+          this.cardStatusBadge.textContent = 'STANDBY // ALL SLOTS LATCHED';
+          this.cardSlotIndicator.textContent = 'NO ACTIVE DISC';
+          this.reviewHeadline.innerHTML = `CD Mechanical Storage · <span>Ready</span>`;
+          this.reviewBodyText.textContent = 'Push any numbered side button to spring-eject a compact disc 40% out and reveal why this album is loved.';
+          this.btnInspectActive.style.display = 'none';
+          this.btnLatchActive.style.display = 'none';
+        }
+
+        /* 3D INSPECTION STAGE */
+        openInspection(idx) {
+          audio.playRailFriction();
+          this.inspectedIndex = idx;
+          const album = ALBUMS[idx];
+
+          this.isLidOpen = false;
+          this.isDiscPopped = false;
+          this.jewelCase3D.classList.remove('lid-open');
+          this.inspectionCd.classList.remove('popped-out');
+          this.openLidText.textContent = 'OPEN LID';
+          this.openLidIcon.textContent = '📂';
+
+          // Render Booklet Cover
+          this.bookletFrontArt.style.background = album.spineBg;
+          this.bookletFrontArt.style.color = album.spineColor;
+          this.bookletFrontArt.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <span style="font-size: 0.65rem; font-family: monospace; letter-spacing: 0.1em; opacity: 0.8;">
+                COMPACT DISC DIGITAL AUDIO
+              </span>
+              <span style="font-size: 0.6rem; border: 1px solid currentColor; padding: 1px 4px; border-radius: 2px;">
+                STEREO
+              </span>
+            </div>
+            <div>
+              <div style="font-size: 1.6rem; line-height: 1.1; margin-bottom: 0.35rem; ${album.style}">
+                ${album.album}
+              </div>
+              <div style="font-size: 1rem; font-weight: 700; opacity: 0.95;">
+                ${album.artist}
+              </div>
+              <div style="font-size: 0.72rem; margin-top: 0.35rem; opacity: 0.85;">
+                Featured: "${album.track}"
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 0.4rem; font-size: 0.62rem; font-family: monospace;">
+              <span>CAT: ${album.cat}</span>
+              <span>SLOT ${String(idx + 1).padStart(2, '0')}</span>
+            </div>
+          `;
+
+          // Render CD Silkscreen
+          this.cdSilkscreenArt.style.background = `radial-gradient(circle at 50% 50%, ${album.discColor} 25%, ${album.discAccent} 70%, #000 100%)`;
+          this.cdSilkscreenArt.innerHTML = `
+            <div style="position: absolute; top: 18%; font-size: 0.62rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.1em;">
+              ${album.artist}
+            </div>
+            <div style="position: absolute; bottom: 18%; font-size: 0.8rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.04em;">
+              ${album.album}
+            </div>
+          `;
+          this.cdMatrixStamp.textContent = `CDP-${album.cat}-NL`;
+
+          this.inspectionBackdrop.classList.add('active');
+          this.setupInspectionMouseTilt();
+        }
+
+        closeInspection(returnToRack = false) {
+          audio.playLidSnap();
+          this.inspectionBackdrop.classList.remove('active');
+
+          if (returnToRack && this.inspectedIndex !== null) {
+            setTimeout(() => {
+              const spine = document.getElementById(`spine_${this.inspectedIndex}`);
+              audio.playRailFriction();
+              setTimeout(() => audio.playLatchLock(), 60);
+              if (spine) spine.classList.remove('ejected');
+              this.slotStates[this.inspectedIndex] = false;
+              this.inspectedIndex = null;
+              this.resetBottomReview();
+            }, 100);
+          }
+        }
+
+        toggleCaseLid() {
+          audio.playLidSnap();
+          this.isLidOpen = !this.isLidOpen;
+          if (this.isLidOpen) {
+            this.jewelCase3D.classList.add('lid-open');
+            this.openLidText.textContent = 'CLOSE LID';
+            this.openLidIcon.textContent = '📁';
+          } else {
+            this.jewelCase3D.classList.remove('lid-open');
+            this.openLidText.textContent = 'OPEN LID';
+            this.openLidIcon.textContent = '📂';
+          }
+        }
+
+        toggleDiscPop() {
+          audio.playHubToothSnap();
+          this.isDiscPopped = !this.isDiscPopped;
+          if (this.isDiscPopped) {
+            this.inspectionCd.classList.add('popped-out');
+            this.btnPopDisc.textContent = '💿 SEAT DISC';
+          } else {
+            this.inspectionCd.classList.remove('popped-out');
+            this.btnPopDisc.textContent = '💿 POP DISC';
+          }
+        }
+
+        setupInspectionMouseTilt() {
+          const onMouseMove = (e) => {
+            if (!this.inspectionBackdrop.classList.contains('active')) return;
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            const dx = (e.clientX - cx) / cx;
+            const dy = (e.clientY - cy) / cy;
+
+            const baseRotY = this.isLidOpen ? -8 : -18;
+            const rotY = baseRotY + dx * 20;
+            const rotX = 14 - dy * 15;
+
+            this.jewelCase3D.style.transform = `rotateX(${rotX.toFixed(1)}deg) rotateY(${rotY.toFixed(1)}deg)`;
+            const sheenAngle = (35 + dx * 90 + dy * 90) % 360;
+            document.documentElement.style.setProperty('--sheen-rot', `${sheenAngle}deg`);
+          };
+
+          window.removeEventListener('mousemove', this._tiltHandler);
+          this._tiltHandler = onMouseMove;
+          window.addEventListener('mousemove', this._tiltHandler);
+        }
+
+        setCameraAngle(rotY, rotX, activeBtn) {
+          audio.playButtonClick();
+          document.querySelectorAll('.angle-btn').forEach(btn => btn.classList.remove('active'));
+          activeBtn.classList.add('active');
+
+          this.cabinetTower.classList.add('smooth-snap');
+          this.currentRotY = rotY;
+          this.currentRotX = rotX;
+          this.cabinetTower.style.transform = `rotateY(${rotY}deg) rotateX(${rotX}deg)`;
+
+          const shadowSkew = Math.sin((rotY * Math.PI) / 180) * 20;
+          this.cabinetDeskShadow.style.transform = `rotateX(85deg) translateZ(-45px) rotateZ(${-shadowSkew.toFixed(1)}deg) scale(1.15)`;
+        }
+
+        switchEnvironment() {
+          audio.playButtonClick();
+          this.currentEnvIndex = (this.currentEnvIndex + 1) % this.environments.length;
+          const env = this.environments[this.currentEnvIndex];
+          document.body.className = env.bodyClass;
+          this.envIcon.textContent = env.icon;
+          this.envLabel.textContent = env.label;
+        }
+
+        setupEvents() {
+          // Angle Presets
+          this.btnAngleRight.addEventListener('click', () => {
+            this.setCameraAngle(-25, 7, this.btnAngleRight);
+          });
+
+          this.btnAngleFront.addEventListener('click', () => {
+            this.setCameraAngle(0, 3, this.btnAngleFront);
+          });
+
+          this.btnAngleBack.addEventListener('click', () => {
+            this.setCameraAngle(180, 5, this.btnAngleBack);
+          });
+
+          this.btnAngleSteep.addEventListener('click', () => {
+            this.setCameraAngle(-36, 12, this.btnAngleSteep);
+          });
+
+          this.btnAngleLeft.addEventListener('click', () => {
+            this.setCameraAngle(25, 7, this.btnAngleLeft);
+          });
+
+          // Environment Switcher
+          this.btnEnvSwitch.addEventListener('click', () => this.switchEnvironment());
+
+          // Bottom card action buttons
+          this.btnInspectActive.addEventListener('click', () => {
+            if (this.activeEjectedIndex !== null) {
+              this.openInspection(this.activeEjectedIndex);
+            }
+          });
+
+          this.btnLatchActive.addEventListener('click', () => {
+            if (this.activeEjectedIndex !== null) {
+              this.toggleSlotEject(this.activeEjectedIndex);
+            }
+          });
+
+          // Modal inspection buttons
+          this.btnOpenCaseLid.addEventListener('click', () => this.toggleCaseLid());
+          this.btnPopDisc.addEventListener('click', () => this.toggleDiscPop());
+          this.btnReturnToRack.addEventListener('click', () => this.closeInspection(true));
+          this.caseFrontLid.addEventListener('click', () => this.toggleCaseLid());
+          this.inspectionCd.addEventListener('click', () => this.toggleDiscPop());
+
+          this.inspectionBackdrop.addEventListener('click', (e) => {
+            if (e.target === this.inspectionBackdrop) {
+              this.closeInspection(false);
+            }
+          });
+        }
+      }
+
+      // Initialize on DOM load
+      window.addEventListener('DOMContentLoaded', () => {
+        new MetallicTowerController();
+      });
+    </script>
+  </body>
+</html>

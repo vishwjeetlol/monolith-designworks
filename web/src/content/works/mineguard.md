@@ -1,17 +1,26 @@
 ---
-title: MineGuard · Mine Safety Command Center
-banner: /works/dev/mineguard.png
+title: MineGuard · Mine Safety & Hazard Command Center
+banner: /works/dev/mineguard-command-center.png
 year: 2025
-role: UI/UX & Frontend Developer
-tags: [Smart India Hackathon, IoT Dashboard, Telemetry, Mine Safety]
+role: Spatial UI/UX & Frontend Developer
+tags: [Smart India Hackathon, IoT Dashboard, Telemetry, Mine Safety, Spatial Analytics]
 link: https://github.com/vishwjeetlol
 ---
 
 # MineGuard Command Center (Smart India Hackathon)
 
-![MineGuard Command Center](/works/dev/mineguard.png)
+![MineGuard Command Center Overview](/works/dev/mineguard-command-center.png)
 
-A comprehensive real-time environmental monitoring and telemetry command center engineered for the Smart India Hackathon (SIH).
+A comprehensive real-time environmental monitoring, spatial hazard mapping, and telemetry command center engineered for the **Smart India Hackathon (SIH)**.
 
-- **Objective**: Protecting subterranean miners by tracking real-time concentrations of dangerous gases (CO, methane), seismic vibrations, and ambient tunnel temperatures.
-- **Interface**: High-visibility dark dashboard with instant threshold warning triggers, worker spatial positioning, and emergency evacuation protocols.
+### Operational Intelligence & Life-Safety
+- **Real-Time Telemetry**: Subterranean sensor array monitoring dangerous gases (CO, CH4 methane), thermal spikes, oxygen depletion, and seismic vibration shifts.
+- **Incident Mitigation**: Automated threshold alarms with localized emergency beacon triggers and worker geolocation tracking.
+- **Auditable Safety Pipeline**: Integrated digital field inspection and regulatory reporting system with automated PDF/SVG generation for compliance audits.
+
+![Mine Safety Command Center](/works/dev/mine-safety-command-center.png)
+
+### Field Inspection & Offline Architecture
+Designed to operate in low-bandwidth and offline underground environments with continuous local sync and rapid evacuation telemetry.
+
+![Mine Inspector Field Report](/works/dev/mine-inspector-field-report.svg)

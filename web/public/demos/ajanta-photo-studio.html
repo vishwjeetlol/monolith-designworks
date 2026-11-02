@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajanta Photo Studio</title>
+<style>
+  :root {
+    --brass: #d4af37;
+    --brass-dark: #8b6b22;
+    --wood-dark: #3e2723;
+    --wood-light: #5d4037;
+    --wall-color: #78909c;
+    --bellows: #1a1a1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+  body {
+    background: radial-gradient(circle at center, #455a64 0%, #263238 100%);
+    font-family: 'Courier New', Courier, monospace;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+
+  /* 1. THE STUDIO SETTING */
+  .studio-stage {
+    position: relative;
+    width: 900px;
+    height: 600px;
+    background: linear-gradient(180deg, var(--wall-color) 0%, var(--wall-color) 60%, #4e342e 60%, #3e2723 100%);
+    border: 10px solid #111;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  /* Painted Backdrop */
+  .backdrop {
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 320px;
+    background: linear-gradient(180deg, #81d4fa 0%, #e1bee7 100%);
+    border: 6px solid #222;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    transition: background 0.5s ease;
+  }
+
+  .backdrop-pole {
+    position: absolute;
+    top: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 560px; height: 8px;
+    background: #111;
+    border-radius: 4px;
+  }
+
+  /* The Subject Stool & Upload Area */
+  .subject-area {
+    position: absolute;
+    bottom: 220px; left: 50%;
+    transform: translateX(-50%);
+    width: 140px; height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+  }
+
+  .photo-preview-box {
+    width: 120px; height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255,255,255,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .photo-preview-box:hover {
+    border-color: var(--brass);
+    background: rgba(212, 175, 55, 0.2);
+  }
+  
+  /* MAGIC BLEND MODE: Blends uploaded photo into the scenic background */
+  .photo-preview-box img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    border-radius: 50%; /* 90s Oval Cameo */
+    transform: scale(0.95);
+    mix-blend-mode: multiply; 
+    filter: sepia(0.4) contrast(1.15);
+  }
+  
+  .photo-preview-box span {
+    font-size: 10px; text-align: center; color: rgba(255,255,255,0.9);
+    pointer-events: none; padding: 5px; font-weight: bold;
+  }
+  #file-upload { display: none; }
+
+  .stool-base {
+    width: 60px; height: 80px;
+    background: linear-gradient(90deg, #222, #444, #222);
+    margin-top: -10px;
+    border-radius: 5px 5px 0 0;
+    z-index: -1;
+  }
+
+  /* 2. THE VINTAGE BELLOWS CAMERA */
+  .vintage-camera {
+    position: absolute;
+    bottom: -20px; right: 50px;
+    width: 200px; height: 280px;
+    z-index: 30;
+    pointer-events: none;
+  }
+
+  .camera-body {
+    position: absolute;
+    top: 50px; left: 20px;
+    width: 100px; height: 120px;
+    background: linear-gradient(135deg, var(--wood-light), var(--wood-dark));
+    border: 4px solid var(--brass-dark);
+    border-radius: 4px;
+    box-shadow: -10px 10px 20px rgba(0,0,0,0.7);
+  }
+
+  .camera-bellows {
+    position: absolute;
+    top: 65px; left: -40px;
+    width: 60px; height: 90px;
+    background: repeating-linear-gradient(90deg, var(--bellows) 0px, var(--bellows) 10px, #333 10px, #333 20px);
+    transform: perspective(100px) rotateY(-30deg);
+  }
+
+  .camera-lens {
+    position: absolute;
+    top: 75px; left: -60px;
+    width: 30px; height: 70px;
+    background: linear-gradient(90deg, #111, #444, #111);
+    border-left: 4px solid var(--brass);
+    border-radius: 4px;
+    box-shadow: inset 5px 0 10px rgba(0,0,0,0.8);
+  }
+
+  .camera-tripod {
+    position: absolute;
+    bottom: 0; left: 60px;
+    width: 10px; height: 120px;
+    background: var(--brass-dark);
+  }
+  .camera-tripod::before {
+    content: ''; position: absolute;
+    top: 0; left: -30px; width: 10px; height: 120px;
+    background: var(--brass-dark); transform: rotate(20deg);
+  }
+  .camera-tripod::after {
+    content: ''; position: absolute;
+    top: 0; left: 30px; width: 10px; height: 120px;
+    background: var(--brass-dark); transform: rotate(-20deg);
+  }
+
+  /* Flash Umbrella */
+  .flash-umbrella {
+    position: absolute;
+    top: -30px; right: -40px;
+    width: 120px; height: 120px;
+    background: conic-gradient(from 180deg at 50% 100%, #fff 0deg, #ddd 45deg, #fff 90deg);
+    border-radius: 50%;
+    clip-path: polygon(0 0, 100% 0, 50% 50%);
+    transform: rotate(-30deg);
+  }
+  .flash-bulb {
+    position: absolute;
+    top: 30px; right: 20px;
+    width: 20px; height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+  }
+
+  /* 3. CONTROL PANEL */
+  .control-panel {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 100px;
+    background: linear-gradient(180deg, #2a2a2a, #111);
+    border-top: 4px solid var(--brass);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 20px;
+    z-index: 40;
+  }
+
+  .branding h1 { font-size: 20px; color: var(--brass); text-shadow: 1px 1px 0 #000; }
+  .branding p { font-size: 10px; color: #aaa; letter-spacing: 2px; }
+
+  .panel-group { display: flex; flex-direction: column; gap: 8px; }
+
+  select {
+    background: #111; color: var(--brass);
+    border: 2px solid var(--brass-dark);
+    padding: 8px 12px; font-family: inherit; font-weight: bold;
+    outline: none; cursor: pointer;
+  }
+
+  .btn-shutter {
+    background: radial-gradient(circle, #e53935, #b71c1c);
+    border: 4px solid #111; color: #fff;
+    width: 70px; height: 70px; border-radius: 50%;
+    font-weight: bold; cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.4);
+    transition: transform 0.1s;
+  }
+  .btn-shutter:active { transform: scale(0.92); }
+
+  /* 4. THE FLASH OVERLAY */
+  .flash-overlay {
+    position: fixed; inset: 0; background: #fff; opacity: 0;
+    pointer-events: none; z-index: 9999;
+  }
+  .flash-overlay.active { animation: flashBang 1.5s ease-out; }
+  @keyframes flashBang { 0%, 10% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* 5. PASSPORT SHEET TRAY */
+  .print-tray {
+    position: absolute;
+    bottom: -300px; left: 50px;
+    width: 240px; height: 320px;
+    background: #1a1a1a;
+    border: 4px solid #333; border-top: none;
+    border-radius: 0 0 8px 8px;
+    display: flex; justify-content: center; padding-top: 10px;
+    transition: bottom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 50; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  }
+  .print-tray.ejected { bottom: 100px; }
+
+  .passport-sheet {
+    width: 200px; height: 280px; background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    display: none; flex-wrap: wrap; align-content: flex-start;
+    padding: 10px; gap: 4px; cursor: pointer; position: relative;
+  }
+  .passport-sheet.visible { display: flex; }
+  
+  .mini-photo {
+    width: 42px; height: 58px; background: #ccc;
+    background-size: cover; background-position: center; border: 1px solid #ddd;
+  }
+
+  .stamp-overlay {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    color: rgba(139, 0, 139, 0.6);
+    font-size: 18px; font-weight: 900;
+    border: 3px solid rgba(139, 0, 139, 0.6);
+    padding: 4px; text-align: center; pointer-events: none;
+  }
+
+  .tray-hint {
+    position: absolute; bottom: 10px; left: 0; width: 100%;
+    text-align: center; font-size: 10px; color: #888;
+  }
+</style>
+</head>
+<body>
+
+<div class="studio-stage">
+  <div class="backdrop-pole"></div>
+  <div class="backdrop" id="backdrop"></div>
+
+  <div class="subject-area">
+    <label class="photo-preview-box" id="upload-box" title="Click to upload your photo">
+      <span id="upload-text">CLICK TO SIT<br>(Upload Photo)</span>
+      <img id="subject-img" src="" style="display:none;">
+      <input type="file" id="file-upload" accept="image/*">
+    </label>
+    <div class="stool-base"></div>
+  </div>
+
+  <div class="vintage-camera">
+    <div class="flash-umbrella"></div>
+    <div class="flash-bulb"></div>
+    <div class="camera-body"></div>
+    <div class="camera-bellows"></div>
+    <div class="camera-lens"></div>
+    <div class="camera-tripod"></div>
+  </div>
+
+  <div class="control-panel">
+    <div class="branding">
+      <h1>अजंता स्टूडियो</h1>
+      <p>AJANTA PHOTO STUDIO · EST 1994</p>
+    </div>
+    <div class="panel-group">
+      <label style="font-size: 10px; color: var(--brass);">SCENIC BACKDROP</label>
+      <select id="backdrop-select">
+        <option value="kashmir">Kashmir Dal Lake</option>
+        <option value="taj">Taj Mahal Sunset</option>
+        <option value="laser">80s Laser Grid</option>
+        <option value="classic">Classic Grey</option>
+      </select>
+    </div>
+    <button class="btn-shutter" id="btn-shutter">SNAP</button>
+  </div>
+
+  <div class="print-tray" id="print-tray">
+    <div class="passport-sheet" id="passport-sheet" title="Click to Download Sheet">
+      <div class="stamp-overlay">AJANTA<br>VERIFIED</div>
+    </div>
+    <div class="tray-hint">CLICK SHEET TO DOWNLOAD</div>
+  </div>
+</div>
+
+<div class="flash-overlay" id="flash-overlay"></div>
+<canvas id="export-canvas" width="800" height="1200" style="display:none;"></canvas>
+
+<script>
+  const fileUpload = document.getElementById('file-upload');
+  const subjectImg = document.getElementById('subject-img');
+  const uploadText = document.getElementById('upload-text');
+  const backdropSelect = document.getElementById('backdrop-select');
+  const backdropEl = document.getElementById('backdrop');
+  const btnShutter = document.getElementById('btn-shutter');
+  const flashOverlay = document.getElementById('flash-overlay');
+  const printTray = document.getElementById('print-tray');
+  const passportSheet = document.getElementById('passport-sheet');
+  const exportCanvas = document.getElementById('export-canvas');
+  const ctx = exportCanvas.getContext('2d');
+
+  let uploadedImageSrc = null;
+  let audioCtx = null;
+  let isProcessing = false;
+
+  const backdrops = {
+    kashmir: 'linear-gradient(180deg, #81d4fa 0%, #e1bee7 100%)',
+    taj: 'linear-gradient(180deg, #ffb74d 0%, #ff8a65 100%)',
+    laser: 'repeating-linear-gradient(0deg, #111 0px, #111 10px, #e91e63 10px, #e91e63 12px)',
+    classic: 'radial-gradient(circle, #cfd8dc 0%, #78909c 100%)'
+  };
+
+  const backdropCanvasColors = {
+    kashmir: ['#81d4fa', '#e1bee7'],
+    taj: ['#ffb74d', '#ff8a65'],
+    laser: ['#111111', '#e91e63'],
+    classic: ['#cfd8dc', '#78909c']
+  };
+
+  // Set initial backdrop
+  backdropEl.style.background = backdrops[backdropSelect.value];
+
+  backdropSelect.addEventListener('change', (e) => {
+    backdropEl.style.background = backdrops[e.target.value];
+  });
+
+  fileUpload.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        uploadedImageSrc = event.target.result;
+        subjectImg.src = uploadedImageSrc;
+        subjectImg.style.display = 'block';
+        uploadText.style.display = 'none';
+        
+        const img = new Image();
+        img.src = uploadedImageSrc;
+        img.onload = () => { window.userImgObj = img; };
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function initAudio() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  }
+
+  function playChargeAndFlash() {
+    initAudio();
+    const t = audioCtx.currentTime;
+    const chargeOsc = audioCtx.createOscillator();
+    const chargeGain = audioCtx.createGain();
+    chargeOsc.type = 'sine';
+    chargeOsc.frequency.setValueAtTime(400, t);
+    chargeOsc.frequency.exponentialRampToValueAtTime(6000, t + 1.2);
+    chargeGain.gain.setValueAtTime(0, t);
+    chargeGain.gain.linearRampToValueAtTime(0.1, t + 0.1);
+    chargeGain.gain.linearRampToValueAtTime(0.3, t + 1.2);
+    chargeGain.gain.setValueAtTime(0, t + 1.21); 
+
+    chargeOsc.connect(chargeGain); chargeGain.connect(audioCtx.destination);
+    chargeOsc.start(t); chargeOsc.stop(t + 1.21);
+
+    setTimeout(() => {
+      const t2 = audioCtx.currentTime;
+      const bufferSize = audioCtx.sampleRate * 0.1;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      
+      const noise = audioCtx.createBufferSource(); noise.buffer = buffer;
+      const noiseFilter = audioCtx.createBiquadFilter(); noiseFilter.type = 'highpass'; noiseFilter.frequency.value = 1000;
+      const noiseGain = audioCtx.createGain(); noiseGain.gain.setValueAtTime(0.5, t2); noiseGain.gain.exponentialRampToValueAtTime(0.01, t2 + 0.1);
+      noise.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(audioCtx.destination);
+      noise.start(t2);
+
+      const thud = audioCtx.createOscillator(); const thudGain = audioCtx.createGain();
+      thud.type = 'triangle'; thud.frequency.setValueAtTime(150, t2); thud.frequency.exponentialRampToValueAtTime(40, t2 + 0.1);
+      thudGain.gain.setValueAtTime(0.8, t2); thudGain.gain.exponentialRampToValueAtTime(0.01, t2 + 0.1);
+      thud.connect(thudGain); thudGain.connect(audioCtx.destination); thud.start(t2); thud.stop(t2 + 0.1);
+    }, 1200);
+  }
+
+  function drawDefaultAvatar(cCtx, x, y, w, h) {
+    cCtx.save(); cCtx.translate(x, y);
+    cCtx.fillStyle = '#2c3e50'; cCtx.beginPath(); cCtx.arc(w/2, h, w/2.5, Math.PI, 0); cCtx.fill();
+    cCtx.fillStyle = '#f1c40f'; cCtx.beginPath(); cCtx.arc(w/2, h/2 - 20, w/4, 0, Math.PI*2); cCtx.fill();
+    cCtx.restore();
+  }
+
+  function generateCanvasExport() {
+    ctx.fillStyle = '#ffffff'; 
+    ctx.fillRect(0, 0, 800, 1200);
+
+    const theme = backdropSelect.value;
+    const colors = backdropCanvasColors[theme];
+    const cols = 4, rows = 2, pW = 180, pH = 240, gapX = 16, gapY = 20, startX = 20, startY = 20;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = startX + c * (pW + gapX);
+        const y = startY + r * (pH + gapY);
+
+        // 1. Draw Background Gradient
+        const grad = ctx.createLinearGradient(x, y, x, y + pH);
+        grad.addColorStop(0, colors[0]); grad.addColorStop(1, colors[1]);
+        ctx.fillStyle = grad; ctx.fillRect(x, y, pW, pH);
+
+        // 2. Draw Subject inside a 90s OVAL CAMEO MASK
+        if (window.userImgObj) {
+          ctx.save();
+          
+          // Create Oval Cutout
+          ctx.beginPath();
+          ctx.ellipse(x + pW / 2, y + pH / 2, pW / 2.2, pH / 2.2, 0, 0, 2 * Math.PI);
+          ctx.clip(); 
+
+          // Blend modes to merge white background of uploaded photo into the scenic background
+          ctx.filter = 'sepia(0.4) contrast(1.15) brightness(1.05)';
+          ctx.globalCompositeOperation = 'multiply';
+
+          const imgRatio = window.userImgObj.width / window.userImgObj.height;
+          const boxRatio = pW / pH;
+          let sW, sH, sX, sY;
+          if (imgRatio > boxRatio) {
+            sH = window.userImgObj.height; sW = sH * boxRatio; sX = (window.userImgObj.width - sW) / 2; sY = 0;
+          } else {
+            sW = window.userImgObj.width; sH = sW / boxRatio; sX = 0; sY = (window.userImgObj.height - sH) / 2;
+          }
+          
+          ctx.drawImage(window.userImgObj, sX, sY, sW, sH, x, y, pW, pH);
+          ctx.restore();
+        } else {
+          drawDefaultAvatar(ctx, x, y, pW, pH);
+        }
+
+        // 3. Vignette
+        const vig = ctx.createRadialGradient(x+pW/2, y+pH/2, pW/4, x+pW/2, y+pH/2, pW);
+        vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(50,30,10,0.4)');
+        ctx.fillStyle = vig; ctx.fillRect(x, y, pW, pH);
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.strokeRect(x+4, y+4, pW-8, pH-8);
+      }
+    }
+
+    ctx.save(); ctx.translate(400, 600); ctx.rotate(-0.15);
+    ctx.strokeStyle = 'rgba(139, 0, 139, 0.5)'; ctx.lineWidth = 8; ctx.strokeRect(-220, -60, 440, 120);
+    ctx.font = 'bold 48px "Courier New"'; ctx.fillStyle = 'rgba(139, 0, 139, 0.5)'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText("AJANTA STUDIO", 0, -15); ctx.font = 'bold 36px "Courier New"'; ctx.fillText("VERIFIED 2026", 0, 30);
+    ctx.restore();
+
+    passportSheet.innerHTML = ''; 
+    for(let i=0; i<8; i++) {
+      const mini = document.createElement('div'); mini.className = 'mini-photo';
+      if(window.userImgObj) { mini.style.backgroundImage = `url(${uploadedImageSrc})`; }
+      passportSheet.appendChild(mini);
+    }
+    const stamp = document.createElement('div'); stamp.className = 'stamp-overlay'; stamp.innerHTML = 'AJANTA<br>VERIFIED';
+    passportSheet.appendChild(stamp);
+  }
+
+  btnShutter.addEventListener('click', () => {
+    if (isProcessing) return;
+    isProcessing = true;
+    printTray.classList.remove('ejected'); passportSheet.classList.remove('visible');
+    playChargeAndFlash();
+
+    setTimeout(() => {
+      flashOverlay.classList.add('active');
+      generateCanvasExport();
+      setTimeout(() => {
+        flashOverlay.classList.remove('active');
+        passportSheet.classList.add('visible'); printTray.classList.add('ejected');
+        isProcessing = false;
+      }, 1500);
+    }, 1200);
+  });
+
+  passportSheet.addEventListener('click', () => {
+    const dataUrl = exportCanvas.toDataURL('image/png');
+    const a = document.createElement('a'); a.href = dataUrl; a.download = 'Ajanta_Passport_Photos.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  });
+</script>
+</body>
+</html>

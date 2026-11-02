@@ -1,0 +1,3585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indian PCO Yellow Payphone</title>
+  <meta name="description" content="An authentic, skeuomorphic interactive Indian PCO STD/ISD yellow coin-box telephone with procedural Web Audio synthesis, mechanical coins, coiled cord physics, and directory hotline audio." />
+
+  <style>
+    /* ==========================================================================
+       RESET & BASE STYLING
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    :root {
+      --pco-yellow-main: #df9c0e;
+      --pco-yellow-light: #f5b82e;
+      --pco-yellow-dark: #b87b05;
+      --pco-yellow-deep: #8f5d02;
+      --chassis-border: #7c4f03;
+      --screw-silver: #a0a6aa;
+      --screw-dark: #4b5258;
+      --led-glow: #ff2222;
+      --led-off: #2b0808;
+      --rubber-key: #25282c;
+      --rubber-key-pressed: #151719;
+      --coin-brass: #d4a737;
+      --coin-rim: #9f7514;
+      --wood-dark: #2a1a0f;
+      --wood-light: #442a17;
+      --cradle-metal: #555b62;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 30%, #3d2d1d 0%, #20150b 70%, #120c06 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #e0d8cf;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 12px 32px;
+    }
+
+    /* VINTAGE SHOP WALL BACKGROUND TEXTURE */
+    .pco-environment {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.22;
+      background-image: 
+        radial-gradient(ellipse at 20% 40%, rgba(255, 230, 180, 0.15) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 2px, transparent 2px, transparent 12px);
+    }
+
+    /* TOP VINTAGE SHOP SIGNBOARD */
+    .shop-header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .signboard {
+      background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
+      border: 3px solid #d4af37;
+      border-radius: 6px;
+      padding: 8px 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sign-hindi {
+      font-size: 19px;
+      font-weight: 700;
+      color: #ffdd59;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(255, 221, 89, 0.5);
+    }
+
+    .sign-divider {
+      color: #d4af37;
+      font-size: 16px;
+    }
+
+    .sign-english {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .sign-sub {
+      margin-top: 5px;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: #d1b585;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       STREAMLINED CONTROL BAR (ONE PRIMARY RECEIVER BUTTON + ONE COIN BUTTON)
+       ========================================================================== */
+    .simple-control-bar {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #1f2732 0%, #111822 100%);
+      border: 2px solid #ecd382;
+      border-radius: 12px;
+      padding: 12px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step-guide-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-chips-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .step-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1.5px solid #45382b;
+      color: #9e8e7c;
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+    }
+
+    .step-chip .step-badge {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2c251d;
+      color: #c4b5a2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .step-chip.active {
+      background: linear-gradient(180deg, #e5a92a 0%, #a87308 100%);
+      border-color: #ffe685;
+      color: #1a1202;
+      font-weight: 900;
+      box-shadow: 0 0 14px rgba(255, 215, 64, 0.65);
+      transform: scale(1.04);
+    }
+    .step-chip.active .step-badge {
+      background: #fff;
+      color: #8c5d02;
+    }
+
+    .step-chip.completed {
+      background: rgba(43, 138, 62, 0.35);
+      border-color: #51cf66;
+      color: #7ce48f;
+    }
+    .step-chip.completed .step-badge {
+      background: #2b8a3e;
+      color: #ffffff;
+    }
+
+    .step-chevron {
+      color: #ecd382;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .easy-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .primary-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      min-width: 240px;
+      border: 2px solid;
+    }
+
+    .primary-action-btn:active {
+      transform: translateY(2px);
+    }
+
+    .btn-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .btn-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .btn-main-label {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .btn-sub-label {
+      font-size: 10px;
+      font-weight: 600;
+      opacity: 0.85;
+      line-height: 1.2;
+    }
+
+    /* THE SINGLE RECEIVER BUTTON */
+    .receiver-btn-on-hook {
+      background: linear-gradient(180deg, #2b8a3e 0%, #185a25 100%);
+      border-color: #51cf66;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(81, 207, 102, 0.5), 0 4px 8px rgba(0,0,0,0.5);
+      animation: receiverPulse 2s infinite alternate;
+    }
+
+    @keyframes receiverPulse {
+      0% { box-shadow: 0 0 8px rgba(81, 207, 102, 0.4); }
+      100% { box-shadow: 0 0 22px rgba(81, 207, 102, 0.9), 0 2px 8px rgba(0,0,0,0.6); }
+    }
+
+    .receiver-btn-on-hook:hover {
+      background: linear-gradient(180deg, #329e47 0%, #1e6c2d 100%);
+      transform: translateY(-2px);
+    }
+
+    .receiver-btn-off-hook {
+      background: linear-gradient(180deg, #c92a2a 0%, #7e1515 100%);
+      border-color: #ff8787;
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(255, 107, 107, 0.5), 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    .receiver-btn-off-hook:hover {
+      background: linear-gradient(180deg, #df3434 0%, #951b1b 100%);
+      transform: translateY(-2px);
+    }
+
+    /* FAST COIN BUTTON */
+    .easy-coin-btn {
+      background: linear-gradient(180deg, #ba881b 0%, #7d5707 100%);
+      border-color: #ffda66;
+      color: #fff9e6;
+      box-shadow: 0 0 14px rgba(255, 218, 102, 0.5), 0 4px 8px rgba(0,0,0,0.5);
+      animation: easyCoinPulse 2.2s infinite alternate;
+    }
+
+    @keyframes easyCoinPulse {
+      0% { box-shadow: 0 0 6px rgba(255, 218, 102, 0.3); }
+      100% { box-shadow: 0 0 20px rgba(255, 218, 102, 0.85); }
+    }
+
+    .easy-coin-btn:hover {
+      background: linear-gradient(180deg, #d49c23 0%, #93660a 100%);
+      transform: translateY(-2px);
+    }
+
+    .instant-call-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(236, 211, 130, 0.25);
+    }
+
+    .instant-call-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffdd59;
+      letter-spacing: 0.5px;
+    }
+
+    .instant-call-chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .instant-preset-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #252e3b 0%, #161c24 100%);
+      border: 1.5px solid #ecd382;
+      color: #ffebaa;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .instant-preset-btn:hover {
+      background: linear-gradient(180deg, #9b2820 0%, #68150f 100%);
+      border-color: #ff8585;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 80, 80, 0.4);
+    }
+
+    /* MAIN STAGE LAYOUT */
+    .workbench-stage {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 32px;
+      max-width: 1300px;
+      width: 100%;
+    }
+
+    @media (max-width: 1100px) {
+      .workbench-stage {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* DIRECTORY CARD (LEFT SIDE PINNED NOTICE) */
+    .directory-panel {
+      width: 290px;
+      background: #f4edd4;
+      color: #2b1f13;
+      padding: 20px 18px;
+      border-radius: 2px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      transform: rotate(-1deg);
+      border: 1px solid #dcd1af;
+      font-family: "Courier New", Courier, monospace;
+      flex-shrink: 0;
+    }
+
+    .tape-strip {
+      position: absolute;
+      width: 65px;
+      height: 22px;
+      background: rgba(255, 255, 230, 0.55);
+      border: 1px solid rgba(220, 210, 180, 0.4);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      backdrop-filter: blur(1px);
+    }
+    .tape-top { top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); }
+    .tape-corner-tr { top: -8px; right: 10px; transform: rotate(35deg); }
+    .tape-corner-bl { bottom: -8px; left: 10px; transform: rotate(-25deg); }
+
+    .directory-header {
+      border-bottom: 2px dashed #8b6b45;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .directory-header h3 {
+      font-size: 15px;
+      letter-spacing: 1px;
+      color: #631712;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .directory-header p {
+      font-size: 10px;
+      color: #6a5840;
+      margin-top: 3px;
+    }
+
+    .directory-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .directory-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      background: rgba(0,0,0,0.03);
+      border: 1px solid rgba(139, 107, 69, 0.2);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .directory-item:hover {
+      background: #faeed0;
+      border-color: #8b6b45;
+      transform: translateX(2px);
+    }
+
+    .dir-number {
+      font-size: 15px;
+      font-weight: bold;
+      color: #9c1d15;
+      min-width: 44px;
+    }
+
+    .dir-info {
+      flex: 1;
+      padding: 0 8px;
+    }
+
+    .dir-title {
+      font-size: 11px;
+      font-weight: bold;
+      color: #1a1612;
+    }
+
+    .dir-desc {
+      font-size: 9px;
+      color: #6d5b45;
+    }
+
+    .dir-dial-btn {
+      font-size: 9px;
+      font-weight: bold;
+      background: #8b261e;
+      color: #fff;
+      border: none;
+      padding: 3px 6px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: inherit;
+    }
+
+    .dir-dial-btn:hover {
+      background: #af3329;
+    }
+
+    .directory-footer-note {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px dashed #aa9578;
+      font-size: 9px;
+      color: #726049;
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       THE PCO TELEPHONE CHASSIS
+       ========================================================================== */
+    .pco-unit-wrapper {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .pco-chassis {
+      position: relative;
+      width: 440px;
+      background: linear-gradient(145deg, #f0b127 0%, #df9c0e 30%, #ce8c06 70%, #b07402 100%);
+      border: 4px solid #825403;
+      border-radius: 14px;
+      padding: 24px 22px 28px;
+      box-shadow: 
+        0 24px 60px rgba(0, 0, 0, 0.75),
+        inset 0 2px 4px rgba(255, 255, 255, 0.5),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.4),
+        0 4px 8px rgba(0,0,0,0.5);
+      z-index: 5;
+    }
+
+    .screw-rivet {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #e6eaed 0%, #879199 60%, #475056 100%);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.8);
+      border: 1px solid #363b3e;
+    }
+    .screw-rivet::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 9px;
+      height: 2px;
+      background: #232729;
+      transform: translate(-50%, -50%) rotate(42deg);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .screw-tl { top: 10px; left: 10px; }
+    .screw-tr { top: 10px; right: 10px; }
+    .screw-bl { bottom: 10px; left: 10px; }
+    .screw-br { bottom: 10px; right: 10px; }
+
+    .padlock-hasp {
+      position: absolute;
+      right: -18px;
+      top: 140px;
+      width: 22px;
+      height: 54px;
+      background: linear-gradient(90deg, #606870, #959fa8, #4d545b);
+      border: 1px solid #2b3034;
+      border-radius: 0 4px 4px 0;
+      box-shadow: 2px 4px 10px rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .padlock-lock {
+      position: absolute;
+      left: 12px;
+      top: 24px;
+      width: 24px;
+      height: 32px;
+      background: linear-gradient(135deg, #e5b33d 0%, #9e7314 100%);
+      border: 1px solid #5a4005;
+      border-radius: 3px;
+      box-shadow: 3px 6px 12px rgba(0,0,0,0.65);
+    }
+    .padlock-shackle {
+      position: absolute;
+      top: -12px;
+      left: 3px;
+      width: 16px;
+      height: 14px;
+      border: 3px solid #717c87;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+    }
+    .padlock-keyhole {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 3px;
+      height: 7px;
+      background: #2b1f05;
+      border-radius: 1px;
+    }
+
+    .chassis-badge {
+      background: linear-gradient(180deg, #0f1624 0%, #1c2b42 100%);
+      border: 2px solid #ecd382;
+      border-radius: 6px;
+      padding: 8px 12px;
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .badge-emblem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .badge-icon {
+      width: 24px;
+      height: 24px;
+      fill: #ffcf40;
+    }
+
+    .badge-hindi {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffdd59;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px rgba(255, 221, 89, 0.6);
+    }
+
+    .badge-std-isd {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      color: #ffffff;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    .badge-subline {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #b5c7d8;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    /* MIDDLE ROW: DISPLAY + SUPER RESPONSIVE COIN SLOT */
+    .chassis-upper-grid {
+      display: grid;
+      grid-template-columns: 1fr 125px;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .led-bezel {
+      background: #111417;
+      border: 3px solid #33383e;
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: inset 0 4px 10px #000000, 0 3px 6px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .led-bezel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.35) 0px,
+        rgba(0, 0, 0, 0.35) 2px,
+        rgba(255, 0, 0, 0.04) 2px,
+        rgba(255, 0, 0, 0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .led-label-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: #7a3a3a;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .led-digits-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 4px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .led-char-svg {
+      width: 22px;
+      height: 38px;
+      filter: drop-shadow(0 0 4px rgba(255, 30, 30, 0.7));
+    }
+
+    .led-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px solid #201111;
+      font-size: 8px;
+      color: #8b3a3a;
+      position: relative;
+      z-index: 2;
+      text-transform: uppercase;
+    }
+
+    .led-pill-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .led-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--led-off);
+      transition: background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .led-dot.active {
+      background: #ff2a2a;
+      box-shadow: 0 0 6px #ff2a2a;
+    }
+
+    /* ULTRA EASY CLICKABLE COIN SLOT MODULE */
+    .coin-slot-module {
+      background: linear-gradient(145deg, #bcc4cb 0%, #e2e8ed 40%, #9ba3aa 100%);
+      border: 2px solid #575e64;
+      border-radius: 8px;
+      padding: 10px 8px;
+      box-shadow: 
+        inset 0 1px 2px rgba(255,255,255,0.8),
+        0 3px 8px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .coin-slot-module:hover {
+      border-color: #ffd043;
+      box-shadow: 0 0 16px rgba(255, 208, 67, 0.8), inset 0 1px 2px rgba(255,255,255,0.9);
+      transform: scale(1.03);
+    }
+
+    .coin-slot-module.awaiting-coin {
+      border-color: #ffd043;
+      animation: slotPulseGlow 1.6s infinite alternate;
+    }
+
+    @keyframes slotPulseGlow {
+      0% { box-shadow: 0 0 6px rgba(255, 208, 67, 0.4), inset 0 1px 2px rgba(255,255,255,0.8); }
+      100% { box-shadow: 0 0 20px rgba(255, 208, 67, 0.95), inset 0 1px 2px rgba(255,255,255,0.9); }
+    }
+
+    .coin-slot-label {
+      font-size: 9px;
+      font-weight: 900;
+      color: #2b3035;
+      text-align: center;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .coin-slot-aperture {
+      position: relative;
+      width: 82px;
+      height: 18px;
+      background: #080a0b;
+      border: 2px solid #4a5158;
+      border-radius: 4px;
+      box-shadow: inset 0 3px 6px #000000;
+      margin: 6px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .coin-slot-module:hover .coin-slot-aperture,
+    .coin-slot-module.awaiting-coin .coin-slot-aperture {
+      border-color: #ffd043;
+      box-shadow: inset 0 3px 6px #000000, 0 0 12px #ffd043;
+    }
+
+    .slot-cut {
+      width: 52px;
+      height: 5px;
+      background: #000;
+      border-radius: 2px;
+      box-shadow: 0 0 2px #fff;
+    }
+
+    .coin-slot-arrow {
+      font-size: 10px;
+      color: #8a2010;
+      font-weight: 900;
+      animation: slotBounce 1.4s infinite;
+    }
+
+    .coin-slot-subhint {
+      font-size: 8px;
+      font-weight: 900;
+      color: #1f5127;
+      background: #b5e8c1;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+      text-transform: uppercase;
+    }
+
+    @keyframes slotBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .operating-instructions {
+      background: rgba(100, 60, 5, 0.15);
+      border: 1px dashed rgba(100, 60, 5, 0.4);
+      border-radius: 5px;
+      padding: 6px 10px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      font-weight: 700;
+      color: #3b2401;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* LOWER SECTION: STATUS PANEL & KEYPAD */
+    .chassis-lower-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    /* AUTHENTIC TELECOM STATUS DISPLAY (NOT A CONFUSING DUPLICATE BUTTON) */
+    .telecom-console-panel {
+      background: linear-gradient(145deg, #181c20 0%, #2a313a 60%, #15181c 100%);
+      border: 2px solid #ecd382;
+      border-radius: 8px;
+      padding: 10px 8px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), 0 3px 6px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .telecom-console-header {
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      color: #ecd382;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .telecom-status-box {
+      width: 100%;
+      background: #0f1215;
+      border: 1.5px solid #4a545e;
+      border-radius: 5px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .telecom-status-lamp {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #23282d;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);
+      transition: all 0.2s ease;
+    }
+
+    .telecom-status-lamp.on-hook {
+      background: #7a1d1d;
+      box-shadow: 0 0 6px rgba(255, 60, 60, 0.5);
+    }
+
+    .telecom-status-lamp.off-hook {
+      background: #2b8a3e;
+      box-shadow: 0 0 14px rgba(81, 207, 102, 0.95);
+    }
+
+    .hook-status-text {
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 3px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .hook-status-text.on-hook {
+      background: #361717;
+      color: #ff8787;
+    }
+    .hook-status-text.off-hook {
+      background: #14301d;
+      color: #69db7c;
+    }
+
+    .telecom-console-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 7.5px;
+      font-weight: 800;
+      color: #9aa8b6;
+      letter-spacing: 1px;
+    }
+
+    /* THE KEYPAD */
+    .keypad-matrix {
+      background: linear-gradient(145deg, #181b1e 0%, #292d33 100%);
+      border: 2px solid #464e56;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.8), 0 3px 8px rgba(0,0,0,0.3);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .key-btn {
+      position: relative;
+      background: linear-gradient(180deg, #383e46 0%, #202428 100%);
+      border: 1px solid #4f5760;
+      border-radius: 6px;
+      height: 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 
+        0 4px 0 #111315,
+        0 6px 8px rgba(0,0,0,0.5),
+        inset 0 1px 1px rgba(255,255,255,0.25);
+      transition: all 0.05s ease;
+    }
+
+    .key-btn:hover {
+      background: linear-gradient(180deg, #444b55 0%, #262b30 100%);
+    }
+
+    .key-btn:active,
+    .key-btn.is-pressed {
+      transform: translateY(3px);
+      box-shadow: 
+        0 1px 0 #111315,
+        0 2px 4px rgba(0,0,0,0.6),
+        inset 0 2px 4px rgba(0,0,0,0.6);
+      background: #191c1f;
+    }
+
+    .key-primary {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f0f3f6;
+      line-height: 1;
+      font-family: Arial, sans-serif;
+    }
+
+    .key-sub {
+      font-size: 7.5px;
+      font-weight: 700;
+      color: #9aa4ae;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* RECESSED COIN RETURN CUP */
+    .coin-return-module {
+      margin-top: 20px;
+      background: #111417;
+      border: 2px solid #4a5157;
+      border-radius: 6px;
+      padding: 6px 12px;
+      box-shadow: inset 0 4px 8px #000, 0 2px 4px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .coin-return-flap {
+      background: linear-gradient(180deg, #7a828a 0%, #464c52 100%);
+      border: 1px solid #30353a;
+      border-radius: 3px;
+      padding: 6px 14px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #d8dee4;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .coin-return-flap:active {
+      transform: perspective(100px) rotateX(25deg);
+    }
+
+    .coin-tray-status {
+      font-size: 9px;
+      color: #8c96a0;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       THE HANDSET & COILED CABLE
+       ========================================================================== */
+    .handset-zone {
+      position: relative;
+      width: 175px;
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      z-index: 25;
+    }
+
+    .cradle-mounting-bracket {
+      position: absolute;
+      left: -20px;
+      top: 130px;
+      width: 24px;
+      height: 52px;
+      background: linear-gradient(90deg, #444c54 0%, #68737e 40%, #2f353b 100%);
+      border: 2px solid #1a1e22;
+      border-radius: 4px;
+      box-shadow: -3px 4px 8px rgba(0,0,0,0.7);
+      z-index: 22;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .cradle-bracket-bolt {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff, #4a5158);
+      border: 1px solid #181a1c;
+    }
+
+    .handset-cradle-socket {
+      position: absolute;
+      top: 15px;
+      width: 142px;
+      height: 320px;
+      background: linear-gradient(145deg, #181b1e 0%, #293038 50%, #131518 100%);
+      border: 3.5px solid #4a545e;
+      border-radius: 14px;
+      box-shadow: 
+        inset 0 3px 8px rgba(0, 0, 0, 0.9),
+        0 10px 24px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 6px;
+      z-index: 26;
+      pointer-events: auto;
+    }
+
+    .cradle-bracket-backplate {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .cradle-bracket-label {
+      font-size: 8.5px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #9cb0c2;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .cradle-screw {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ccd3d9, #505860);
+      border: 1px solid #23272a;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);
+    }
+
+    .cradle-twin-hooks {
+      position: absolute;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 144px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 34;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .twin-prong {
+      width: 22px;
+      height: 54px;
+      background: linear-gradient(180deg, #f0f4f8 0%, #b8c4ce 35%, #66727d 80%, #3a4249 100%);
+      border: 2px solid #202529;
+      border-radius: 8px 8px 3px 3px;
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.8),
+        inset 1px 2px 2px rgba(255,255,255,0.8);
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .twin-prong.prong-left {
+      transform-origin: bottom right;
+      border-top-left-radius: 12px;
+    }
+    .twin-prong.prong-left::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      right: -6px;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, #e4eaef, #788590);
+      border: 1.5px solid #202529;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .twin-prong.prong-right {
+      transform-origin: bottom left;
+      border-top-right-radius: 12px;
+    }
+    .twin-prong.prong-right::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: -6px;
+      width: 10px;
+      height: 10px;
+      background: linear-gradient(135deg, #e4eaef, #788590);
+      border: 1.5px solid #202529;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .cradle-switch-plunger {
+      width: 22px;
+      height: 16px;
+      background: linear-gradient(180deg, #a81c1c 0%, #610d0d 100%);
+      border: 1.5px solid #300606;
+      border-radius: 3px;
+      box-shadow: inset 0 2px 3px rgba(255,255,255,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .cradle-twin-hooks.on-hook {
+      transform: translateX(-50%) translateY(16px);
+    }
+    .cradle-twin-hooks.on-hook .twin-prong.prong-left {
+      transform: rotate(2deg);
+    }
+    .cradle-twin-hooks.on-hook .twin-prong.prong-right {
+      transform: rotate(-2deg);
+    }
+    .cradle-twin-hooks.on-hook .cradle-switch-plunger {
+      transform: translateY(8px);
+    }
+
+    .cradle-twin-hooks.off-hook {
+      transform: translateX(-50%) translateY(-4px);
+    }
+    .cradle-twin-hooks.off-hook .twin-prong.prong-left {
+      transform: rotate(-10deg);
+      border-color: #51cf66;
+      box-shadow: 0 0 14px rgba(81, 207, 102, 0.7);
+    }
+    .cradle-twin-hooks.off-hook .twin-prong.prong-right {
+      transform: rotate(10deg);
+      border-color: #51cf66;
+      box-shadow: 0 0 14px rgba(81, 207, 102, 0.7);
+    }
+    .cradle-twin-hooks.off-hook .cradle-switch-plunger {
+      transform: translateY(-4px);
+      box-shadow: 0 0 10px rgba(255, 60, 60, 0.8);
+    }
+
+    .cradle-base-cup {
+      width: 82px;
+      height: 36px;
+      border-radius: 0 0 40px 40px;
+      background: linear-gradient(180deg, #1f2428 0%, #0d0f11 100%);
+      border: 2px solid #3c444d;
+      box-shadow: inset 0 5px 10px #000;
+    }
+
+    .cradle-socket-status {
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: center;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .cradle-socket-status.on-hook {
+      background: rgba(43, 122, 58, 0.25);
+      color: #74b882;
+      border: 1px solid rgba(81, 207, 102, 0.3);
+    }
+
+    .cradle-socket-status.off-hook {
+      background: rgba(201, 42, 42, 0.25);
+      color: #ff8787;
+      border: 1px solid rgba(255, 107, 107, 0.4);
+    }
+
+    /* Handset Physical Unit */
+    .handset-unit {
+      width: 96px;
+      height: 295px;
+      background: linear-gradient(90deg, #1a1d20 0%, #2f363d 30%, #15181b 75%, #0a0b0d 100%);
+      border: 3.5px solid #4a545e;
+      border-radius: 48px / 32px;
+      box-shadow: 
+        10px 18px 35px rgba(0, 0, 0, 0.85),
+        inset 2px 4px 6px rgba(255, 255, 255, 0.18),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.8);
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      z-index: 30;
+      touch-action: manipulation;
+    }
+
+    .handset-unit.on-hook {
+      transform: translateY(18px) rotate(0deg) scale(1);
+      border-color: #4a545e;
+      box-shadow: 
+        0 14px 28px rgba(0, 0, 0, 0.8),
+        inset 2px 4px 6px rgba(255, 255, 255, 0.15);
+    }
+
+    .handset-unit.on-hook:hover {
+      transform: translateY(10px) scale(1.03);
+      border-color: #51cf66;
+      box-shadow: 
+        0 18px 36px rgba(0,0,0,0.85), 
+        0 0 20px rgba(81, 207, 102, 0.6);
+    }
+
+    .handset-unit.off-hook {
+      transform: translateY(-54px) translateX(-44px) rotate(-18deg) scale(1.15);
+      border-color: #51cf66;
+      box-shadow: 
+        34px 48px 75px rgba(0, 0, 0, 0.95),
+        0 0 30px rgba(81, 207, 102, 0.65),
+        inset 2px 4px 6px rgba(255, 255, 255, 0.35);
+    }
+
+    .earpiece-cup, .mic-cup {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #383f47 0%, #171a1d 75%, #0d0e10 100%);
+      border: 2px solid #4e5760;
+      box-shadow: 
+        0 4px 8px rgba(0,0,0,0.6),
+        inset 0 2px 4px rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mic-acoustic-holes {
+      display: grid;
+      grid-template-columns: repeat(3, 5px);
+      gap: 4px;
+    }
+
+    .mic-hole {
+      width: 5px;
+      height: 5px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,0.9);
+    }
+
+    .handle-stem {
+      width: 36px;
+      flex: 1;
+      margin: 8px 0;
+      background: linear-gradient(90deg, #1d2125 0%, #353c44 40%, #16181b 100%);
+      border-radius: 8px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      border-right: 1px solid rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .handle-grip-ribs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      opacity: 0.25;
+    }
+
+    .grip-rib {
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+    }
+
+    #coiledCordCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    /* ==========================================================================
+       COUNTER SHELF & 1-CLICK BRASS COINS
+       ========================================================================== */
+    .counter-shelf {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      margin-top: 24px;
+      background: linear-gradient(180deg, #442a17 0%, #2b1a0d 30%, #190e06 100%);
+      border-top: 4px solid #734827;
+      border-radius: 6px;
+      padding: 16px 24px;
+      box-shadow: 
+        0 14px 35px rgba(0,0,0,0.85),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .shelf-coin-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .shelf-coin-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .shelf-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffdd59;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .shelf-coin-subtext {
+      font-size: 9px;
+      color: #caa97f;
+      font-weight: bold;
+    }
+
+    .coin-tray-items {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Brass ₹1 Indian Coin (Single Click to insert!) */
+    .brass-coin {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffe682 0%, #d4a737 55%, #8c6710 100%);
+      border: 2px solid #ffe88a;
+      box-shadow: 
+        0 4px 10px rgba(0,0,0,0.6),
+        inset 0 2px 2px rgba(255,255,255,0.7),
+        inset 0 -2px 3px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .brass-coin:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 
+        0 10px 20px rgba(0,0,0,0.75),
+        0 0 14px rgba(255, 220, 100, 0.7);
+    }
+
+    .brass-coin:active {
+      transform: scale(0.92);
+    }
+
+    .coin-reeds {
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      border: 1px dashed rgba(80, 50, 0, 0.45);
+      pointer-events: none;
+    }
+
+    .coin-symbol {
+      font-size: 15px;
+      font-weight: 900;
+      color: #5c3f02;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(255, 245, 180, 0.6);
+      pointer-events: none;
+    }
+
+    .coin-subtext {
+      font-size: 6.5px;
+      font-weight: 800;
+      color: #5c3f02;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 1px;
+      pointer-events: none;
+    }
+
+    .shelf-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: linear-gradient(180deg, #3a2211 0%, #1f1107 100%);
+      border: 1px solid #734827;
+      color: #f0dec5;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      transition: all 0.15s;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(180deg, #4c2d16 0%, #2b180a 100%);
+      border-color: #a46738;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* CONTROL DECK (BOTTOM) */
+    .control-deck {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 960px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 11px;
+      color: #a69888;
+    }
+
+    .control-deck-keys {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kbd-chip {
+      background: #1b1611;
+      border: 1px solid #4a3c2c;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-family: monospace;
+      color: #ffdd59;
+    }
+
+    .audio-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vol-slider {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 90px;
+      height: 4px;
+      background: #4a3c2c;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .vol-slider::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d4af37;
+      cursor: pointer;
+    }
+
+    /* FLYING COIN ANIMATION (FOR CLICK-TO-INSERT) */
+    .flying-coin {
+      position: fixed;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffe682 0%, #d4a737 55%, #8c6710 100%);
+      border: 2px solid #ffe88a;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.8), 0 0 15px rgba(255, 215, 60, 0.8);
+      pointer-events: none;
+      z-index: 1000;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* COIN INSERTION NOTIFICATION TOAST */
+    .coin-toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-35px);
+      background: linear-gradient(180deg, #2b1f0c 0%, #150f05 100%);
+      border: 2px solid #ffcf40;
+      color: #ffdd59;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 8px 22px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.85), 0 0 16px rgba(255, 207, 64, 0.5);
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COIN INSERTION NOTIFICATION TOAST -->
+  <div id="coinToast" class="coin-toast">
+    <span>🪙</span>
+    <span id="toastMsg">₹1.00 COIN INSERTED!</span>
+  </div>
+
+  <!-- AMBIENT SHOP BACKGROUND -->
+  <div class="pco-environment"></div>
+
+  <!-- VINTAGE PCO SIGNBOARD -->
+  <header class="shop-header">
+    <div class="signboard">
+      <span class="sign-hindi">सार्वजनिक टेलीफोन</span>
+      <span class="sign-divider">★</span>
+      <span class="sign-english">LOCAL · STD · ISD</span>
+    </div>
+    <div class="sign-sub">DEPARTMENT OF TELECOMMUNICATIONS · BSNL COIN-BOX PAYPHONE</div>
+  </header>
+
+  <!-- STREAMLINED ACTION BAR WITH EXACTLY ONE RECEIVER BUTTON & ONE COIN BUTTON -->
+  <div class="simple-control-bar">
+    <!-- 3-STEP REALTIME FLOW GUIDE -->
+    <div class="step-guide-wrap">
+      <div class="step-chips-row">
+        <div class="step-chip active" id="stepChip1">
+          <span class="step-badge">1</span>
+          <span>Pick Up Receiver</span>
+        </div>
+        <div class="step-chevron">➔</div>
+        <div class="step-chip" id="stepChip2">
+          <span class="step-badge">2</span>
+          <span>Insert ₹1 Coin</span>
+        </div>
+        <div class="step-chevron">➔</div>
+        <div class="step-chip" id="stepChip3">
+          <span class="step-badge">3</span>
+          <span>Dial Number</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLEAN DUAL ACTION BUTTONS (NO CONFUSING DUPLICATES) -->
+    <div class="easy-action-row">
+      <!-- THE ONLY RECEIVER BUTTON -->
+      <button class="primary-action-btn receiver-btn-on-hook" id="singleReceiverBtn" title="Pick up or replace telephone receiver">
+        <span class="btn-icon" id="receiverBtnIcon">📞</span>
+        <div class="btn-text-group">
+          <span class="btn-main-label" id="receiverBtnMain">PICK UP RECEIVER</span>
+          <span class="btn-sub-label" id="receiverBtnSub">Click to lift handset off cradle</span>
+        </div>
+      </button>
+
+      <!-- EASY COIN BUTTON -->
+      <button class="primary-action-btn easy-coin-btn" id="singleCoinBtn" title="Click to instantly insert ₹1 coin">
+        <span class="btn-icon">🪙</span>
+        <div class="btn-text-group">
+          <span class="btn-main-label">INSERT ₹1 COIN</span>
+          <span class="btn-sub-label">Click here or tap coin below</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- 1-CLICK INSTANT CALL PRESETS -->
+    <div class="instant-call-row">
+      <span class="instant-call-label">⚡ 1-CLICK HOTLINES:</span>
+      <div class="instant-call-chips">
+        <button class="instant-preset-btn" data-preset="100" title="Call Police Dispatch">
+          <span>🚨 Police (100)</span>
+        </button>
+        <button class="instant-preset-btn" data-preset="143" title="Call Bollywood Hotline">
+          <span>❤️ Bollywood (143)</span>
+        </button>
+        <button class="instant-preset-btn" data-preset="011" title="Call Delhi Bazaar">
+          <span>🛺 Delhi (011)</span>
+        </button>
+        <button class="instant-preset-btn" data-preset="022" title="Call Marine Drive Monsoon">
+          <span>🌧️ Mumbai (022)</span>
+        </button>
+        <button class="instant-preset-btn" data-preset="999" title="Call Speaking Clock">
+          <span>⏰ Clock (999)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORKBENCH STAGE -->
+  <main class="workbench-stage">
+
+    <!-- LEFT: PINNED DIRECTORY NOTICE -->
+    <aside class="directory-panel">
+      <div class="tape-strip tape-top"></div>
+      <div class="tape-strip tape-corner-tr"></div>
+      <div class="tape-strip tape-corner-bl"></div>
+
+      <div class="directory-header">
+        <h3>PCO SPEED DIAL</h3>
+        <p>CLICK TO CALL DIRECTLY</p>
+      </div>
+
+      <div class="directory-list">
+        <div class="directory-item" data-code="100">
+          <span class="dir-number">100</span>
+          <div class="dir-info">
+            <div class="dir-title">Police Dispatch</div>
+            <div class="dir-desc">Siren &amp; radio dispatch</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="100">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="143">
+          <span class="dir-number">143</span>
+          <div class="dir-info">
+            <div class="dir-title">Heartbreak Hotline</div>
+            <div class="dir-desc">Lo-fi 80s Bollywood synth</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="143">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="011">
+          <span class="dir-number">011</span>
+          <div class="dir-info">
+            <div class="dir-title">Delhi Bazaar</div>
+            <div class="dir-desc">Bicycle bells &amp; chai stall</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="011">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="022">
+          <span class="dir-number">022</span>
+          <div class="dir-info">
+            <div class="dir-title">Marine Drive Monsoon</div>
+            <div class="dir-desc">Waves &amp; heavy rain</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="022">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="197">
+          <span class="dir-number">197</span>
+          <div class="dir-info">
+            <div class="dir-title">BSNL Directory Assist</div>
+            <div class="dir-desc">Automated operator voice</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="197">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="108">
+          <span class="dir-number">108</span>
+          <div class="dir-info">
+            <div class="dir-title">Ambulance Service</div>
+            <div class="dir-desc">Two-tone emergency siren</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="108">Call</button>
+        </div>
+
+        <div class="directory-item" data-code="999">
+          <span class="dir-number">999</span>
+          <div class="dir-info">
+            <div class="dir-title">Speaking Clock</div>
+            <div class="dir-desc">HMT telecommunication pips</div>
+          </div>
+          <button class="dir-dial-btn" data-dial="999">Call</button>
+        </div>
+      </div>
+
+      <div class="directory-footer-note">
+        ★ Rate: ₹1.00 per 60 seconds<br />
+        ★ Auto-picks up receiver and connects audio immediately!
+      </div>
+    </aside>
+
+    <!-- CENTER & RIGHT: PCO YELLOW CHASSIS + HANDSET + CORD -->
+    <div class="pco-unit-wrapper" id="pcoWrapper">
+      <!-- COILED TELEPHONE CORD CANVAS -->
+      <canvas id="coiledCordCanvas"></canvas>
+
+      <!-- YELLOW POWDER-COATED STEEL PAYPHONE -->
+      <section class="pco-chassis" id="pcoBox">
+        <div class="screw-rivet screw-tl"></div>
+        <div class="screw-rivet screw-tr"></div>
+        <div class="screw-rivet screw-bl"></div>
+        <div class="screw-rivet screw-br"></div>
+
+        <!-- Heavy Padlock Latch on right edge -->
+        <div class="padlock-hasp">
+          <div class="padlock-lock">
+            <div class="padlock-shackle"></div>
+            <div class="padlock-keyhole"></div>
+          </div>
+        </div>
+
+        <!-- TELECOM EMBLEM BADGE -->
+        <div class="chassis-badge">
+          <div class="badge-emblem">
+            <svg class="badge-icon" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <span class="badge-hindi">सार्वजनिक टेलीफोन</span>
+          </div>
+          <div class="badge-std-isd">★ LOCAL · STD · ISD ★</div>
+          <div class="badge-subline">CENTRE FOR DEVELOPMENT OF TELEMATICS · MODEL PCO-92</div>
+        </div>
+
+        <!-- UPPER GRID: 7-SEGMENT LED DISPLAY + 1-TAP COIN SLOT -->
+        <div class="chassis-upper-grid">
+          <!-- 7-SEGMENT RED DIGITAL DISPLAY -->
+          <div class="led-bezel">
+            <div class="led-label-top">
+              <span>CALL CHARGE / TIMER</span>
+              <span>₹1.00 / 60S</span>
+            </div>
+
+            <!-- LED Characters Container -->
+            <div class="led-digits-container" id="ledDisplay"></div>
+
+            <div class="led-status-bar">
+              <div class="led-pill-indicator">
+                <div class="led-dot" id="dotCredit"></div>
+                <span>CREDIT</span>
+              </div>
+              <div class="led-pill-indicator">
+                <div class="led-dot" id="dotCall"></div>
+                <span>IN CALL</span>
+              </div>
+              <div class="led-pill-indicator">
+                <div class="led-dot" id="dotWarning"></div>
+                <span>LOW BAL</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- COIN SLOT (TAP DIRECTLY TO INSERT COIN) -->
+          <div class="coin-slot-module" id="coinSlotModule" title="Click to instantly insert ₹1 coin">
+            <div class="coin-slot-label">INSERT ₹1 COIN</div>
+            <div class="coin-slot-aperture" id="coinSlotDropZone">
+              <div class="slot-cut"></div>
+            </div>
+            <div class="coin-slot-arrow">▼ TAP HERE</div>
+            <div class="coin-slot-subhint">1-CLICK INSERT</div>
+          </div>
+        </div>
+
+        <!-- OPERATING INSTRUCTIONS STENCIL -->
+        <div class="operating-instructions">
+          <span>1. LIFT RECEIVER</span>
+          <span>2. INSERT ₹1 COIN</span>
+          <span>3. DIAL NUMBER</span>
+          <span>4. 60 SEC/COIN</span>
+        </div>
+
+        <!-- LOWER SECTION: STATUS CONSOLE & 3x4 KEYPAD -->
+        <div class="chassis-lower-grid">
+          <!-- TELECOM LINE STATUS DISPLAY (AUTHENTIC INSTRUMENT READOUT) -->
+          <div class="telecom-console-panel">
+            <div class="telecom-console-header">HOOK STATUS</div>
+            <div class="telecom-status-box" id="telecomStatusBox">
+              <div class="telecom-status-lamp on-hook" id="lineStatusLamp"></div>
+              <div class="hook-status-text on-hook" id="hookStatusText">ON HOOK</div>
+            </div>
+            <div class="telecom-console-badge">
+              <span>DOT · BSNL</span>
+              <span>PCO-92</span>
+            </div>
+          </div>
+
+          <!-- 3x4 KEYPAD -->
+          <div class="keypad-matrix" id="keypadMatrix">
+            <button class="key-btn" data-key="1">
+              <span class="key-primary">1</span>
+              <span class="key-sub">.</span>
+            </button>
+            <button class="key-btn" data-key="2">
+              <span class="key-primary">2</span>
+              <span class="key-sub">ABC</span>
+            </button>
+            <button class="key-btn" data-key="3">
+              <span class="key-primary">3</span>
+              <span class="key-sub">DEF</span>
+            </button>
+            <button class="key-btn" data-key="4">
+              <span class="key-primary">4</span>
+              <span class="key-sub">GHI</span>
+            </button>
+            <button class="key-btn" data-key="5">
+              <span class="key-primary">5</span>
+              <span class="key-sub">JKL</span>
+            </button>
+            <button class="key-btn" data-key="6">
+              <span class="key-primary">6</span>
+              <span class="key-sub">MNO</span>
+            </button>
+            <button class="key-btn" data-key="7">
+              <span class="key-primary">7</span>
+              <span class="key-sub">PQRS</span>
+            </button>
+            <button class="key-btn" data-key="8">
+              <span class="key-primary">8</span>
+              <span class="key-sub">TUV</span>
+            </button>
+            <button class="key-btn" data-key="9">
+              <span class="key-primary">9</span>
+              <span class="key-sub">WXYZ</span>
+            </button>
+            <button class="key-btn" data-key="*">
+              <span class="key-primary">*</span>
+              <span class="key-sub">FLASH</span>
+            </button>
+            <button class="key-btn" data-key="0">
+              <span class="key-primary">0</span>
+              <span class="key-sub">+</span>
+            </button>
+            <button class="key-btn" data-key="#">
+              <span class="key-primary">#</span>
+              <span class="key-sub">REDIAL</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RECESSED COIN RETURN CUP -->
+        <div class="coin-return-module">
+          <button class="coin-return-flap" id="coinReturnBtn" title="Push to refund unused coins">
+            PUSH FOR REFUND
+          </button>
+          <div class="coin-tray-status" id="refundStatus">TRAY EMPTY</div>
+        </div>
+      </section>
+
+      <!-- THE HANDSET & CRADLE SOCKET (CLICK HANDSET TO LIFT/HANG UP) -->
+      <div class="handset-zone" id="handsetZone" title="Click handset to pick up or hang up">
+        <div class="cradle-mounting-bracket">
+          <div class="cradle-bracket-bolt"></div>
+          <div class="cradle-bracket-bolt"></div>
+        </div>
+
+        <!-- CRADLE REST BRACKET -->
+        <div class="handset-cradle-socket" id="cradleSocket">
+          <div class="cradle-bracket-backplate">
+            <div class="cradle-screw cs-top"></div>
+            <div class="cradle-bracket-label">C-DOT CRADLE HOOK</div>
+          </div>
+
+          <div class="cradle-base-cup"></div>
+          <div class="cradle-socket-status on-hook" id="cradleSocketStatus">DOCKED ON HOOK</div>
+          <div class="cradle-screw cs-bot"></div>
+        </div>
+
+        <!-- PHYSICAL HANDSET -->
+        <div class="handset-unit on-hook" id="handsetUnit" role="button" tabindex="0">
+          <div class="earpiece-cup"></div>
+          <div class="handle-stem">
+            <div class="handle-grip-ribs">
+              <div class="grip-rib"></div>
+              <div class="grip-rib"></div>
+              <div class="grip-rib"></div>
+              <div class="grip-rib"></div>
+            </div>
+          </div>
+          <div class="mic-cup">
+            <div class="mic-acoustic-holes">
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+              <div class="mic-hole"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRADLE HOOK FORKS -->
+        <div class="cradle-twin-hooks on-hook" id="cradleTwinHooks">
+          <div class="twin-prong prong-left"></div>
+          <div class="cradle-switch-plunger"></div>
+          <div class="twin-prong prong-right"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- WOODEN COUNTER SHELF & 1-CLICK BRASS COINS -->
+  <footer class="counter-shelf">
+    <div class="shelf-coin-box">
+      <div class="shelf-coin-header">
+        <span class="shelf-label">BRASS ₹1 COINS:</span>
+        <span class="shelf-coin-subtext">👉 TAP ANY COIN TO INSERT DIRECTLY</span>
+      </div>
+      <div class="coin-tray-items" id="coinStack">
+        <div class="brass-coin" title="Tap to instantly insert ₹1 coin">
+          <div class="coin-reeds"></div>
+          <span class="coin-symbol">₹1</span>
+          <span class="coin-subtext">BHARAT</span>
+        </div>
+        <div class="brass-coin" title="Tap to instantly insert ₹1 coin">
+          <div class="coin-reeds"></div>
+          <span class="coin-symbol">₹1</span>
+          <span class="coin-subtext">BHARAT</span>
+        </div>
+        <div class="brass-coin" title="Tap to instantly insert ₹1 coin">
+          <div class="coin-reeds"></div>
+          <span class="coin-symbol">₹1</span>
+          <span class="coin-subtext">BHARAT</span>
+        </div>
+        <div class="brass-coin" title="Tap to instantly insert ₹1 coin">
+          <div class="coin-reeds"></div>
+          <span class="coin-symbol">₹1</span>
+          <span class="coin-subtext">BHARAT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shelf-actions">
+      <button class="action-btn" id="takeCoinBtn" title="Get more coins">
+        <span>+ Add More Coins</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- KEYBOARD SHORTCUTS & AUDIO CONTROLS -->
+  <div class="control-deck">
+    <div class="control-deck-keys">
+      <span>Keypad: <span class="kbd-chip">0-9</span> <span class="kbd-chip">*</span> <span class="kbd-chip">#</span></span>
+      <span>| Pick Up/Hang Up: <span class="kbd-chip">Space</span></span>
+      <span>| Insert Coin: <span class="kbd-chip">C</span></span>
+    </div>
+
+    <div class="audio-vol-wrap">
+      <span>Volume:</span>
+      <input type="range" min="0" max="1" step="0.05" value="0.75" class="vol-slider" id="volumeSlider" />
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION CORE -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* ==========================================================================
+         1. PROCEDURAL TELECOM AUDIO SYNTHESIS ENGINE
+         ========================================================================== */
+      class TelecomAudioEngine {
+        constructor() {
+          this.ctx = null;
+          this.masterGain = null;
+          this.lineFilterHigh = null;
+          this.lineFilterLow = null;
+          this.waveshaper = null;
+          this.hissGain = null;
+          this.hissSource = null;
+
+          this.dialToneOsc1 = null;
+          this.dialToneOsc2 = null;
+          this.dialToneGain = null;
+          this.ringInterval = null;
+          this.busyInterval = null;
+          this.activeStationNode = null;
+        }
+
+        initContext() {
+          if (!this.ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioCtx();
+
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.setValueAtTime(0.75, this.ctx.currentTime);
+            this.masterGain.connect(this.ctx.destination);
+
+            this.lineFilterHigh = this.ctx.createBiquadFilter();
+            this.lineFilterHigh.type = 'highpass';
+            this.lineFilterHigh.frequency.setValueAtTime(300, this.ctx.currentTime);
+            this.lineFilterHigh.Q.setValueAtTime(0.7, this.ctx.currentTime);
+
+            this.lineFilterLow = this.ctx.createBiquadFilter();
+            this.lineFilterLow.type = 'lowpass';
+            this.lineFilterLow.frequency.setValueAtTime(3400, this.ctx.currentTime);
+            this.lineFilterLow.Q.setValueAtTime(0.7, this.ctx.currentTime);
+
+            this.waveshaper = this.ctx.createWaveShaper();
+            this.waveshaper.curve = this.createSaturationCurve(256);
+            this.waveshaper.oversample = '2x';
+
+            this.lineFilterHigh.connect(this.lineFilterLow);
+            this.lineFilterLow.connect(this.waveshaper);
+            this.waveshaper.connect(this.masterGain);
+
+            this.startLineHiss();
+          }
+
+          if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+          }
+        }
+
+        createSaturationCurve(samples) {
+          const curve = new Float32Array(samples);
+          for (let i = 0; i < samples; ++i) {
+            const x = (i * 2) / samples - 1;
+            curve[i] = Math.tanh(x * 1.3);
+          }
+          return curve;
+        }
+
+        startLineHiss() {
+          const bufferSize = this.ctx.sampleRate * 2;
+          const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = (Math.random() * 2 - 1) * 0.015;
+          }
+
+          this.hissSource = this.ctx.createBufferSource();
+          this.hissSource.buffer = noiseBuffer;
+          this.hissSource.loop = true;
+
+          const hissFilter = this.ctx.createBiquadFilter();
+          hissFilter.type = 'bandpass';
+          hissFilter.frequency.setValueAtTime(1200, this.ctx.currentTime);
+          hissFilter.Q.setValueAtTime(0.5, this.ctx.currentTime);
+
+          this.hissGain = this.ctx.createGain();
+          this.hissGain.gain.setValueAtTime(0.0001, this.ctx.currentTime);
+
+          this.hissSource.connect(hissFilter);
+          hissFilter.connect(this.hissGain);
+          this.hissGain.connect(this.masterGain);
+          this.hissSource.start();
+        }
+
+        setLineHissActive(active) {
+          if (!this.hissGain || !this.ctx) return;
+          const target = active ? 0.08 : 0.0001;
+          this.hissGain.gain.setTargetAtTime(target, this.ctx.currentTime, 0.05);
+        }
+
+        setVolume(vol) {
+          if (!this.masterGain || !this.ctx) return;
+          this.masterGain.gain.setTargetAtTime(vol, this.ctx.currentTime, 0.02);
+        }
+
+        playHookSwitch(isOffHook) {
+          try {
+            this.initContext();
+            if (!this.ctx) return;
+            const t = this.ctx.currentTime;
+
+            const len = Math.max(1, Math.floor(this.ctx.sampleRate * 0.05));
+            const noiseBuffer = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+            const data = noiseBuffer.getChannelData(0);
+            for (let i = 0; i < len; i++) {
+              data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.2));
+            }
+            const noiseNode = this.ctx.createBufferSource();
+            noiseNode.buffer = noiseBuffer;
+
+            const noiseFilter = this.ctx.createBiquadFilter();
+            noiseFilter.type = 'bandpass';
+            noiseFilter.frequency.setValueAtTime(isOffHook ? 850 : 650, t);
+            noiseFilter.Q.setValueAtTime(2.0, t);
+
+            const noiseGain = this.ctx.createGain();
+            noiseGain.gain.setValueAtTime(0.4, t);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+
+            noiseNode.connect(noiseFilter);
+            noiseFilter.connect(noiseGain);
+            noiseGain.connect(this.masterGain);
+            noiseNode.start(t);
+
+            const osc = this.ctx.createOscillator();
+            const oscGain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(isOffHook ? 110 : 85, t);
+            osc.frequency.exponentialRampToValueAtTime(40, t + 0.08);
+
+            oscGain.gain.setValueAtTime(0.5, t);
+            oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+            osc.connect(oscGain);
+            oscGain.connect(this.masterGain);
+            osc.start(t);
+            osc.stop(t + 0.08);
+          } catch(e) {
+            console.warn('Audio non-critical:', e);
+          }
+        }
+
+        playCoinDrop() {
+          this.initContext();
+          const t = this.ctx.currentTime;
+
+          const scrapeLen = Math.floor(this.ctx.sampleRate * 0.12);
+          const scrapeBuf = this.ctx.createBuffer(1, scrapeLen, this.ctx.sampleRate);
+          const sData = scrapeBuf.getChannelData(0);
+          for (let i = 0; i < scrapeLen; i++) {
+            sData[i] = (Math.random() * 2 - 1) * (1 - i / scrapeLen);
+          }
+          const scrapeNode = this.ctx.createBufferSource();
+          scrapeNode.buffer = scrapeBuf;
+
+          const scrapeFilter = this.ctx.createBiquadFilter();
+          scrapeFilter.type = 'bandpass';
+          scrapeFilter.frequency.setValueAtTime(3200, t);
+          scrapeFilter.frequency.exponentialRampToValueAtTime(1400, t + 0.12);
+          scrapeFilter.Q.setValueAtTime(3.0, t);
+
+          const scrapeGain = this.ctx.createGain();
+          scrapeGain.gain.setValueAtTime(0.35, t);
+          scrapeGain.gain.linearRampToValueAtTime(0.01, t + 0.12);
+
+          scrapeNode.connect(scrapeFilter);
+          scrapeFilter.connect(scrapeGain);
+          scrapeGain.connect(this.masterGain);
+          scrapeNode.start(t);
+
+          setTimeout(() => {
+            if (!this.ctx) return;
+            const t2 = this.ctx.currentTime;
+
+            const bell1 = this.ctx.createOscillator();
+            const bell1Gain = this.ctx.createGain();
+            bell1.type = 'sine';
+            bell1.frequency.setValueAtTime(1850, t2);
+            bell1Gain.gain.setValueAtTime(0.45, t2);
+            bell1Gain.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.55);
+
+            bell1.connect(bell1Gain);
+            bell1Gain.connect(this.masterGain);
+            bell1.start(t2);
+            bell1.stop(t2 + 0.55);
+
+            const bell2 = this.ctx.createOscillator();
+            const bell2Gain = this.ctx.createGain();
+            bell2.type = 'sine';
+            bell2.frequency.setValueAtTime(3700, t2);
+            bell2Gain.gain.setValueAtTime(0.25, t2);
+            bell2Gain.gain.exponentialRampToValueAtTime(0.0001, t2 + 0.35);
+
+            bell2.connect(bell2Gain);
+            bell2Gain.connect(this.masterGain);
+            bell2.start(t2);
+            bell2.stop(t2 + 0.35);
+          }, 100);
+        }
+
+        playCoinReturnFlap() {
+          this.initContext();
+          const t = this.ctx.currentTime;
+
+          const osc = this.ctx.createOscillator();
+          const oscGain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(950, t);
+          osc.frequency.exponentialRampToValueAtTime(220, t + 0.08);
+
+          oscGain.gain.setValueAtTime(0.35, t);
+          oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+
+          osc.connect(oscGain);
+          oscGain.connect(this.masterGain);
+          osc.start(t);
+          osc.stop(t + 0.08);
+        }
+
+        playWarningBeep() {
+          this.initContext();
+          const t = this.ctx.currentTime;
+          [t, t + 0.12].forEach(startT => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1200, startT);
+
+            gain.gain.setValueAtTime(0.001, startT);
+            gain.gain.linearRampToValueAtTime(0.4, startT + 0.01);
+            gain.gain.setValueAtTime(0.4, startT + 0.06);
+            gain.gain.linearRampToValueAtTime(0.001, startT + 0.08);
+
+            osc.connect(gain);
+            gain.connect(this.lineFilterHigh);
+            osc.start(startT);
+            osc.stop(startT + 0.09);
+          });
+        }
+
+        startDialTone() {
+          this.initContext();
+          this.stopDialTone();
+          this.setLineHissActive(true);
+
+          const t = this.ctx.currentTime;
+          this.dialToneGain = this.ctx.createGain();
+          this.dialToneGain.gain.setValueAtTime(0.001, t);
+          this.dialToneGain.gain.linearRampToValueAtTime(0.28, t + 0.05);
+
+          this.dialToneOsc1 = this.ctx.createOscillator();
+          this.dialToneOsc1.type = 'sine';
+          this.dialToneOsc1.frequency.setValueAtTime(400, t);
+
+          this.dialToneOsc2 = this.ctx.createOscillator();
+          this.dialToneOsc2.type = 'sine';
+          this.dialToneOsc2.frequency.setValueAtTime(350, t);
+
+          this.dialToneOsc1.connect(this.dialToneGain);
+          this.dialToneOsc2.connect(this.dialToneGain);
+          this.dialToneGain.connect(this.lineFilterHigh);
+
+          this.dialToneOsc1.start();
+          this.dialToneOsc2.start();
+        }
+
+        stopDialTone() {
+          if (this.dialToneGain && this.ctx) {
+            const t = this.ctx.currentTime;
+            this.dialToneGain.gain.linearRampToValueAtTime(0.0001, t + 0.015);
+            setTimeout(() => {
+              if (this.dialToneOsc1) {
+                try { this.dialToneOsc1.stop(); this.dialToneOsc1.disconnect(); } catch (e) {}
+                this.dialToneOsc1 = null;
+              }
+              if (this.dialToneOsc2) {
+                try { this.dialToneOsc2.stop(); this.dialToneOsc2.disconnect(); } catch (e) {}
+                this.dialToneOsc2 = null;
+              }
+              if (this.dialToneGain) {
+                try { this.dialToneGain.disconnect(); } catch (e) {}
+                this.dialToneGain = null;
+              }
+            }, 25);
+          }
+        }
+
+        playDTMF(digit) {
+          this.initContext();
+          this.stopDialTone();
+
+          const dtmfMap = {
+            '1': [697, 1209], '2': [697, 1336], '3': [697, 1477],
+            '4': [770, 1209], '5': [770, 1336], '6': [770, 1477],
+            '7': [852, 1209], '8': [852, 1336], '9': [852, 1477],
+            '*': [941, 1209], '0': [941, 1336], '#': [941, 1477]
+          };
+
+          const freqs = dtmfMap[digit];
+          if (!freqs) return;
+
+          const t = this.ctx.currentTime;
+          const duration = 0.16;
+
+          const toneGain = this.ctx.createGain();
+          toneGain.gain.setValueAtTime(0.001, t);
+          toneGain.gain.linearRampToValueAtTime(0.35, t + 0.008);
+          toneGain.gain.setValueAtTime(0.35, t + duration - 0.01);
+          toneGain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+          const lowOsc = this.ctx.createOscillator();
+          const highOsc = this.ctx.createOscillator();
+          lowOsc.type = 'sine';
+          highOsc.type = 'sine';
+          lowOsc.frequency.setValueAtTime(freqs[0], t);
+          highOsc.frequency.setValueAtTime(freqs[1], t);
+
+          lowOsc.connect(toneGain);
+          highOsc.connect(toneGain);
+          toneGain.connect(this.lineFilterHigh);
+
+          lowOsc.start(t);
+          highOsc.start(t);
+          lowOsc.stop(t + duration);
+          highOsc.stop(t + duration);
+        }
+
+        startRinging(onConnectCallback) {
+          this.initContext();
+          this.stopAllStationAudio();
+
+          let ringCount = 0;
+          const ringPulse = () => {
+            if (!this.ctx) return;
+            const t = this.ctx.currentTime;
+
+            const burst = (startOffset) => {
+              const startT = t + startOffset;
+              const gain = this.ctx.createGain();
+              gain.gain.setValueAtTime(0.001, startT);
+              gain.gain.linearRampToValueAtTime(0.3, startT + 0.01);
+              gain.gain.setValueAtTime(0.3, startT + 0.38);
+              gain.gain.linearRampToValueAtTime(0.001, startT + 0.4);
+
+              const osc1 = this.ctx.createOscillator();
+              const osc2 = this.ctx.createOscillator();
+              osc1.type = 'sine';
+              osc2.type = 'sine';
+              osc1.frequency.setValueAtTime(400, startT);
+              osc2.frequency.setValueAtTime(440, startT);
+
+              osc1.connect(gain);
+              osc2.connect(gain);
+              gain.connect(this.lineFilterHigh);
+
+              osc1.start(startT);
+              osc2.start(startT);
+              osc1.stop(startT + 0.4);
+              osc2.stop(startT + 0.4);
+            };
+
+            burst(0);
+            burst(0.6);
+
+            ringCount++;
+            if (ringCount >= 2 && onConnectCallback) {
+              this.stopRinging();
+              setTimeout(onConnectCallback, 1800);
+            }
+          };
+
+          ringPulse();
+          this.ringInterval = setInterval(ringPulse, 3000);
+        }
+
+        stopRinging() {
+          if (this.ringInterval) {
+            clearInterval(this.ringInterval);
+            this.ringInterval = null;
+          }
+        }
+
+        startBusyTone() {
+          this.initContext();
+          this.stopAllStationAudio();
+
+          const pulse = () => {
+            if (!this.ctx) return;
+            const t = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, t);
+
+            gain.gain.setValueAtTime(0.001, t);
+            gain.gain.linearRampToValueAtTime(0.3, t + 0.01);
+            gain.gain.setValueAtTime(0.3, t + 0.48);
+            gain.gain.linearRampToValueAtTime(0.001, t + 0.5);
+
+            osc.connect(gain);
+            gain.connect(this.lineFilterHigh);
+            osc.start(t);
+            osc.stop(t + 0.5);
+          };
+
+          pulse();
+          this.busyInterval = setInterval(pulse, 1000);
+        }
+
+        stopBusyTone() {
+          if (this.busyInterval) {
+            clearInterval(this.busyInterval);
+            this.busyInterval = null;
+          }
+        }
+
+        playStationAudio(number) {
+          this.stopAllStationAudio();
+          this.initContext();
+          this.setLineHissActive(true);
+
+          switch (number) {
+            case '100':
+              this.synthPoliceDispatch();
+              break;
+            case '143':
+              this.synthHeartbreakHotline();
+              break;
+            case '011':
+              this.synthDelhiBazaar();
+              break;
+            case '022':
+              this.synthMarineDriveMonsoon();
+              break;
+            case '197':
+              this.synthBSNLDirectory();
+              break;
+            case '108':
+              this.synthAmbulance();
+              break;
+            case '999':
+              this.synthSpeakingClock();
+              break;
+            default:
+              this.activeStationNode = { stop: () => {} };
+              break;
+          }
+        }
+
+        synthPoliceDispatch() {
+          const sirenOsc = this.ctx.createOscillator();
+          const sirenGain = this.ctx.createGain();
+          const lfo = this.ctx.createOscillator();
+          const lfoGain = this.ctx.createGain();
+
+          sirenOsc.type = 'sawtooth';
+          sirenOsc.frequency.setValueAtTime(750, this.ctx.currentTime);
+          lfo.frequency.setValueAtTime(0.8, this.ctx.currentTime);
+          lfoGain.gain.setValueAtTime(200, this.ctx.currentTime);
+
+          lfo.connect(sirenOsc.frequency);
+          sirenGain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+
+          sirenOsc.connect(sirenGain);
+          sirenGain.connect(this.lineFilterHigh);
+
+          sirenOsc.start();
+          lfo.start();
+
+          this.activeStationNode = {
+            stop: () => {
+              try { sirenOsc.stop(); lfo.stop(); } catch(e){}
+            }
+          };
+        }
+
+        synthHeartbreakHotline() {
+          const chords = [
+            [293.66, 349.23, 440.00],
+            [392.00, 466.16, 587.33],
+            [466.16, 587.33, 698.46],
+            [440.00, 554.37, 659.25]
+          ];
+
+          let chordIdx = 0;
+          const oscList = [];
+          const chordGain = this.ctx.createGain();
+          chordGain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          chordGain.connect(this.lineFilterHigh);
+
+          const playChord = () => {
+            if (!this.ctx || !this.activeStationNode) return;
+            const currentChord = chords[chordIdx % chords.length];
+            chordIdx++;
+
+            while (oscList.length) {
+              try { const o = oscList.pop(); o.stop(); o.disconnect(); } catch(e){}
+            }
+
+            const now = this.ctx.currentTime;
+            currentChord.forEach(freq => {
+              const osc = this.ctx.createOscillator();
+              const g = this.ctx.createGain();
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(freq, now);
+
+              g.gain.setValueAtTime(0.001, now);
+              g.gain.linearRampToValueAtTime(0.12, now + 0.3);
+              g.gain.setValueAtTime(0.12, now + 2.4);
+              g.gain.linearRampToValueAtTime(0.001, now + 3.0);
+
+              osc.connect(g);
+              g.connect(chordGain);
+              osc.start(now);
+              osc.stop(now + 3.1);
+              oscList.push(osc);
+            });
+          };
+
+          playChord();
+          const chordInterval = setInterval(playChord, 3000);
+
+          this.activeStationNode = {
+            stop: () => {
+              clearInterval(chordInterval);
+              while (oscList.length) {
+                try { const o = oscList.pop(); o.stop(); o.disconnect(); } catch(e){}
+              }
+            }
+          };
+        }
+
+        synthDelhiBazaar() {
+          const bellInterval = setInterval(() => {
+            if (!this.ctx || !this.activeStationNode) return;
+            const now = this.ctx.currentTime;
+            [0, 0.12].forEach(offset => {
+              const t = now + offset;
+              const b1 = this.ctx.createOscillator();
+              const g = this.ctx.createGain();
+              b1.type = 'sine';
+              b1.frequency.setValueAtTime(2450, t);
+              g.gain.setValueAtTime(0.001, t);
+              g.gain.linearRampToValueAtTime(0.2, t + 0.005);
+              g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+              b1.connect(g);
+              g.connect(this.lineFilterHigh);
+              b1.start(t);
+              b1.stop(t + 0.11);
+            });
+          }, 2800);
+
+          this.activeStationNode = {
+            stop: () => clearInterval(bellInterval)
+          };
+        }
+
+        synthMarineDriveMonsoon() {
+          const noiseLen = this.ctx.sampleRate * 2.5;
+          const surfBuf = this.ctx.createBuffer(1, noiseLen, this.ctx.sampleRate);
+          const data = surfBuf.getChannelData(0);
+          for (let i = 0; i < noiseLen; i++) {
+            data[i] = (Math.random() * 2 - 1) * 0.2;
+          }
+
+          const surfSource = this.ctx.createBufferSource();
+          surfSource.buffer = surfBuf;
+          surfSource.loop = true;
+
+          const waveFilter = this.ctx.createBiquadFilter();
+          waveFilter.type = 'lowpass';
+          waveFilter.frequency.setValueAtTime(450, this.ctx.currentTime);
+
+          const waveGain = this.ctx.createGain();
+          waveGain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+
+          surfSource.connect(waveFilter);
+          waveFilter.connect(waveGain);
+          waveGain.connect(this.lineFilterHigh);
+          surfSource.start();
+
+          this.activeStationNode = {
+            stop: () => {
+              try { surfSource.stop(); surfSource.disconnect(); } catch(e){}
+            }
+          };
+        }
+
+        synthBSNLDirectory() {
+          const chimeInterval = setInterval(() => {
+            if (!this.ctx || !this.activeStationNode) return;
+            const now = this.ctx.currentTime;
+            [950, 1400, 1800].forEach((freq, idx) => {
+              const t = now + idx * 0.12;
+              const osc = this.ctx.createOscillator();
+              const g = this.ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, t);
+              g.gain.setValueAtTime(0.001, t);
+              g.gain.linearRampToValueAtTime(0.25, t + 0.01);
+              g.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+              osc.connect(g);
+              g.connect(this.lineFilterHigh);
+              osc.start(t);
+              osc.stop(t + 0.12);
+            });
+          }, 3500);
+
+          this.activeStationNode = {
+            stop: () => clearInterval(chimeInterval)
+          };
+        }
+
+        synthAmbulance() {
+          const siren = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          siren.type = 'sine';
+          gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+
+          let hiTone = true;
+          const sirenInterval = setInterval(() => {
+            if (!this.ctx || !this.activeStationNode) return;
+            siren.frequency.setValueAtTime(hiTone ? 920 : 700, this.ctx.currentTime);
+            hiTone = !hiTone;
+          }, 350);
+
+          siren.connect(gain);
+          gain.connect(this.lineFilterHigh);
+          siren.start();
+
+          this.activeStationNode = {
+            stop: () => {
+              clearInterval(sirenInterval);
+              try { siren.stop(); siren.disconnect(); } catch(e){}
+            }
+          };
+        }
+
+        synthSpeakingClock() {
+          const clockInterval = setInterval(() => {
+            if (!this.ctx || !this.activeStationNode) return;
+            const now = this.ctx.currentTime;
+            const pip = this.ctx.createOscillator();
+            const pGain = this.ctx.createGain();
+            pip.type = 'sine';
+            pip.frequency.setValueAtTime(1000, now);
+            pGain.gain.setValueAtTime(0.001, now);
+            pGain.gain.linearRampToValueAtTime(0.3, now + 0.005);
+            pGain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+            pip.connect(pGain);
+            pGain.connect(this.lineFilterHigh);
+            pip.start(now);
+            pip.stop(now + 0.1);
+          }, 1000);
+
+          this.activeStationNode = {
+            stop: () => clearInterval(clockInterval)
+          };
+        }
+
+        stopAllStationAudio() {
+          if (this.activeStationNode) {
+            try { this.activeStationNode.stop(); } catch(e){}
+            this.activeStationNode = null;
+          }
+        }
+
+        terminateAllAudio() {
+          this.stopDialTone();
+          this.stopRinging();
+          this.stopBusyTone();
+          this.stopAllStationAudio();
+          this.setLineHissActive(false);
+        }
+      }
+
+      /* ==========================================================================
+         2. SKEUOMORPHIC 14-SEGMENT LED DISPLAY CONTROLLER
+         ========================================================================== */
+      class SegmentDisplay {
+        constructor(containerEl, numDigits = 10) {
+          this.container = containerEl;
+          this.numDigits = numDigits;
+          this.digitElements = [];
+          this.initDOM();
+
+          this.glyphMap = {
+            ' ': [],
+            '0': ['a', 'b', 'c', 'd', 'e', 'f', 'j', 'm'],
+            '1': ['b', 'c', 'j'],
+            '2': ['a', 'b', 'g1', 'g2', 'e', 'd'],
+            '3': ['a', 'b', 'c', 'd', 'g2'],
+            '4': ['f', 'g1', 'g2', 'b', 'c'],
+            '5': ['a', 'f', 'g1', 'g2', 'c', 'd'],
+            '6': ['a', 'f', 'e', 'd', 'c', 'g1', 'g2'],
+            '7': ['a', 'b', 'c'],
+            '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g1', 'g2'],
+            '9': ['a', 'b', 'c', 'd', 'f', 'g1', 'g2'],
+            'A': ['a', 'b', 'c', 'e', 'f', 'g1', 'g2'],
+            'B': ['a', 'b', 'c', 'd', 'i', 'l', 'g2'],
+            'C': ['a', 'd', 'e', 'f'],
+            'D': ['a', 'b', 'c', 'd', 'i', 'l'],
+            'E': ['a', 'd', 'e', 'f', 'g1'],
+            'F': ['a', 'e', 'f', 'g1'],
+            'G': ['a', 'c', 'd', 'e', 'f', 'g2'],
+            'H': ['b', 'c', 'e', 'f', 'g1', 'g2'],
+            'I': ['a', 'd', 'i', 'l'],
+            'J': ['b', 'c', 'd', 'e'],
+            'K': ['e', 'f', 'g1', 'j', 'k'],
+            'L': ['d', 'e', 'f'],
+            'M': ['e', 'f', 'h', 'j', 'b', 'c'],
+            'N': ['e', 'f', 'h', 'k', 'b', 'c'],
+            'O': ['a', 'b', 'c', 'd', 'e', 'f'],
+            'P': ['a', 'b', 'e', 'f', 'g1', 'g2'],
+            'Q': ['a', 'b', 'c', 'd', 'e', 'f', 'k'],
+            'R': ['a', 'b', 'e', 'f', 'g1', 'g2', 'k'],
+            'S': ['a', 'f', 'g1', 'g2', 'c', 'd'],
+            'T': ['a', 'i', 'l'],
+            'U': ['b', 'c', 'd', 'e', 'f'],
+            'V': ['e', 'f', 'm', 'j'],
+            'W': ['b', 'c', 'e', 'f', 'm', 'k'],
+            'X': ['h', 'j', 'k', 'm'],
+            'Y': ['h', 'j', 'l'],
+            'Z': ['a', 'd', 'j', 'm'],
+            '-': ['g1', 'g2'],
+            ':': ['dp'],
+            '.': ['dp']
+          };
+        }
+
+        initDOM() {
+          this.container.innerHTML = '';
+          this.digitElements = [];
+
+          for (let i = 0; i < this.numDigits; i++) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'led-char-svg');
+            svg.setAttribute('viewBox', '0 0 24 38');
+
+            svg.innerHTML = `
+              <polygon data-seg="a" points="4,2 20,2 18,5 6,5" fill="#240606" />
+              <polygon data-seg="b" points="19,5 22,7 21,18 18,17" fill="#240606" />
+              <polygon data-seg="c" points="18,20 21,19 20,31 17,29" fill="#240606" />
+              <polygon data-seg="d" points="5,33 19,33 17,30 7,30" fill="#240606" />
+              <polygon data-seg="e" points="4,20 7,20 6,30 3,31" fill="#240606" />
+              <polygon data-seg="f" points="3,7 6,5 7,17 4,18" fill="#240606" />
+              <polygon data-seg="g1" points="6,18 11,18 10,20 5,20" fill="#240606" />
+              <polygon data-seg="g2" points="13,18 18,18 19,20 14,20" fill="#240606" />
+              <line data-seg="h" x1="6" y1="6" x2="11" y2="17" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <line data-seg="i" x1="12" y1="4" x2="12" y2="17" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <line data-seg="j" x1="18" y1="6" x2="13" y2="17" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <line data-seg="k" x1="13" y1="21" x2="18" y2="30" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <line data-seg="l" x1="12" y1="21" x2="12" y2="31" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <line data-seg="m" x1="11" y1="21" x2="6" y2="30" stroke="#240606" stroke-width="1.8" stroke-linecap="round" />
+              <circle data-seg="dp" cx="21" cy="32" r="1.5" fill="#240606" />
+            `;
+
+            this.container.appendChild(svg);
+            this.digitElements.push(svg);
+          }
+        }
+
+        setText(text, alignRight = false) {
+          const str = String(text).toUpperCase().slice(0, this.numDigits);
+          const padded = alignRight ? str.padStart(this.numDigits, ' ') : str.padEnd(this.numDigits, ' ');
+
+          for (let i = 0; i < this.numDigits; i++) {
+            const char = padded[i] || ' ';
+            const svg = this.digitElements[i];
+            const activeSegments = this.glyphMap[char] || [];
+
+            const elements = svg.querySelectorAll('[data-seg]');
+            elements.forEach(el => {
+              const segName = el.getAttribute('data-seg');
+              const isLit = activeSegments.includes(segName);
+
+              if (isLit) {
+                if (el.tagName.toLowerCase() === 'line') {
+                  el.setAttribute('stroke', '#ff2222');
+                  el.style.filter = 'drop-shadow(0 0 3px #ff0000)';
+                } else {
+                  el.setAttribute('fill', '#ff2222');
+                  el.style.filter = 'drop-shadow(0 0 3px #ff0000)';
+                }
+              } else {
+                if (el.tagName.toLowerCase() === 'line') {
+                  el.setAttribute('stroke', '#240606');
+                  el.style.filter = 'none';
+                } else {
+                  el.setAttribute('fill', '#240606');
+                  el.style.filter = 'none';
+                }
+              }
+            });
+          }
+        }
+      }
+
+      /* ==========================================================================
+         3. DYNAMIC COILED CABLE SIMULATION
+         ========================================================================== */
+      class CoiledCordRenderer {
+        constructor(canvasEl, pcoBoxEl, handsetUnitEl, wrapperEl) {
+          this.canvas = canvasEl;
+          this.ctx = canvasEl.getContext('2d');
+          this.pcoBox = pcoBoxEl;
+          this.handset = handsetUnitEl;
+          this.wrapper = wrapperEl;
+          this.numCoils = 38;
+
+          this.resize();
+          window.addEventListener('resize', () => this.resize());
+          this.animate();
+        }
+
+        resize() {
+          const rect = this.wrapper.getBoundingClientRect();
+          this.canvas.width = rect.width * window.devicePixelRatio;
+          this.canvas.height = rect.height * window.devicePixelRatio;
+          this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+
+        animate() {
+          this.draw();
+          requestAnimationFrame(() => this.animate());
+        }
+
+        draw() {
+          const wrapRect = this.wrapper.getBoundingClientRect();
+          const boxRect = this.pcoBox.getBoundingClientRect();
+          const handRect = this.handset.getBoundingClientRect();
+
+          const w = wrapRect.width;
+          const h = wrapRect.height;
+          this.ctx.clearRect(0, 0, w, h);
+
+          const startX = boxRect.left - wrapRect.left + 50;
+          const startY = boxRect.bottom - wrapRect.top - 14;
+          const endX = handRect.left - wrapRect.left + handRect.width / 2;
+          const endY = handRect.bottom - wrapRect.top - 18;
+
+          const midX = (startX + endX) / 2 + 10;
+          const dist = Math.hypot(endX - startX, endY - startY);
+          const sag = Math.max(70, 160 - dist * 0.25);
+          const midY = Math.max(startY, endY) + sag;
+
+          const points = [];
+          const steps = this.numCoils * 2;
+          for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * midX + t * t * endX;
+            const y = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * midY + t * t * endY;
+            points.push({ x, y });
+          }
+
+          this.ctx.save();
+          this.ctx.lineCap = 'round';
+          this.ctx.lineJoin = 'round';
+
+          for (let i = 0; i < points.length - 1; i++) {
+            const p1 = points[i];
+            const p2 = points[i + 1];
+
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const angle = Math.atan2(dy, dx);
+            const perpX = -Math.sin(angle);
+            const perpY = Math.cos(angle);
+
+            const isEven = i % 2 === 0;
+            const coilRadius = isEven ? 9.5 : -9.5;
+
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = '#1e2226';
+            this.ctx.lineWidth = 3.6;
+            this.ctx.moveTo(p1.x + perpX * coilRadius, p1.y + perpY * coilRadius);
+            this.ctx.lineTo(p2.x - perpX * coilRadius, p2.y - perpY * coilRadius);
+            this.ctx.stroke();
+          }
+
+          this.ctx.restore();
+        }
+      }
+
+      /* ==========================================================================
+         4. PCO TELEPHONE STATE MACHINE & INTERACTION ORCHESTRATOR
+         ========================================================================== */
+      const STATES = {
+        ON_HOOK: 'ON_HOOK',
+        OFF_HOOK: 'OFF_HOOK',
+        CREDITED: 'CREDITED',
+        DIALING: 'DIALING',
+        RINGING: 'RINGING',
+        IN_CALL: 'IN_CALL',
+        ENGAGED: 'ENGAGED'
+      };
+
+      class PCOTelephoneApp {
+        constructor() {
+          this.state = STATES.ON_HOOK;
+          this.credit = 0;
+          this.unspentCoins = 0;
+          this.dialedDigits = '';
+          this.activeSecondsRemaining = 60;
+          this.timerInterval = null;
+          this.idleBlinkInterval = null;
+          this.idleBlinkPhase = 0;
+
+          // DOM Elements
+          this.ledDisplayEl = document.getElementById('ledDisplay');
+          this.dotCredit = document.getElementById('dotCredit');
+          this.dotCall = document.getElementById('dotCall');
+          this.dotWarning = document.getElementById('dotWarning');
+
+          this.stepChip1 = document.getElementById('stepChip1');
+          this.stepChip2 = document.getElementById('stepChip2');
+          this.stepChip3 = document.getElementById('stepChip3');
+
+          // THE SINGLE RECEIVER BUTTON & COIN BUTTON
+          this.singleReceiverBtn = document.getElementById('singleReceiverBtn');
+          this.receiverBtnIcon = document.getElementById('receiverBtnIcon');
+          this.receiverBtnMain = document.getElementById('receiverBtnMain');
+          this.receiverBtnSub = document.getElementById('receiverBtnSub');
+          this.singleCoinBtn = document.getElementById('singleCoinBtn');
+
+          // Chassis elements
+          this.lineStatusLamp = document.getElementById('lineStatusLamp');
+          this.hookStatusText = document.getElementById('hookStatusText');
+          this.cradleTwinHooks = document.getElementById('cradleTwinHooks');
+          this.cradleSocketStatus = document.getElementById('cradleSocketStatus');
+          this.handsetUnit = document.getElementById('handsetUnit');
+
+          this.coinSlotModule = document.getElementById('coinSlotModule');
+          this.coinReturnBtn = document.getElementById('coinReturnBtn');
+          this.refundStatus = document.getElementById('refundStatus');
+          this.takeCoinBtn = document.getElementById('takeCoinBtn');
+          this.coinStack = document.getElementById('coinStack');
+          this.volumeSlider = document.getElementById('volumeSlider');
+          this.pcoWrapper = document.getElementById('pcoWrapper');
+          this.pcoBox = document.getElementById('pcoBox');
+          this.cordCanvas = document.getElementById('coiledCordCanvas');
+
+          // Systems
+          this.audio = new TelecomAudioEngine();
+          this.display = new SegmentDisplay(this.ledDisplayEl, 10);
+          this.cordRenderer = new CoiledCordRenderer(this.cordCanvas, this.pcoBox, this.handsetUnit, this.pcoWrapper);
+
+          this.bindEvents();
+          this.transitionTo(STATES.ON_HOOK);
+        }
+
+        bindEvents() {
+          // 1. Single Primary Receiver Button (and direct click on physical handset)
+          let hookLockout = false;
+          const toggleReceiverState = (e) => {
+            if (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            if (hookLockout) return;
+            hookLockout = true;
+            setTimeout(() => { hookLockout = false; }, 300);
+
+            if (this.state === STATES.ON_HOOK) {
+              this.liftReceiver();
+            } else {
+              this.hangUp();
+            }
+          };
+
+          // The dedicated single button
+          this.singleReceiverBtn.addEventListener('click', toggleReceiverState);
+
+          // Clicking physical handset itself also works intuitively
+          this.handsetUnit.addEventListener('click', toggleReceiverState);
+
+          // 2. Effortless Coin Insertion Triggers
+          // A. The Top Coin Button
+          this.singleCoinBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.insertCoinEffortlessly();
+          });
+
+          // B. Clicking directly on the chassis Coin Slot
+          this.coinSlotModule.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.insertCoinEffortlessly();
+          });
+
+          // C. 1-Click Tap on ANY coin in the tray
+          this.bindCoinClickEvents();
+
+          // 3. 1-Click Instant Speed Dial Presets
+          const instantBtns = document.querySelectorAll('.instant-preset-btn');
+          instantBtns.forEach(btn => {
+            const preset = btn.getAttribute('data-preset');
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              this.quickDialNumber(preset);
+            });
+          });
+
+          // 4. Keypad Buttons
+          const keyBtns = document.querySelectorAll('.key-btn');
+          keyBtns.forEach(btn => {
+            const keyVal = btn.getAttribute('data-key');
+            btn.addEventListener('pointerdown', (e) => {
+              e.preventDefault();
+              btn.classList.add('is-pressed');
+              this.handleKeyPress(keyVal);
+            });
+            btn.addEventListener('pointerup', () => btn.classList.remove('is-pressed'));
+            btn.addEventListener('pointerleave', () => btn.classList.remove('is-pressed'));
+          });
+
+          // 5. Physical Keyboard Shortcuts
+          window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+              e.preventDefault();
+              toggleReceiverState();
+              return;
+            }
+
+            if (e.key === 'c' || e.key === 'C') {
+              e.preventDefault();
+              this.insertCoinEffortlessly();
+              return;
+            }
+
+            const validKeys = ['0','1','2','3','4','5','6','7','8','9','*','#'];
+            if (validKeys.includes(e.key)) {
+              e.preventDefault();
+              const keyBtn = document.querySelector(`.key-btn[data-key="${e.key}"]`);
+              if (keyBtn) {
+                keyBtn.classList.add('is-pressed');
+                setTimeout(() => keyBtn.classList.remove('is-pressed'), 120);
+              }
+              this.handleKeyPress(e.key);
+            }
+          });
+
+          // 6. Coin Refund Button
+          this.coinReturnBtn.addEventListener('click', () => {
+            this.audio.playCoinReturnFlap();
+            if (this.unspentCoins > 0) {
+              const refunded = this.unspentCoins;
+              this.unspentCoins = 0;
+              this.credit = 0;
+              this.refundStatus.textContent = `₹${refunded}.00 RETURNED`;
+              this.refundStatus.style.color = '#ffdd59';
+              this.showCoinToast(`₹${refunded}.00 Refunded to Shelf`);
+
+              for (let i = 0; i < refunded; i++) {
+                this.addCoinToCounter();
+              }
+
+              if (this.state === STATES.CREDITED || this.state === STATES.DIALING) {
+                this.transitionTo(STATES.OFF_HOOK);
+              }
+
+              setTimeout(() => {
+                this.refundStatus.textContent = 'TRAY EMPTY';
+                this.refundStatus.style.color = '#8c96a0';
+              }, 2500);
+            } else {
+              this.refundStatus.textContent = 'NO COIN HELD';
+              setTimeout(() => {
+                this.refundStatus.textContent = 'TRAY EMPTY';
+              }, 1200);
+            }
+          });
+
+          // 7. Add More Coins
+          this.takeCoinBtn.addEventListener('click', () => {
+            this.addCoinToCounter();
+            this.showCoinToast('+1 Brass ₹1 Coin Added to Tray');
+          });
+
+          // 8. Pinned Directory Quick-Dial
+          const dirItems = document.querySelectorAll('.directory-item');
+          dirItems.forEach(item => {
+            const dialCode = item.getAttribute('data-code');
+            const dialBtn = item.querySelector('.dir-dial-btn');
+
+            const startCallToDir = (e) => {
+              e.stopPropagation();
+              this.quickDialNumber(dialCode);
+            };
+
+            dialBtn.addEventListener('click', startCallToDir);
+            item.addEventListener('click', startCallToDir);
+          });
+
+          // 9. Volume Slider
+          this.volumeSlider.addEventListener('input', (e) => {
+            const vol = parseFloat(e.target.value);
+            this.audio.setVolume(vol);
+          });
+        }
+
+        bindCoinClickEvents() {
+          const coins = this.coinStack.querySelectorAll('.brass-coin');
+          coins.forEach(coin => {
+            coin.onclick = (e) => {
+              e.preventDefault();
+              this.animateFlyCoinToSlot(coin);
+            };
+          });
+        }
+
+        addCoinToCounter() {
+          const coin = document.createElement('div');
+          coin.className = 'brass-coin';
+          coin.title = 'Tap to instantly insert ₹1 coin';
+          coin.innerHTML = `
+            <div class="coin-reeds"></div>
+            <span class="coin-symbol">₹1</span>
+            <span class="coin-subtext">BHARAT</span>
+          `;
+          this.coinStack.appendChild(coin);
+          this.bindCoinClickEvents();
+        }
+
+        animateFlyCoinToSlot(coinEl) {
+          const coinRect = coinEl.getBoundingClientRect();
+          const slotRect = this.coinSlotModule.getBoundingClientRect();
+
+          const flying = document.createElement('div');
+          flying.className = 'flying-coin';
+          flying.style.left = `${coinRect.left}px`;
+          flying.style.top = `${coinRect.top}px`;
+          document.body.appendChild(flying);
+
+          coinEl.remove();
+
+          requestAnimationFrame(() => {
+            flying.style.transform = 'scale(0.7) rotate(180deg)';
+            flying.style.left = `${slotRect.left + slotRect.width / 2 - 23}px`;
+            flying.style.top = `${slotRect.top + slotRect.height / 2 - 23}px`;
+          });
+
+          setTimeout(() => {
+            flying.remove();
+            this.processCoinInsertion();
+          }, 450);
+        }
+
+        insertCoinEffortlessly() {
+          const coin = this.coinStack.querySelector('.brass-coin');
+          if (coin) {
+            this.animateFlyCoinToSlot(coin);
+          } else {
+            this.addCoinToCounter();
+            const newCoin = this.coinStack.querySelector('.brass-coin');
+            if (newCoin) this.animateFlyCoinToSlot(newCoin);
+          }
+        }
+
+        showCoinToast(msg) {
+          const toast = document.getElementById('coinToast');
+          const toastMsg = document.getElementById('toastMsg');
+          if (toast && toastMsg) {
+            toastMsg.textContent = msg;
+            toast.classList.add('visible');
+            if (this.toastTimeout) clearTimeout(this.toastTimeout);
+            this.toastTimeout = setTimeout(() => {
+              toast.classList.remove('visible');
+            }, 1800);
+          }
+        }
+
+        /* --- STATE TRANSITIONS --- */
+        transitionTo(newState) {
+          this.state = newState;
+          this.clearTimers();
+
+          this.dotCredit.classList.remove('active');
+          this.dotCall.classList.remove('active');
+          this.dotWarning.classList.remove('active');
+
+          if (newState === STATES.OFF_HOOK) {
+            this.coinSlotModule.classList.add('awaiting-coin');
+          } else {
+            this.coinSlotModule.classList.remove('awaiting-coin');
+          }
+
+          // Update Step Guide
+          this.stepChip1.className = 'step-chip';
+          this.stepChip2.className = 'step-chip';
+          this.stepChip3.className = 'step-chip';
+
+          if (newState === STATES.ON_HOOK) {
+            this.stepChip1.classList.add('active');
+          } else if (newState === STATES.OFF_HOOK) {
+            this.stepChip1.classList.add('completed');
+            this.stepChip2.classList.add('active');
+          } else if (newState === STATES.CREDITED || newState === STATES.DIALING) {
+            this.stepChip1.classList.add('completed');
+            this.stepChip2.classList.add('completed');
+            this.stepChip3.classList.add('active');
+          } else if (newState === STATES.RINGING || newState === STATES.IN_CALL) {
+            this.stepChip1.classList.add('completed');
+            this.stepChip2.classList.add('completed');
+            this.stepChip3.classList.add('completed', 'active');
+          }
+
+          // Update THE SINGLE RECEIVER BUTTON
+          if (newState === STATES.ON_HOOK) {
+            this.singleReceiverBtn.className = 'primary-action-btn receiver-btn-on-hook';
+            this.receiverBtnIcon.textContent = '📞';
+            this.receiverBtnMain.textContent = 'PICK UP RECEIVER';
+            this.receiverBtnSub.textContent = 'Click to lift handset off cradle';
+          } else {
+            this.singleReceiverBtn.className = 'primary-action-btn receiver-btn-off-hook';
+            this.receiverBtnIcon.textContent = '🔴';
+            this.receiverBtnMain.textContent = 'HANG UP RECEIVER';
+            this.receiverBtnSub.textContent = 'Click to replace receiver on cradle';
+          }
+
+          switch (newState) {
+            case STATES.ON_HOOK:
+              this.audio.terminateAllAudio();
+              this.credit = 0;
+              this.unspentCoins = 0;
+              this.dialedDigits = '';
+
+              this.lineStatusLamp.className = 'telecom-status-lamp on-hook';
+              this.hookStatusText.className = 'hook-status-text on-hook';
+              this.hookStatusText.textContent = 'ON HOOK';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks on-hook';
+              this.cradleSocketStatus.className = 'cradle-socket-status on-hook';
+              this.cradleSocketStatus.textContent = 'DOCKED ON HOOK';
+              this.handsetUnit.className = 'handset-unit on-hook';
+
+              this.startIdleBlink();
+              break;
+
+            case STATES.OFF_HOOK:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.hookStatusText.className = 'hook-status-text off-hook';
+              this.hookStatusText.textContent = 'OFF HOOK';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.cradleSocketStatus.className = 'cradle-socket-status off-hook';
+              this.cradleSocketStatus.textContent = 'LIFTED OFF HOOK';
+              this.handsetUnit.className = 'handset-unit off-hook';
+
+              this.audio.startDialTone();
+              this.display.setText('INSERT COIN');
+              break;
+
+            case STATES.CREDITED:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.hookStatusText.className = 'hook-status-text off-hook';
+              this.hookStatusText.textContent = 'OFF HOOK';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.cradleSocketStatus.className = 'cradle-socket-status off-hook';
+              this.cradleSocketStatus.textContent = 'LIFTED OFF HOOK';
+              this.handsetUnit.className = 'handset-unit off-hook';
+
+              this.dotCredit.classList.add('active');
+              this.display.setText('CREDIT 1.00');
+              this.audio.startDialTone();
+
+              setTimeout(() => {
+                if (this.state === STATES.CREDITED) {
+                  this.display.setText('DIAL NUMBER');
+                }
+              }, 1200);
+              break;
+
+            case STATES.DIALING:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.handsetUnit.className = 'handset-unit off-hook';
+              this.dotCredit.classList.add('active');
+              this.audio.stopDialTone();
+              this.display.setText(this.dialedDigits || 'DIAL NUMBER');
+              break;
+
+            case STATES.RINGING:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.handsetUnit.className = 'handset-unit off-hook';
+              this.dotCredit.classList.add('active');
+              this.display.setText('RINGING...');
+              this.audio.startRinging(() => {
+                this.transitionTo(STATES.IN_CALL);
+              });
+              break;
+
+            case STATES.IN_CALL:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.handsetUnit.className = 'handset-unit off-hook';
+              this.dotCredit.classList.add('active');
+              this.dotCall.classList.add('active');
+              this.audio.playStationAudio(this.dialedDigits);
+              this.activeSecondsRemaining = 59;
+              this.startCallCountdown();
+              break;
+
+            case STATES.ENGAGED:
+              this.lineStatusLamp.className = 'telecom-status-lamp off-hook';
+              this.cradleTwinHooks.className = 'cradle-twin-hooks off-hook';
+              this.handsetUnit.className = 'handset-unit off-hook';
+              this.audio.terminateAllAudio();
+              this.audio.startBusyTone();
+              this.display.setText('ENGAGED');
+              setTimeout(() => {
+                if (this.state === STATES.ENGAGED) {
+                  this.display.setText('TIME OUT');
+                }
+              }, 2200);
+              break;
+          }
+        }
+
+        liftReceiver() {
+          this.audio.playHookSwitch(true);
+          if (this.credit > 0 || this.unspentCoins > 0) {
+            this.transitionTo(STATES.CREDITED);
+          } else {
+            this.transitionTo(STATES.OFF_HOOK);
+          }
+          this.showCoinToast('📞 Receiver Lifted! Tap coin or slot to insert');
+        }
+
+        hangUp() {
+          this.audio.playHookSwitch(false);
+          this.transitionTo(STATES.ON_HOOK);
+          this.showCoinToast('📞 Receiver Placed On Hook');
+        }
+
+        processCoinInsertion() {
+          this.audio.playCoinDrop();
+
+          // Auto-lifts receiver if on-hook
+          if (this.state === STATES.ON_HOOK) {
+            this.audio.playHookSwitch(true);
+            this.credit = 1;
+            this.unspentCoins = 1;
+            this.transitionTo(STATES.CREDITED);
+            this.showCoinToast('🪙 ₹1.00 Inserted · Handset Picked Up!');
+            return;
+          }
+
+          if (this.state === STATES.OFF_HOOK) {
+            this.credit = 1;
+            this.unspentCoins = 1;
+            this.transitionTo(STATES.CREDITED);
+            this.showCoinToast('🪙 ₹1.00 Inserted · Dial Tone Ready!');
+            return;
+          }
+
+          if (this.state === STATES.CREDITED || this.state === STATES.DIALING) {
+            this.credit += 1;
+            this.unspentCoins += 1;
+            this.display.setText(`CREDIT ${this.credit}.00`);
+            this.showCoinToast(`🪙 ₹1.00 Added · Credit: ₹${this.credit}.00`);
+            return;
+          }
+
+          if (this.state === STATES.IN_CALL) {
+            this.activeSecondsRemaining += 60;
+            this.credit += 1;
+            this.dotWarning.classList.remove('active');
+            const mm = String(Math.floor(this.activeSecondsRemaining / 60)).padStart(2, '0');
+            const ss = String(this.activeSecondsRemaining % 60).padStart(2, '0');
+            this.display.setText(`+60S  ${mm}:${ss}`);
+            this.showCoinToast('🪙 ₹1.00 Added · +60s Call Extended!');
+            setTimeout(() => {
+              if (this.state === STATES.IN_CALL) {
+                this.updateCallDisplay();
+              }
+            }, 1200);
+            return;
+          }
+        }
+
+        handleKeyPress(digit) {
+          if (this.state === STATES.ON_HOOK) {
+            this.liftReceiver();
+            this.processCoinInsertion();
+            this.audio.playDTMF(digit);
+            this.dialedDigits = digit;
+            this.state = STATES.DIALING;
+            this.display.setText(`DIAL: ${this.dialedDigits}`);
+            return;
+          }
+
+          if (this.state === STATES.OFF_HOOK) {
+            this.processCoinInsertion();
+            this.audio.playDTMF(digit);
+            this.dialedDigits = digit;
+            this.state = STATES.DIALING;
+            this.display.setText(`DIAL: ${this.dialedDigits}`);
+            return;
+          }
+
+          this.audio.playDTMF(digit);
+
+          if (this.state === STATES.CREDITED) {
+            this.state = STATES.DIALING;
+            this.dialedDigits = digit;
+            this.display.setText(`DIAL: ${this.dialedDigits}`);
+          } else if (this.state === STATES.DIALING) {
+            if (this.dialedDigits.length < 6) {
+              this.dialedDigits += digit;
+              this.display.setText(`DIAL: ${this.dialedDigits}`);
+            }
+          }
+
+          if (this.dialedDigits.length >= 3) {
+            this.checkAndConnectCall();
+          }
+        }
+
+        checkAndConnectCall() {
+          const validCodes = ['100', '143', '011', '022', '197', '108', '999'];
+          if (validCodes.includes(this.dialedDigits)) {
+            setTimeout(() => {
+              if (this.state === STATES.DIALING) {
+                this.transitionTo(STATES.RINGING);
+              }
+            }, 500);
+          } else if (this.dialedDigits.length >= 4) {
+            setTimeout(() => {
+              if (this.state === STATES.DIALING) {
+                this.transitionTo(STATES.RINGING);
+              }
+            }, 600);
+          }
+        }
+
+        quickDialNumber(number) {
+          if (this.state === STATES.IN_CALL || this.state === STATES.RINGING) return;
+          this.showCoinToast(`⚡ Calling ${number}...`);
+
+          if (this.state === STATES.ON_HOOK) {
+            this.liftReceiver();
+            setTimeout(() => {
+              this.processCoinInsertion();
+              setTimeout(() => {
+                this.dialedDigits = number;
+                this.transitionTo(STATES.RINGING);
+              }, 400);
+            }, 300);
+          } else if (this.state === STATES.OFF_HOOK) {
+            this.processCoinInsertion();
+            setTimeout(() => {
+              this.dialedDigits = number;
+              this.transitionTo(STATES.RINGING);
+            }, 400);
+          } else {
+            this.dialedDigits = number;
+            this.transitionTo(STATES.RINGING);
+          }
+        }
+
+        startCallCountdown() {
+          this.updateCallDisplay();
+          this.timerInterval = setInterval(() => {
+            this.activeSecondsRemaining--;
+
+            if (this.activeSecondsRemaining <= 10 && this.activeSecondsRemaining > 0) {
+              this.dotWarning.classList.toggle('active');
+              this.audio.playWarningBeep();
+
+              if (this.activeSecondsRemaining % 2 === 0) {
+                this.display.setText('LOW BAL');
+              } else {
+                this.updateCallDisplay();
+              }
+            } else if (this.activeSecondsRemaining <= 0) {
+              this.transitionTo(STATES.ENGAGED);
+            } else {
+              this.updateCallDisplay();
+            }
+          }, 1000);
+        }
+
+        updateCallDisplay() {
+          const mm = String(Math.floor(this.activeSecondsRemaining / 60)).padStart(2, '0');
+          const ss = String(this.activeSecondsRemaining % 60).padStart(2, '0');
+          this.display.setText(`TALK ${mm}:${ss}`);
+        }
+
+        startIdleBlink() {
+          const messages = ['LIFT RCVR', 'RATE 1-MIN'];
+          this.idleBlinkPhase = 0;
+          this.display.setText(messages[0]);
+
+          this.idleBlinkInterval = setInterval(() => {
+            this.idleBlinkPhase = (this.idleBlinkPhase + 1) % messages.length;
+            this.display.setText(messages[this.idleBlinkPhase]);
+          }, 2400);
+        }
+
+        clearTimers() {
+          if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+          }
+          if (this.idleBlinkInterval) {
+            clearInterval(this.idleBlinkInterval);
+            this.idleBlinkInterval = null;
+          }
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        new PCOTelephoneApp();
+      });
+
+    })();
+  </script>
+</body>
+</html>
