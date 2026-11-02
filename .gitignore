@@ -13,3 +13,4 @@ web/dist-ssr/
 web/.vercel/
 web/*.tsbuildinfo
 web/.env*
+.vercel

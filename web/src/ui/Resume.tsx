@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ZooopLogo } from './ZooopLogo'
-import { SOCIAL_ICONS } from './SocialIcons'
+import { SOCIAL_ICONS, ExternalLinkIcon } from './SocialIcons'
 import { FOCUS_POINTS } from '../data/focusPoints'
 
 const SOCIAL_LINKS = [
@@ -252,7 +252,7 @@ function Group({ group }: { group: ResumeGroup }) {
       {group.links && (
         <div className="tl-logos">
           {group.links.map((l) => {
-            const Icon = SOCIAL_ICONS[l.id as keyof typeof SOCIAL_ICONS]
+            const Icon = SOCIAL_ICONS[l.id as keyof typeof SOCIAL_ICONS] || ExternalLinkIcon
             return (
               <a
                 key={l.id}

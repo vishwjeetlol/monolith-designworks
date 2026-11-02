@@ -19,6 +19,12 @@ export default function LoadingScreen() {
     if (progress >= 100) setReached(true)
   }, [progress])
 
+  // Fallback: automatically reveal after 5s even if assets are still streaming
+  useEffect(() => {
+    const timer = setTimeout(() => setReached(true), 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
   // 到过 100% 后：停留片刻 → 淡出 → 卸载（一次性，锁定不受后续进度变化影响）
   useEffect(() => {
     if (!reached) return
