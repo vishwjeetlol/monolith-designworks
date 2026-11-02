@@ -1,0 +1,15 @@
+# Root gitignore
+.DS_Store
+*.log
+.claude/
+deploy/
+*.blend1
+*.blend2
+
+# Web dependencies and build outputs
+web/node_modules/
+web/dist/
+web/dist-ssr/
+web/.vercel/
+web/*.tsbuildinfo
+web/.env*
