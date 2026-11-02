@@ -61,19 +61,14 @@ const COPY = {
 function Hero({ lang, cueOpacity }: { lang: Lang; cueOpacity: MotionValue<number> }) {
   const { title, paragraphs } = COPY[lang]
   const aboutRef = useRef(null)
-  // 触发起点提前：about 顶部位于视口 60% 处即开始（offset[0] 进度 0），到达顶部为进度 1
-  const { scrollYProgress } = useScroll({
-    target: aboutRef,
-    offset: ['start 0.6', 'start start'],
-  })
-  // 透明度在 about 顶部升到约 30vh 时归 0：起点 60%→进度 p 时顶部在 0.6×(1−p)，
-  // 令 =0.3 解得 p=0.5，故 opacity 区间 [0, 0.5]
-  const blur = useTransform(scrollYProgress, [0, 0.5], ['blur(0px)', 'blur(16px)'])
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  // 视差：标题上升更快、字距随滚动拉开；正文上升慢一点
-  const titleY = useTransform(scrollYProgress, [0, 1], [0, -96])
-  const bodyY = useTransform(scrollYProgress, [0, 1], [0, -52])
-  const titleSpacing = useTransform(scrollYProgress, [0, 1], ['0.01em', '0.42em'])
+  const { scrollY } = useScroll()
+
+  // 严格在滚动开始后平滑淡出，初始静止状态为 100% 不透明与清晰
+  const blur = useTransform(scrollY, [0, 260], ['blur(0px)', 'blur(16px)'])
+  const opacity = useTransform(scrollY, [0, 240], [1, 0])
+  const titleY = useTransform(scrollY, [0, 300], [0, -60])
+  const bodyY = useTransform(scrollY, [0, 300], [0, -36])
+  const titleSpacing = useTransform(scrollY, [0, 300], ['0.01em', '0.2em'])
   return (
     <section className="hero">
       <motion.div

@@ -148,6 +148,11 @@ function Man2({
   const get = useThree((s) => s.get)
   const { scene, animations } = useGLTF(`${import.meta.env.BASE_URL}models/me.glb`)
 
+  useEffect(() => {
+    ;(window as any).__scene = get().scene
+    ;(window as any).__camera = get().camera
+  }, [get])
+
   // 克隆模型；收集眼睛对象、聚焦锚点对象、glb 自带相机、各锚点景深开关
   const { model, eyes, points, startPoint, glbCam, focusNode, dof } = useMemo(() => {
     const clone = scene.clone(true)
@@ -157,6 +162,11 @@ function Man2({
     let glbCam: any = null
     let focusNode: any = null
     clone.traverse((o: any) => {
+      // 禁用 glb 自带的超高强度灯光（Blender 导出的 2400W 强光会导致画面完全过曝爆白）
+      if (o.isLight) {
+        o.visible = false
+        o.intensity = 0
+      }
       if (o.isMesh) {
         o.castShadow = true
         o.receiveShadow = true
@@ -166,6 +176,34 @@ function Man2({
       if (o.name === 'focus-start' || o.name === 'focus-0') startPoint = o
       if (o.name === 'focus-works') focusNode = o
       if (POINTS.includes(o.name)) pmap[o.name] = o
+
+      // 针对头部人体扫描材质校正高光与粗糙度，避免强反光泛白
+      if (o.name === 'man' || o.name === 'imagetostl_mesh0') {
+        if (o.isMesh && o.material) {
+          const mats = Array.isArray(o.material) ? o.material : [o.material]
+          mats.forEach((m: any) => {
+            m.metalness = 0.05
+            m.roughness = 0.6
+          })
+        }
+      }
+
+      // 贴纸尺寸、材质深度与渲染层级优化
+      if (o.name && o.name.startsWith('sticker_')) {
+        if (o.isMesh && o.material) {
+          o.scale.set(0.18, 0.18, 0.18)
+          o.renderOrder = 10
+          const mats = Array.isArray(o.material) ? o.material : [o.material]
+          mats.forEach((m: any) => {
+            m.transparent = true
+            m.depthWrite = false
+            m.polygonOffset = true
+            m.polygonOffsetFactor = -1
+            m.polygonOffsetUnits = -1
+          })
+        }
+      }
+
       if (/eye/i.test(o.name)) {
         // 平滑着色：重算平滑顶点法线 + 关闭 flatShading
         if (o.isMesh) {
@@ -516,8 +554,8 @@ function Post2({
   dofRangeRef: MutableRefObject<number>
 }) {
   const post = {
-    bloomIntensity: 0.6,
-    bloomThreshold: 0.82,
+    bloomIntensity: 0.35,
+    bloomThreshold: 0.88,
     dof: true,
     startBokeh: 7.4,
     startRange: 2.0,
